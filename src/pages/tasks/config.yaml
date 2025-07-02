@@ -1,0 +1,187 @@
+# Tasks Page Configuration
+# Complete page definition for task management and kanban board functionality
+
+page:
+  title: "Task Management"
+  route: "/tasks"
+  description: "Kanban board and project management interface"
+  
+layout:
+  type: "grid"
+  columns: 12
+  rows: 6
+  gap: 1.5
+  padding: 1.5
+  
+# Theme configuration removed - using dynamic database themes instead
+    
+components:
+  - id: "page-header"
+    type: "PageHeader"
+    position: { col: 1, row: 1, span: 12 }
+    props:
+      title: "Task Management"
+      subtitle: "Organize and track your projects"
+      showActions: true
+      actions:
+        - label: "New Task"
+          type: "primary"
+          action: "create-task"
+          icon: "plus"
+        - label: "New Project"
+          type: "secondary"
+          action: "create-project"
+          icon: "folder-plus"
+    style:
+      marginBottom: "1rem"
+      
+  - id: "project-sidebar"
+    type: "ProjectSidebar"
+    position: { col: 1, row: 2, span: 3, rowSpan: 5 }
+    props:
+      showFavorites: true
+      showAllProjects: true
+      showSpecialViews: true
+      enableProjectActions: true
+      specialViews:
+        - id: "all-projects"
+          label: "All Projects"
+          icon: "folder"
+        - id: "assigned-to-me"
+          label: "Assigned to Me"
+          icon: "user"
+        - id: "reports"
+          label: "Reports"
+          icon: "bar-chart"
+    style:
+      backgroundColor: "var(--color-surface)"
+      borderRadius: "0.5rem"
+      padding: "1rem"
+      
+  - id: "task-board"
+    type: "TaskBoard"
+    position: { col: 4, row: 2, span: 9, rowSpan: 5 }
+    props:
+      enableDragDrop: true
+      showPriority: true
+      showAssignee: true
+      showDueDate: true
+      enableQuickActions: true
+      statusColumns:
+        - id: "todo"
+          label: "To Do"
+          color: "#6b7280"
+        - id: "in-progress"
+          label: "In Progress"
+          color: "#3b82f6"
+        - id: "review"
+          label: "Review"
+          color: "#f59e0b"
+        - id: "done"
+          label: "Done"
+          color: "#10b981"
+    style:
+      backgroundColor: "var(--color-surface)"
+      borderRadius: "0.5rem"
+      padding: "1rem"
+      minHeight: "600px"
+      
+data:
+  sources:
+    - name: "tasks"
+      type: "api"
+      endpoint: "/api/tasks"
+      method: "GET"
+      refresh: "30s"
+      transform: "formatTasksForBoard"
+      
+    - name: "projects"
+      type: "api"
+      endpoint: "/api/projects"
+      method: "GET"
+      refresh: "60s"
+      transform: "formatProjectsForSidebar"
+      
+    - name: "task-statuses"
+      type: "api"
+      endpoint: "/api/task-statuses"
+      method: "GET"
+      refresh: "300s"
+      
+    - name: "team-members"
+      type: "api"
+      endpoint: "/api/team-members"
+      method: "GET"
+      refresh: "300s"
+      
+navigation:
+  showSidebar: false   # Page has its own project sidebar
+  customHeader: true   # Use custom page header
+  breadcrumbs: true
+  
+realtime:
+  enabled: true
+  events:
+    - "task-created"
+    - "task-updated"
+    - "task-deleted"
+    - "task-moved"
+    - "project-created"
+    - "project-updated"
+    - "project-deleted"
+  polling:
+    interval: "30s"
+    endpoints:
+      - "/api/tasks"
+      - "/api/projects"
+      
+features:
+  kanbanBoard:
+    enabled: true
+    dragAndDrop: true
+    swimlanes: false
+    
+  listView:
+    enabled: true
+    sorting: true
+    filtering: true
+    search: true
+    
+  calendarView:
+    enabled: false  # Future feature
+    
+  teamView:
+    enabled: false  # Future feature
+    
+  taskCreation:
+    enabled: true
+    bulkCreate: false
+    templates: false
+    
+  projectManagement:
+    enabled: true
+    projectColors: true
+    projectIcons: true
+    favorites: true
+    
+  collaboration:
+    enabled: true
+    comments: false  # Future feature
+    mentions: false  # Future feature
+    
+  reporting:
+    enabled: false  # Future feature
+    
+scripts:
+  onLoad:
+    - "initializeRealtimeEvents"
+    - "loadUserPreferences"
+  onUnload:
+    - "cleanupRealtimeEvents"
+    - "saveUserPreferences"
+    
+meta:
+  author: "Claude Agent"
+  version: "1.0.0"
+  lastModified: "2025-06-30"
+  tags: ["tasks", "kanban", "project-management", "productivity"]

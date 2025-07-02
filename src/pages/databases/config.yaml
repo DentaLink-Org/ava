@@ -1,0 +1,63 @@
+# Databases Page Configuration
+# This file defines the complete page structure, layout, and component configuration
+
+page:
+  title: "Database Management"
+  route: "/databases"
+  description: "Manage databases, schemas, and connections"
+
+layout:
+  type: "grid"
+  columns: 12
+  gap: 4
+  padding: 6
+
+# Theme configuration removed - using dynamic database themes instead
+
+components:
+  - id: "database-manager"
+    type: "DatabaseManager"
+    position:
+      col: 1
+      row: 1
+      span: 12
+    props:
+      enableRealtime: true
+      showHistory: true
+      trackChanges: true
+
+data:
+  sources:
+    - name: "databases"
+      type: "supabase"
+      query: "SELECT * FROM user_databases ORDER BY created_at DESC"
+      refresh: "30s"
+    
+    - name: "schemas"
+      type: "supabase"
+      query: "SELECT * FROM database_schemas"
+      refresh: "1m"
+    
+    - name: "activity"
+      type: "api"
+      endpoint: "/api/databases/activity"
+      method: "GET"
+      refresh: "10s"
+
+navigation:
+  showSidebar: true
+  customHeader: false
+  breadcrumbs: true
+
+scripts:
+  onLoad:
+    - "initializeDatabaseConnection"
+    - "checkDatabaseHealth"
+  onUnload:
+    - "cleanupDatabaseConnections"
+
+meta:
+  author: "Dashboard System"
+  version: "1.0.0"
+  lastModified: "2025-06-30"
+  tags: ["databases", "management", "admin"]

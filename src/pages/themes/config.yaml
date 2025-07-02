@@ -1,0 +1,68 @@
+# Theme Gallery Page Configuration
+# Theme selection and customization interface
+
+page:
+  title: "Theme Gallery"
+  route: "/themes"
+  description: "Browse and customize themes for your dashboard pages"
+
+layout:
+  type: "flex"
+  direction: "column"
+  gap: 6
+  padding: 6
+
+# Theme configuration removed - using dynamic database themes instead
+
+components:
+  - id: "theme-gallery-header"
+    type: "ThemeGalleryHeader"
+    position:
+      order: 1
+    props:
+      title: "Theme Gallery"
+      subtitle: "Customize the appearance of your dashboard pages"
+      
+  - id: "page-theme-selector"
+    type: "PageThemeSelector"
+    position:
+      order: 2
+    props:
+      pages:
+        - id: "dashboard"
+          name: "Dashboard"
+          description: "Main admin dashboard"
+        - id: "databases" 
+          name: "Databases"
+          description: "Database management"
+        - id: "tasks"
+          name: "Tasks"
+          description: "Task management"
+
+  - id: "theme-grid"
+    type: "ThemeGrid"
+    position:
+      order: 3
+    props:
+      columns: 3
+      showPreview: true
+      enableQuickApply: true
+
+  - id: "theme-customizer"
+    type: "ThemeCustomizer"
+    position:
+      order: 4
+    props:
+      allowCustomThemes: true
+      showAdvancedOptions: false
+
+navigation:
+  showSidebar: true
+  customHeader: false
+  breadcrumbs: true
+
+meta:
+  author: "Dashboard Theme Team"
+  version: "1.0.0"
+  lastModified: "2025-06-30"
+  tags: ["themes", "customization", "appearance"]

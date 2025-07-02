@@ -1,0 +1,53 @@
+{
+  "name": "claude-dashboard",
+  "version": "1.0.0",
+  "description": "Page-centric, agent-friendly dashboard architecture",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "analyze": "cross-env ANALYZE=true next build"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.50.2",
+    "@types/react-beautiful-dnd": "^13.1.8",
+    "@types/uuid": "^10.0.0",
+    "@types/ws": "^8.18.1",
+    "ajv": "^8.17.1",
+    "js-yaml": "^4.1.0",
+    "lucide-react": "^0.525.0",
+    "next": "^14.0.0",
+    "react": "^18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
+    "react-dom": "^18.2.0",
+    "uuid": "^11.1.0",
+    "ws": "^8.18.2"
+  },
+  "devDependencies": {
+    "@next/bundle-analyzer": "^14.0.0",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "autoprefixer": "^10.4.21",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.0.0",
+    "eslint-config-next": "^14.0.0",
+    "jest": "^29.0.0",
+    "null-loader": "^4.0.1",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+}

@@ -1,0 +1,40 @@
+# Page Manager Configuration
+# Interface for managing dashboard pages - create, edit, and modify pages
+
+page:
+  title: "Page Manager"
+  route: "/page-manager"
+  description: "Manage dashboard pages - create, edit, and modify page configurations"
+
+layout:
+  type: "grid"
+  columns: 12
+  gap: 6
+  padding: 6
+
+components:
+  - id: "page-manager-main"
+    type: "PageManager"
+    position:
+      col: 1
+      row: 1
+      span: 12
+    props: {}
+
+data:
+  sources:
+    - name: "pages"
+      type: "api"
+      endpoint: "/api/pages"
+      refresh: "30s"
+
+navigation:
+  showSidebar: true
+  customHeader: false
+  breadcrumbs: true
+
+meta:
+  author: "Dashboard Team"
+  version: "1.0.0"
+  lastModified: "2025-06-30"
+  tags: ["management", "pages", "admin"]

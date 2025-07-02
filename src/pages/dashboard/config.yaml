@@ -1,0 +1,101 @@
+# Dashboard Page Configuration
+# This file defines the complete dashboard page structure, theme, and components
+
+page:
+  title: "Dashboard"
+  route: "/"
+  description: "Main admin dashboard with KPIs and navigation"
+
+layout:
+  type: "grid"
+  columns: 8
+  gap: 2
+  padding: 3
+
+# Theme configuration removed - using dynamic database themes instead
+
+components:
+  - id: "welcome-header"
+    type: "WelcomeHeader"
+    position:
+      col: 1
+      row: 1
+      span: 8
+    props:
+      title: "Dashboard"
+      subtitle: "AVI-Tech Team Dashboard"
+      
+  - id: "database-link-card"
+    type: "DatabaseLinkCard"
+    position:
+      col: 1
+      row: 2
+      span: 4
+    props:
+      title: "Databases"
+      description: "Manage your databases"
+      href: "/databases"
+      icon: "Database"
+      
+  - id: "tasks-link-card"
+    type: "TasksLinkCard"
+    position:
+      col: 5
+      row: 2
+      span: 4
+    props:
+      title: "Task Management"
+      description: "Organize and track tasks"
+      href: "/tasks"
+      icon: "CheckSquare"
+
+  - id: "kpi-cards"
+    type: "KPICards"
+    position:
+      col: 1
+      row: 3
+      span: 8
+    props:
+      metrics:
+        - id: "total-revenue"
+          title: "Total Revenue"
+          value: 0
+          suffix: ""
+          description: "From orders table"
+        - id: "active-users"
+          title: "Active Users" 
+          value: 0
+          suffix: ""
+          description: "From customers table"
+        - id: "orders-processed"
+          title: "Orders Processed"
+          value: 247
+          suffix: ""
+          description: "This month"
+        - id: "page-builder"
+          title: "Page Builder"
+          value: "Ready"
+          suffix: ""
+          description: "Create custom pages"
+
+data:
+  sources:
+    - name: "orders"
+      type: "supabase"
+      query: "SELECT COUNT(*) as count, SUM(amount) as revenue FROM orders"
+      refresh: "30s"
+    - name: "customers"
+      type: "supabase"  
+      query: "SELECT COUNT(*) as count FROM customers"
+      refresh: "1m"
+
+navigation:
+  showSidebar: true
+  customHeader: false
+  breadcrumbs: true
+
+meta:
+  author: "Dashboard Refactoring Team"
+  version: "1.0.0"
+  lastModified: "2025-06-30"
+  tags: ["dashboard", "admin", "overview"]
