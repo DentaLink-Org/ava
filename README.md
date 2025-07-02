@@ -20,6 +20,7 @@ A sophisticated Next.js dashboard framework designed for rapid development and d
 - **Task Management**: Project tracking with drag-and-drop functionality
 - **Page Manager**: Dynamic page creation and configuration
 - **Theme Gallery**: Live theme preview and customization
+- **Claude CLI Chatbot**: Integrated AI assistant for development tasks
 
 ### 🔧 Technical Stack
 - **Frontend**: Next.js 14, React 18, TypeScript
@@ -95,6 +96,14 @@ Each page follows a consistent structure:
 
 ## 🔄 AI-Assisted Development
 
+### Claude CLI Chatbot Integration
+A sophisticated AI assistant built into the dashboard interface:
+- **Real-time Interaction**: Direct Claude CLI integration via web interface
+- **Context Awareness**: Automatically includes project and page context
+- **Development Tasks**: File operations, code analysis, and system administration
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+
+### MCP Server Features
 Integrated with Claude Code MCP server for:
 - Automated component generation
 - Database schema management
@@ -106,15 +115,28 @@ Integrated with Claude Code MCP server for:
 
 - Node.js ≥ 18.0.0
 - npm ≥ 8.0.0
+- Claude CLI installed and configured
 - Supabase project (for database features)
 
 ## 🚦 Getting Started
 
 1. Clone the repository
 2. Install dependencies: `npm install`
-3. Configure environment variables for Supabase
-4. Run development server: `npm run dev`
-5. Visit `http://localhost:3000` to access the dashboard
+3. Install Claude CLI: `curl -fsSL https://install.claude.ai/claude-code | sh`
+4. Configure environment variables for Supabase
+5. Run development server: `npm run dev`
+6. Visit `http://localhost:3000` to access the dashboard
+7. Try the chatbot on the Playground page (bottom-right corner)
+
+### Claude CLI Chatbot Setup
+The chatbot requires Claude CLI to be installed and accessible. The system will automatically detect the installation path, or you can set it manually:
+
+```env
+CLAUDE_CLI_PATH=/path/to/claude
+CLAUDE_EXECUTION_TIMEOUT=300000  # 5 minutes (default)
+```
+
+For detailed setup instructions, see: [`docs/chatbot/README.md`](docs/chatbot/README.md)
 
 ## 🤝 Contributing
 

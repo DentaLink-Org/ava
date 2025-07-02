@@ -22,3 +22,10 @@ export {
   ConfigurationError,
   ComponentError
 } from './ErrorBoundary';
+
+// Chatbot components
+export { ChatBot, ChatMessage, ChatInput } from './chatbot';
+
+// Issue Tracker components
+export { IssueTracker, IssueForm, IssueList } from './issue-tracker';
+export type { Issue, IssueStatus } from './issue-tracker';

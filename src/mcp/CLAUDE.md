@@ -60,6 +60,9 @@ claude mcp add --scope user [server-name] python3 /full/path/to/server.py
 
 ## Development Workflow
 
+### Git Branch Policy
+**IMPORTANT**: All git operations (commits, pushes, pulls) should be performed on the `dev` branch. This repository uses `dev` as the primary development branch.
+
 ### 1. Server Creation Process
 1. **Directory Setup**: Create structured directory under `servers/[server-name]/`
 2. **Core Implementation**: Implement MCP protocol with proper error handling
@@ -195,6 +198,7 @@ Located in `servers/color-hex-server/`, this server demonstrates:
 ## Best Practices
 
 - Always use `--scope user` for development servers
+- **Work exclusively on the `dev` branch** - all commits and pushes should target `dev`
 - Test protocol compliance before Claude Code integration
 - Provide helpful error messages for invalid inputs
 - Use absolute paths in server registration

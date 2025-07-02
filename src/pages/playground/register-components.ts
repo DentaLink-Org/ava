@@ -12,6 +12,7 @@ import {
   QuickStartCard,
   KPICards
 } from './components';
+import { ChatBot, IssueTracker } from '../_shared/components';
 
 const PLAYGROUND_PAGE_ID = 'playground';
 
@@ -26,6 +27,8 @@ export const registerPlaygroundComponents = () => {
   componentRegistry.register(PLAYGROUND_PAGE_ID, 'TasksLinkCard', TasksLinkCard as any);
   componentRegistry.register(PLAYGROUND_PAGE_ID, 'QuickStartCard', QuickStartCard as any);
   componentRegistry.register(PLAYGROUND_PAGE_ID, 'KPICards', KPICards as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'ChatBot', ChatBot as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'IssueTracker', IssueTracker as any);
   
   console.log('Playground components registered successfully');
 };

@@ -2,6 +2,10 @@
 
 An MCP server that provides tools for performing Git and GitHub operations through the command-line interface.
 
+## Important: Branch Policy
+
+**All git operations should be performed on the `dev` branch.** This repository uses `dev` as the primary development branch for all commits, pushes, and pulls.
+
 ## Features
 
 The GitHub MCP server provides the following tools:
@@ -34,8 +38,10 @@ Once registered, you can use natural language with Claude to perform Git operati
 - "Check the git status of my project at /path/to/repo"
 - "Create a new branch called 'feature-xyz' in /path/to/repo"
 - "Commit all changes with message 'Fixed bug in authentication' in /path/to/repo"
-- "Push the current branch to origin"
+- "Push the dev branch to origin"
 - "Show me the last 5 commits"
+
+**Note**: All commits and pushes should be made to the `dev` branch, which is the primary development branch for this repository.
 
 ## Tool Details
 

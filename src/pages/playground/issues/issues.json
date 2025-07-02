@@ -1,0 +1,68 @@
+{
+  "issues": [
+    {
+      "id": "github-5",
+      "title": "Features Table Error: Cannot add new feature",
+      "description": "## Problem Description\nWhen users try to add a new feature, they encounter an error:\n**Error**: `Features table not found. Please run the database setup script to create the page_features table.`\n\n## Technical Context\nThis error is related to the previous issue (#4) - the `page_features` table is missing from the database.\n\n## Root Cause\nThe `page_features` table doesn't exist in the Supabase instance. This table is required for feature management functionality.\n\n## Files to Investigate\n- `/src/pages/page-manager/scripts/setup-features-table.sql`\n- Feature creation API endpoints\n- `/src/pages/databases/scripts/setup-database.ts`\n\n## Suggested Resolution\n1. Ensure the `page_features` table is created by running the setup script\n2. Add pre-flight checks before attempting feature operations\n3. Provide clear instructions in the UI for database setup requirements\n\n## Priority\n**High** - Blocks feature creation functionality\n\n## Labels\ndatabase, bug, setup, supabase, high-priority",
+      "status": "unchecked",
+      "pageId": "playground",
+      "tags": [],
+      "source": "github",
+      "githubIssueNumber": 5
+    },
+    {
+      "id": "github-4",
+      "title": "Features Database Error: Table not found on load",
+      "description": "## Problem Description\nWhen users load the Features Database, they encounter errors:\n- **Error 1**: `Database Error`\n- **Error 2**: `Features table not found. Please run the database setup script to create the page_features table.`\n\n## Technical Context\nThe `page_features` table is defined in `/src/pages/page-manager/scripts/setup-features-table.sql` but appears to not be created in the Supabase instance.\n\n## Root Cause\nThe database setup script for the features table hasn't been run, or the table was not successfully created.\n\n## Files to Investigate\n- `/src/pages/page-manager/scripts/setup-features-table.sql`\n- `/src/pages/databases/scripts/setup-database.ts`\n- Database initialization/migration processes\n\n## Suggested Resolution\n1. Run the setup script to create the `page_features` table\n2. Add validation to check if required tables exist on application startup\n3. Improve error messaging to guide users on how to run setup scripts\n\n## Priority\n**High** - Blocks features database functionality\n\n## Labels\ndatabase, bug, setup, supabase, high-priority",
+      "status": "unchecked",
+      "pageId": "playground",
+      "tags": [],
+      "source": "github",
+      "githubIssueNumber": 4
+    },
+    {
+      "id": "github-3",
+      "title": "Database Error: Missing 'column_count' when creating new table",
+      "description": "## Problem Description\nWhen users try to create a new table in a database, they encounter an error:\n**Error**: `Could not find the 'column_count' column of 'database_schemas' in the schema cache`\n\n## Technical Context\nThe `database_schemas` table should include a `column_count` column to track the number of columns in each table.\n\n## Root Cause\nThe `column_count` column is missing from the `database_schemas` table or is referenced with an incorrect name in the application code.\n\n## Files to Investigate\n- `/src/pages/databases/scripts/setup-database-tables.sql`\n- `/src/pages/databases/api/schema-operations.ts`\n- `/src/pages/databases/hooks/useRealtimeSchemas.ts`\n\n## Priority\n**High** - Blocks table creation functionality\n\n## Labels\ndatabase, bug, schema, supabase, high-priority",
+      "status": "unchecked",
+      "pageId": "playground",
+      "tags": [],
+      "source": "github",
+      "githubIssueNumber": 3
+    },
+    {
+      "id": "github-2",
+      "title": "Schema Error: Missing 'is_unique' column when adding column to schema",
+      "description": "## Problem Description\nWhen users click on a database and try to add a new column to its schema, they encounter an error:\n**Error**: `Could not find the 'is_unique' column of 'schema_columns' in the schema cache`\n\n## Technical Context\nThe `schema_columns` table should include an `is_unique` column as part of the column definition structure.\n\n## Root Cause\nThe `is_unique` column appears to be missing from the `schema_columns` table or the application is looking for it with an incorrect name.\n\n## Files to Investigate\n- `/src/pages/databases/api/schema-operations.ts`\n- `/src/pages/databases/hooks/useSchemaManager.ts`\n- `/src/pages/databases/scripts/setup-database-tables.sql`\n\n## Priority\n**High** - Blocks schema modification functionality\n\n## Labels\ndatabase, bug, schema, supabase, high-priority",
+      "status": "unchecked",
+      "pageId": "playground",
+      "tags": [],
+      "source": "github",
+      "githubIssueNumber": 2
+    },
+    {
+      "id": "github-1",
+      "title": "Database Error: Missing 'size_bytes' column when creating database",
+      "description": "## Problem Description\nWhen users click on creating a database and enter all the information, they encounter an error:\n**Error**: `Could not find the 'size_bytes' column of 'user_databases' in the schema cache`\n\n## Technical Context\nBased on codebase analysis, the `user_databases` table is defined in `/src/pages/databases/scripts/setup-database-tables.sql` with a column named **size** (not size_bytes).\n\n## Root Cause\nSchema mismatch - the application expects a column named `size_bytes` but the database schema defines it as `size`.\n\n## Files to Investigate\n- `/src/pages/databases/scripts/setup-database-tables.sql`\n- `/src/pages/databases/api/database-crud.ts`\n- `/src/pages/databases/hooks/useRealtimeDatabases.ts`\n\n## Priority\n**High** - Blocks core database creation functionality\n\n## Labels\ndatabase, bug, schema, supabase, high-priority",
+      "status": "unchecked",
+      "pageId": "playground",
+      "tags": [],
+      "source": "github",
+      "githubIssueNumber": 1
+    },
+    {
+      "id": "test-issue-1",
+      "title": "Test Issue for Validation",
+      "description": "This is a test issue to validate the API and plan generation workflow.",
+      "status": "unchecked",
+      "pageId": "playground",
+      "createdAt": "2025-07-02T21:45:00.000Z",
+      "tags": [
+        "test",
+        "api"
+      ]
+    }
+  ],
+  "lastUpdated": "2025-07-02T22:01:12.269Z",
+  "pageId": "playground"
+}
