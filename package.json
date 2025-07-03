@@ -11,7 +11,11 @@
     "type-check": "tsc --noEmit",
     "test": "jest",
     "test:watch": "jest --watch",
-    "analyze": "cross-env ANALYZE=true next build"
+    "analyze": "cross-env ANALYZE=true next build",
+    "db:setup": "node scripts/setup-database.js",
+    "db:test": "node scripts/setup-database.js test",
+    "db:verify": "node scripts/setup-database.js verify",
+    "postbuild": "node scripts/check-database.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.50.2",
