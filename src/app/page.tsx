@@ -1,9 +1,20 @@
 /**
- * Root page - redirects to dashboard
+ * Root page - renders dashboard directly
  */
 
-import { redirect } from 'next/navigation';
+'use client';
+
+import React from 'react';
+import { PageRenderer } from '../components/_shared/runtime/PageRenderer';
+import { PageWrapper } from '../components/_shared/components/PageWrapper';
+import { DatabaseThemeProvider } from '../components/_shared/runtime/DatabaseThemeProvider';
 
 export default function RootPage() {
-  redirect('/dashboard');
+  return (
+    <DatabaseThemeProvider pageId="dashboard">
+      <PageWrapper>
+        <PageRenderer pageId="dashboard" />
+      </PageWrapper>
+    </DatabaseThemeProvider>
+  );
 }
