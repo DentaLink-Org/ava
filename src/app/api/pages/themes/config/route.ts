@@ -10,7 +10,7 @@ import * as yaml from 'yaml';
 
 export async function GET(request: NextRequest) {
   try {
-    // Read the themes page configuration
+    // Read the themes page configuration from components directory
     const configPath = join(process.cwd(), 'src', 'components', 'themes', 'config.yaml');
     const configContent = await readFile(configPath, 'utf-8');
     const config = yaml.parse(configContent);
