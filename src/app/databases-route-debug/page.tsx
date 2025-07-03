@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { PageRenderer } from '@/components/_shared/runtime/PageRenderer';
 import { PageWrapper } from '@/components/_shared/components/PageWrapper';
+import { DatabaseThemeProvider } from '@/components/_shared/runtime/DatabaseThemeProvider';
 
 export default function DatabasesRouteDebug() {
   const [configLoaded, setConfigLoaded] = useState(false);
@@ -32,55 +33,57 @@ export default function DatabasesRouteDebug() {
   }, []);
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Databases Route Debug</h1>
-      
-      <div style={{ marginBottom: '20px' }}>
-        <h2>Debug Info:</h2>
-        <ul>
-          <li>Config loaded: {configLoaded ? '✅' : '❌'}</li>
-          <li>Config error: {configError || 'None'}</li>
-          <li>Components registered: {componentRegistered ? '✅' : '❌'}</li>
-        </ul>
-      </div>
+    <DatabaseThemeProvider pageId="databases">
+      <div style={{ padding: '20px' }}>
+        <h1>Databases Route Debug</h1>
+        
+        <div style={{ marginBottom: '20px' }}>
+          <h2>Debug Info:</h2>
+          <ul>
+            <li>Config loaded: {configLoaded ? '✅' : '❌'}</li>
+            <li>Config error: {configError || 'None'}</li>
+            <li>Components registered: {componentRegistered ? '✅' : '❌'}</li>
+          </ul>
+        </div>
 
-      <hr style={{ margin: '20px 0' }} />
+        <hr style={{ margin: '20px 0' }} />
 
-      <h2>Testing PageRenderer directly:</h2>
-      <div style={{ border: '2px solid blue', padding: '20px', marginTop: '10px' }}>
-        <PageRenderer
-          pageId="databases"
-          onError={(error) => {
-            console.error('PageRenderer error:', error);
-            alert(`PageRenderer error: ${error.message}`);
-          }}
-          onLoad={() => {
-            console.log('PageRenderer loaded successfully');
-          }}
-        />
-      </div>
-
-      <hr style={{ margin: '20px 0' }} />
-
-      <h2>Testing with PageWrapper:</h2>
-      <div style={{ border: '2px solid green', padding: '20px', marginTop: '10px' }}>
-        <PageWrapper 
-          pageId="databases"
-          showNavigation={true}
-          showBreadcrumbs={true}
-        >
+        <h2>Testing PageRenderer directly:</h2>
+        <div style={{ border: '2px solid blue', padding: '20px', marginTop: '10px' }}>
           <PageRenderer
             pageId="databases"
             onError={(error) => {
-              console.error('PageRenderer with wrapper error:', error);
-              alert(`PageRenderer with wrapper error: ${error.message}`);
+              console.error('PageRenderer error:', error);
+              alert(`PageRenderer error: ${error.message}`);
             }}
             onLoad={() => {
-              console.log('PageRenderer with wrapper loaded successfully');
+              console.log('PageRenderer loaded successfully');
             }}
           />
-        </PageWrapper>
+        </div>
+
+        <hr style={{ margin: '20px 0' }} />
+
+        <h2>Testing with PageWrapper:</h2>
+        <div style={{ border: '2px solid green', padding: '20px', marginTop: '10px' }}>
+          <PageWrapper 
+            pageId="databases"
+            showNavigation={true}
+            showBreadcrumbs={true}
+          >
+            <PageRenderer
+              pageId="databases"
+              onError={(error) => {
+                console.error('PageRenderer with wrapper error:', error);
+                alert(`PageRenderer with wrapper error: ${error.message}`);
+              }}
+              onLoad={() => {
+                console.log('PageRenderer with wrapper loaded successfully');
+              }}
+            />
+          </PageWrapper>
+        </div>
       </div>
-    </div>
+    </DatabaseThemeProvider>
   );
 }
