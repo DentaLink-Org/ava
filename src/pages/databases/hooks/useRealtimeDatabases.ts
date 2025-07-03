@@ -76,7 +76,7 @@ export const useRealtimeDatabases = (): UseRealtimeDatabasesResult => {
           status: database.status || 'active',
           table_count: 0,
           record_count: 0,
-          size_bytes: 0
+          size: '0 B'
         })
         .select()
         .single();
