@@ -12,11 +12,22 @@ import { PageActions } from './components/PageActions';
 import { PageEditor } from './components/PageEditor';
 import { PageManager } from './components/PageManager';
 
+// Create wrapped components that match PageComponent interface
+const PageHeaderWrapper = (props: any) => {
+  const { title = 'Page Manager', ...rest } = props;
+  return PageHeader({ title, ...rest });
+};
+
+const PageListWrapper = (props: any) => PageList(props);
+const PageActionsWrapper = (props: any) => PageActions(props);
+const PageEditorWrapper = (props: any) => PageEditor(props);
+const PageManagerWrapper = (props: any) => PageManager(props);
+
 // Register components for page-manager page
-componentRegistry.register('page-manager', 'PageHeader', PageHeader);
-componentRegistry.register('page-manager', 'PageList', PageList);
-componentRegistry.register('page-manager', 'PageActions', PageActions);
-componentRegistry.register('page-manager', 'PageEditor', PageEditor);
-componentRegistry.register('page-manager', 'PageManager', PageManager);
+componentRegistry.register('page-manager', 'PageHeader', PageHeaderWrapper);
+componentRegistry.register('page-manager', 'PageList', PageListWrapper);
+componentRegistry.register('page-manager', 'PageActions', PageActionsWrapper);
+componentRegistry.register('page-manager', 'PageEditor', PageEditorWrapper);
+componentRegistry.register('page-manager', 'PageManager', PageManagerWrapper);
 
 console.log('Page Manager components registered successfully');
