@@ -14,15 +14,15 @@ import { PageEditor } from './components/PageEditor';
 import { PageManager } from './components/PageManager';
 
 // Create wrapped components that match PageComponent interface
-const PageHeaderWrapper: React.FC<any> = (props) => {
+const PageHeaderWrapper = (props: any): React.ReactElement => {
   const { title = 'Page Manager', ...rest } = props;
   return <PageHeader title={title} {...rest} />;
 };
 
-const PageListWrapper: React.FC<any> = (props) => <PageList {...props} />;
-const PageActionsWrapper: React.FC<any> = (props) => <PageActions {...props} />;
-const PageEditorWrapper: React.FC<any> = (props) => <PageEditor {...props} />;
-const PageManagerWrapper: React.FC<any> = (props) => <PageManager {...props} />;
+const PageListWrapper = (props: any): React.ReactElement => <PageList {...props} />;
+const PageActionsWrapper = (props: any): React.ReactElement => <PageActions {...props} />;
+const PageEditorWrapper = (props: any): React.ReactElement => <PageEditor {...props} />;
+const PageManagerWrapper = (props: any): React.ReactElement => <PageManager {...props} />;
 
 // Register components for page-manager page
 componentRegistry.register('page-manager', 'PageHeader', PageHeaderWrapper);

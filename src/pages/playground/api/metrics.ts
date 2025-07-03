@@ -3,10 +3,10 @@
  * Dashboard-specific API handlers for metrics data
  */
 
-import { DashboardMetrics, DashboardApiResponse } from '../types';
+import { PlaygroundMetrics, PlaygroundApiResponse } from '../types';
 
 // Mock data generator for development
-const generateMetricsData = (): DashboardMetrics => ({
+const generateMetricsData = (): PlaygroundMetrics => ({
   totalRevenue: Math.floor(Math.random() * 100000) + 50000,
   totalOrders: Math.floor(Math.random() * 1000) + 200,
   averageOrderValue: Math.floor(Math.random() * 200) + 50,
@@ -17,7 +17,7 @@ const generateMetricsData = (): DashboardMetrics => ({
 /**
  * Fetch dashboard metrics
  */
-export const fetchDashboardMetrics = async (): Promise<DashboardApiResponse> => {
+export const fetchDashboardMetrics = async (): Promise<PlaygroundApiResponse> => {
   try {
     // TODO: Replace with actual Supabase/API calls
     // Example implementation:
@@ -45,7 +45,7 @@ export const fetchDashboardMetrics = async (): Promise<DashboardApiResponse> => 
 /**
  * Refresh specific metric
  */
-export const refreshMetric = async (metricId: string): Promise<DashboardApiResponse> => {
+export const refreshMetric = async (metricId: string): Promise<PlaygroundApiResponse> => {
   try {
     // TODO: Implement specific metric refresh
     // For now, return full metrics
@@ -63,7 +63,7 @@ export const refreshMetric = async (metricId: string): Promise<DashboardApiRespo
 /**
  * Validate metrics data
  */
-export const validateMetricsData = (data: unknown): data is DashboardMetrics => {
+export const validateMetricsData = (data: unknown): data is PlaygroundMetrics => {
   if (typeof data !== 'object' || data === null) return false;
   
   const metrics = data as Record<string, unknown>;

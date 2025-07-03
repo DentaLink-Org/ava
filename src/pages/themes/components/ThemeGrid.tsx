@@ -56,7 +56,7 @@ export const ThemeGrid: React.FC<ThemeGridProps> = ({
 
   // Get unique categories
   const categories = useMemo(() => {
-    const cats = ['all', ...new Set(displayThemes.map(theme => theme.category))];
+    const cats = ['all', ...Array.from(new Set(displayThemes.map(theme => theme.category)))];
     return cats;
   }, [displayThemes]);
 
