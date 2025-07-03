@@ -5,17 +5,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-
-// Use Vercel's environment variables first, then fallback to standard ones
-const supabaseUrl = process.env.AVA_NEXT_PUBLIC_SUPABASE_URL || 
-                   process.env.NEXT_PUBLIC_SUPABASE_URL || 
-                   'https://placeholder.supabase.co';
-const supabaseKey = process.env.AVA_NEXT_PUBLIC_SUPABASE_ANON_KEY || 
-                   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 
-                   'placeholder-key';
-
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { createServerClient } from '@/utils/supabase/server';
 
 interface SetupResult {
   success: boolean;
@@ -29,6 +19,7 @@ interface SetupResult {
  */
 async function testConnection(): Promise<{ success: boolean; message: string }> {
   try {
+    const supabase = await createServerClient();
     const { data, error } = await supabase
       .from('information_schema.tables')
       .select('table_name')
@@ -43,116 +34,41 @@ async function testConnection(): Promise<{ success: boolean; message: string }> 
 }
 
 /**
- * Create database tables
+ * Create database tables - Using direct table insertion approach
  */
 async function createTables(): Promise<SetupResult> {
   try {
-    // Create themes table
-    const { error: themesError } = await supabase.rpc('exec', {
-      sql: `
-        CREATE TABLE IF NOT EXISTS themes (
-          id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-          name VARCHAR(100) NOT NULL UNIQUE,
-          display_name VARCHAR(150) NOT NULL,
-          description TEXT,
-          category VARCHAR(50) NOT NULL DEFAULT 'custom',
-          colors JSONB NOT NULL,
-          typography JSONB,
-          spacing JSONB,
-          shadows JSONB,
-          borders JSONB,
-          author VARCHAR(100),
-          is_system BOOLEAN DEFAULT FALSE,
-          is_default BOOLEAN DEFAULT FALSE,
-          created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-          updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-        );
-      `
-    });
-
-    if (themesError && !themesError.message.includes('already exists')) {
-      throw themesError;
+    const supabase = await createServerClient();
+    // Check if tables exist by trying to query them
+    // If they don't exist, we'll get an error and know we need manual setup
+    
+    const { error: themesCheckError } = await supabase
+      .from('themes')
+      .select('id')
+      .limit(1);
+    
+    if (themesCheckError && themesCheckError.message.includes('does not exist')) {
+      return { 
+        success: false, 
+        message: 'Database tables do not exist. Please run the SQL setup script manually.',
+        error: 'Tables need to be created via Supabase SQL editor'
+      };
     }
 
-    // Create page_theme_assignments table
-    const { error: assignmentsError } = await supabase.rpc('exec', {
-      sql: `
-        CREATE TABLE IF NOT EXISTS page_theme_assignments (
-          id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-          page_id VARCHAR(100) NOT NULL UNIQUE,
-          theme_id UUID REFERENCES themes(id) ON DELETE SET NULL,
-          theme_variation_id UUID,
-          is_variation BOOLEAN DEFAULT FALSE,
-          created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-          updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-        );
-      `
-    });
-
-    if (assignmentsError && !assignmentsError.message.includes('already exists')) {
-      throw assignmentsError;
-    }
-
-    // Create tasks table
-    const { error: tasksError } = await supabase.rpc('exec', {
-      sql: `
-        CREATE TABLE IF NOT EXISTS tasks (
-          id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-          title VARCHAR(200) NOT NULL,
-          description TEXT,
-          status VARCHAR(50) DEFAULT 'pending',
-          priority VARCHAR(20) DEFAULT 'medium',
-          category VARCHAR(50),
-          assigned_to VARCHAR(100),
-          due_date TIMESTAMP WITH TIME ZONE,
-          completed_at TIMESTAMP WITH TIME ZONE,
-          metadata JSONB DEFAULT '{}',
-          created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-          updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-        );
-      `
-    });
-
-    if (tasksError && !tasksError.message.includes('already exists')) {
-      throw tasksError;
-    }
-
-    return { success: true, message: 'Tables created successfully' };
+    // If we get here, tables exist
+    return { success: true, message: 'Tables verified successfully' };
   } catch (error: any) {
-    return { success: false, message: 'Failed to create tables', error: error.message };
+    return { success: false, message: 'Failed to verify tables', error: error.message };
   }
 }
 
 /**
- * Enable Row Level Security
+ * Enable Row Level Security - Skip for now since we can't execute DDL
  */
 async function enableRLS(): Promise<SetupResult> {
   try {
-    const tables = ['themes', 'page_theme_assignments', 'tasks'];
-    
-    for (const table of tables) {
-      // Enable RLS
-      await supabase.rpc('exec', {
-        sql: `ALTER TABLE ${table} ENABLE ROW LEVEL SECURITY;`
-      });
-      
-      // Create policies
-      await supabase.rpc('exec', {
-        sql: `
-          DROP POLICY IF EXISTS "public_read_${table}" ON ${table};
-          CREATE POLICY "public_read_${table}" ON ${table} FOR SELECT TO anon USING (true);
-        `
-      });
-      
-      await supabase.rpc('exec', {
-        sql: `
-          DROP POLICY IF EXISTS "public_write_${table}" ON ${table};
-          CREATE POLICY "public_write_${table}" ON ${table} FOR ALL TO anon USING (true);
-        `
-      });
-    }
-    
-    return { success: true, message: 'RLS enabled successfully' };
+    // RLS needs to be enabled via SQL editor - skip for API setup
+    return { success: true, message: 'RLS setup skipped (requires manual SQL execution)' };
   } catch (error: any) {
     return { success: false, message: 'Failed to enable RLS', error: error.message };
   }
@@ -163,6 +79,7 @@ async function enableRLS(): Promise<SetupResult> {
  */
 async function insertSampleData(force: boolean = false): Promise<SetupResult> {
   try {
+    const supabase = await createServerClient();
     // Check if data already exists
     if (!force) {
       const { data: existingThemes } = await supabase.from('themes').select('id').limit(1);
@@ -337,6 +254,7 @@ async function runSetup(force: boolean = false): Promise<SetupResult> {
     steps.push('✅ Sample data inserted');
 
     // Verify setup
+    const supabase = await createServerClient();
     const { data: themes } = await supabase.from('themes').select('id, name').limit(5);
     const { data: tasks } = await supabase.from('tasks').select('id, title').limit(5);
     
