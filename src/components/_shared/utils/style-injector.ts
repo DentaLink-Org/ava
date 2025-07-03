@@ -200,7 +200,7 @@ export class FileStyleLoader {
    * @param stylesPath - Path to styles file (optional, defaults to page directory)
    */
   async loadPageStyles(pageId: string, stylesPath?: string): Promise<void> {
-    const defaultPath = stylesPath || `src/pages/${pageId}/styles.css`;
+    const defaultPath = stylesPath || `src/components/${pageId}/styles.css`;
     
     try {
       // In Node.js environment, read file directly

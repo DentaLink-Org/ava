@@ -58,7 +58,7 @@ function buildInvestigationPrompt(issue: Issue): string {
     '',
     '2. **INVESTIGATE THE CODEBASE**:',
     '   - Use available tools (Read, LS, Glob, Grep) to examine relevant files',
-    '   - Look at the page-specific code in src/pages/' + issue.pageId + '/',
+    '   - Look at the page-specific code in src/components/' + issue.pageId + '/',
     '   - Check related components, APIs, and configuration files',
     '   - Identify any error patterns, missing dependencies, or configuration issues',
     '',
@@ -185,7 +185,7 @@ function savePlanFile(issue: Issue, planContent: string): string {
   }
   
   const filePath = join(issuesDir, fileName);
-  const relativePath = `src/pages/${issue.pageId}/issues/${fileName}`;
+  const relativePath = `src/components/${issue.pageId}/issues/${fileName}`;
   
   // Create comprehensive plan document
   const planDocument = `# Issue Investigation Plan

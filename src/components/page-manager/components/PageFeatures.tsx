@@ -179,7 +179,7 @@ export const PageFeatures: React.FC<PageFeaturesProps> = ({
                 <ol>
                   <li>Open your Supabase Dashboard</li>
                   <li>Go to SQL Editor</li>
-                  <li>Copy the SQL from: <code>src/pages/page-manager/scripts/setup-features-simple.sql</code></li>
+                  <li>Copy the SQL from: <code>src/components/page-manager/scripts/setup-features-simple.sql</code></li>
                   <li>Paste and run it in the SQL Editor</li>
                   <li>Refresh this page</li>
                 </ol>

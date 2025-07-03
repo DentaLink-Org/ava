@@ -4,7 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { RuntimeTheme } from '@/pages/_shared/types/theme';
+import { RuntimeTheme } from "@/components/_shared/types/theme";
 
 // Mock themes for testing
 const mockThemes: RuntimeTheme[] = [

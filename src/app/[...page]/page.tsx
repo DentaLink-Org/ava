@@ -11,10 +11,10 @@
 import React, { useEffect } from 'react';
 // Metadata removed - client components don't support generateMetadata
 import { notFound } from 'next/navigation';
-import { PageRenderer } from '../../pages/_shared/runtime/PageRenderer';
-import { PageWrapper } from '../../pages/_shared/components/PageWrapper';
-import { DatabaseThemeProvider } from '../../pages/_shared/runtime/DatabaseThemeProvider';
-import { PlaygroundPageRenderer } from '../../pages/playground/components/PlaygroundPageRenderer';
+import { PageRenderer } from '../../components/_shared/runtime/PageRenderer';
+import { PageWrapper } from '../../components/_shared/components/PageWrapper';
+import { DatabaseThemeProvider } from '../../components/_shared/runtime/DatabaseThemeProvider';
+import { PlaygroundPageRenderer } from '../../components/playground/components/PlaygroundPageRenderer';
 
 // Valid page IDs that can be rendered
 const VALID_PAGES = [

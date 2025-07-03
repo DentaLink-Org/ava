@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { PageRenderer } from '@/pages/_shared/runtime/PageRenderer';
-import { PageWrapper } from '@/pages/_shared/components/PageWrapper';
+import { PageRenderer } from '@/components/_shared/runtime/PageRenderer';
+import { PageWrapper } from '@/components/_shared/components/PageWrapper';
 
 export default function DatabasesRouteDebug() {
   const [configLoaded, setConfigLoaded] = useState(false);

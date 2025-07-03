@@ -9,7 +9,7 @@ import React from 'react';
 import { Database, Plus, Server } from 'lucide-react';
 import { Database as DatabaseType } from '../types';
 import { DatabaseCard } from './DatabaseCard';
-import { PageTheme } from '@/pages/_shared/runtime/types';
+import { PageTheme } from "@/components/_shared/runtime/types";
 
 export interface DatabaseGridProps {
   databases: DatabaseType[];

@@ -21,10 +21,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@/pages/*": ["./src/pages/*"],
-      "@/components/*": ["./src/pages/_shared/components/*"],
-      "@/runtime/*": ["./src/pages/_shared/runtime/*"],
-      "@/utils/*": ["./src/pages/_shared/utils/*"]
+      "@/components/*": ["./src/components/*"]
     }
   },
   "include": [

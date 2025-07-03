@@ -15,7 +15,7 @@ export class FileConfigManager implements ConfigManager {
   private basePath: string;
   private backupPath: string;
 
-  constructor(basePath: string = 'src/pages', backupPath: string = '.backups') {
+  constructor(basePath: string = 'src/components', backupPath: string = '.backups') {
     this.basePath = basePath;
     this.backupPath = backupPath;
   }

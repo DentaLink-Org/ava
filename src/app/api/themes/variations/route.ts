@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
-import { ThemeVariationRecord } from '@/pages/_shared/types/theme';
+import { ThemeVariationRecord } from "@/components/_shared/types/theme";
 
 export async function GET(request: NextRequest) {
   try {

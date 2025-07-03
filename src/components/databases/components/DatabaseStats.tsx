@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { Database, Table, FileText, TrendingUp } from 'lucide-react';
-import { PageTheme } from '@/pages/_shared/runtime/types';
+import { PageTheme } from "@/components/_shared/runtime/types";
 
 export interface DatabaseStatsProps {
   theme: PageTheme;

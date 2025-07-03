@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { Database, Shield, Server, Key, Save, TestTube } from 'lucide-react';
-import { PageTheme } from '@/pages/_shared/runtime/types';
+import { PageTheme } from "@/components/_shared/runtime/types";
 
 export interface ConnectionConfig {
   name: string;

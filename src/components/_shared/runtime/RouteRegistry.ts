@@ -121,8 +121,8 @@ export class RouteRegistry {
     const entry: RouteRegistryEntry = {
       id: metadata.id,
       metadata,
-      configPath: `src/pages/${metadata.id}/config.yaml`,
-      componentPath: `src/pages/${metadata.id}`,
+      configPath: `src/components/${metadata.id}/config.yaml`,
+      componentPath: `src/components/${metadata.id}`,
       isValid: true, // Assume valid until validation fails
       lastValidated: new Date()
     };

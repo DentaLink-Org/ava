@@ -3,7 +3,7 @@
  * Registers all database-specific components with the ComponentRegistry
  */
 
-import { ComponentRegistry } from '@/pages/_shared/runtime';
+import { ComponentRegistry } from "@/components/_shared/runtime";
 import {
   DatabaseCard,
   SchemaEditor,

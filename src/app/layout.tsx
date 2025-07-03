@@ -6,11 +6,11 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import './globals.css';
-import '../pages/dashboard/styles.css';
-import '../pages/databases/styles.css';
-import '../pages/tasks/styles.css';
-import '../pages/themes/styles.css';
-import '../pages/_shared/components/ThemeSelector.css';
+import '../components/dashboard/styles.css';
+import '../components/databases/styles.css';
+import '../components/tasks/styles.css';
+import '../components/themes/styles.css';
+import '../components/_shared/components/ThemeSelector.css';
 
 export const metadata: Metadata = {
   title: 'Claude Admin Dashboard',

@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { Plus, Database, RefreshCw } from 'lucide-react';
-import { PageTheme } from '@/pages/_shared/runtime/types';
+import { PageTheme } from "@/components/_shared/runtime/types";
 
 export interface PageHeaderProps {
   title: string;

@@ -13,7 +13,7 @@ import { DatabaseCreator } from './DatabaseCreator';
 import { DatabaseEditor } from './DatabaseEditor';
 import { FeaturesDatabase } from './FeaturesDatabase';
 import { isSupabaseConfigured } from '../api/supabase';
-import { PageTheme } from '@/pages/_shared/runtime/types';
+import { PageTheme } from "@/components/_shared/runtime/types";
 
 export interface DatabaseManagerProps {
   className?: string;

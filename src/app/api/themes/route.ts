@@ -6,7 +6,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { ThemeRecord, RuntimeTheme, ThemeVariationRecord, ThemeVariationSummary } from '@/pages/_shared/types/theme';
+import { ThemeRecord, RuntimeTheme, ThemeVariationRecord, ThemeVariationSummary } from "@/components/_shared/types/theme";
 
 // Initialize Supabase client
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;

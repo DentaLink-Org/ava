@@ -5,7 +5,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Wifi, WifiOff, RefreshCw, Server } from 'lucide-react';
-import { PageTheme } from '@/pages/_shared/runtime/types';
+import { PageTheme } from "@/components/_shared/runtime/types";
 
 export interface ConnectionStatusProps {
   theme: PageTheme;

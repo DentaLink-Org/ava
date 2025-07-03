@@ -1,8 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Using App Router (default in Next.js 14)
-  // Only treat .page.tsx/.page.ts as pages to avoid conflicts with components
-  pageExtensions: ['page.tsx', 'page.ts'],
+  // Explicitly ignore pages directory for routing
+  pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
+  experimental: {
+    optimizePackageImports: ['@supabase/supabase-js']
+  },
   typescript: {
     // Dangerously allow production builds to successfully complete even if
     // your project has type errors.

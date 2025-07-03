@@ -6,10 +6,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { promises as fs } from 'fs';
 import path from 'path';
-import { configParser } from '../../../../../pages/_shared/runtime/ConfigParser';
-import { routeRegistry } from '../../../../../pages/_shared/runtime/RouteRegistry';
+import { configParser } from '../../../../../components/_shared/runtime/ConfigParser';
+import { routeRegistry } from '../../../../../components/_shared/runtime/RouteRegistry';
 
-const PAGES_DIR = path.join(process.cwd(), 'src/pages');
+const PAGES_DIR = path.join(process.cwd(), 'src/components');
 
 // GET /api/pages/[pageId]/config - Get page configuration
 export async function GET(

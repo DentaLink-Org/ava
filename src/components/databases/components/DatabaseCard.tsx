@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { Database, Trash2, Edit, ExternalLink } from 'lucide-react';
-import { PageTheme } from '@/pages/_shared/runtime/types';
+import { PageTheme } from "@/components/_shared/runtime/types";
 
 export interface DatabaseCardProps {
   database: {

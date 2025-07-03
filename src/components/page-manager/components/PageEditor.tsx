@@ -195,8 +195,8 @@ meta:
         order: formData.order,
         status: 'active',
         lastModified: new Date().toISOString(),
-        configPath: `src/pages/${formData.id}/config.yaml`,
-        componentPath: `src/pages/${formData.id}`
+        configPath: `src/components/${formData.id}/config.yaml`,
+        componentPath: `src/components/${formData.id}`
       };
 
       await onSave(pageData, config);

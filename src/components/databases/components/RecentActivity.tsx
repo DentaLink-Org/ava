@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { Clock, Database, Plus, Edit, Trash2, Table } from 'lucide-react';
-import { PageTheme } from '@/pages/_shared/runtime/types';
+import { PageTheme } from "@/components/_shared/runtime/types";
 
 export interface Activity {
   id: string;
