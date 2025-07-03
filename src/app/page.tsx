@@ -12,7 +12,7 @@ import { DatabaseThemeProvider } from '../components/_shared/runtime/DatabaseThe
 export default function RootPage() {
   return (
     <DatabaseThemeProvider pageId="dashboard">
-      <PageWrapper>
+      <PageWrapper pageId="dashboard">
         <PageRenderer pageId="dashboard" />
       </PageWrapper>
     </DatabaseThemeProvider>
