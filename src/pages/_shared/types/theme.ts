@@ -129,11 +129,34 @@ export interface ThemeBorders {
   };
 }
 
+// Theme variation record
+export interface ThemeVariationRecord {
+  id: string;
+  parent_theme_id: string;
+  name: string;
+  display_name: string;
+  description?: string;
+  page_id?: string; // Optional: specific page this variation was created for
+  colors: ThemeColors;
+  typography?: ThemeTypography;
+  spacing?: ThemeSpacing;
+  shadows?: ThemeShadows;
+  borders?: ThemeBorders;
+  created_at: string;
+  updated_at: string;
+  author?: string;
+  version: string;
+  variation_depth: number;
+  lineage_path: string[];
+}
+
 // Page theme assignment
 export interface PageThemeAssignment {
   id: string;
   page_id: string;
   theme_id: string;
+  theme_variation_id?: string;
+  is_variation: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -145,6 +168,19 @@ export interface RuntimeTheme {
   displayName: string;
   cssProperties: Record<string, string>;
   category: ThemeCategory;
+  type?: 'theme' | 'variation';
+  parentThemeId?: string;
+  variations?: ThemeVariationSummary[];
+}
+
+// Summary of theme variations for display
+export interface ThemeVariationSummary {
+  id: string;
+  name: string;
+  displayName: string;
+  pageId?: string;
+  createdAt: string;
+  variationDepth: number;
 }
 
 // Theme application context
@@ -159,12 +195,18 @@ export interface ThemeContext {
 // Theme operations
 export interface ThemeOperations {
   loadTheme: (themeId: string) => Promise<RuntimeTheme>;
-  applyThemeToPage: (pageId: string, themeId: string) => Promise<void>;
+  applyThemeToPage: (pageId: string, themeId: string, isVariation?: boolean) => Promise<void>;
   getAllThemes: () => Promise<RuntimeTheme[]>;
   createCustomTheme: (theme: Omit<ThemeRecord, 'id' | 'created_at' | 'updated_at'>) => Promise<string>;
   updateTheme: (themeId: string, updates: Partial<ThemeRecord>) => Promise<void>;
   deleteTheme: (themeId: string) => Promise<void>;
   resetToDefault: (pageId: string) => Promise<void>;
+  
+  // Variation operations
+  createThemeVariation: (parentThemeId: string, variation: Omit<ThemeVariationRecord, 'id' | 'parent_theme_id' | 'created_at' | 'updated_at' | 'lineage_path' | 'variation_depth'>) => Promise<string>;
+  updateThemeVariation: (variationId: string, updates: Partial<ThemeVariationRecord>) => Promise<void>;
+  deleteThemeVariation: (variationId: string) => Promise<void>;
+  getThemeVariations: (themeId: string) => Promise<ThemeVariationRecord[]>;
 }
 
 // Theme utility functions

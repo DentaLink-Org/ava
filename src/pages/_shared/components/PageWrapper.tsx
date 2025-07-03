@@ -5,7 +5,7 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navigation, Breadcrumb } from './Navigation';
 import { ThemeSelector } from './ThemeSelector';
 
@@ -28,11 +28,38 @@ export const PageWrapper: React.FC<PageWrapperProps> = ({
   className = '',
   style
 }) => {
-  const [isNavigationCollapsed, setIsNavigationCollapsed] = useState(navigationCompact);
+  // Use localStorage to persist navigation collapse state across pages
+  const [isNavigationCollapsed, setIsNavigationCollapsed] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('navigation-collapsed');
+      return saved !== null ? JSON.parse(saved) : navigationCompact;
+    }
+    return navigationCompact;
+  });
 
   const toggleNavigation = () => {
-    setIsNavigationCollapsed(!isNavigationCollapsed);
+    const newState = !isNavigationCollapsed;
+    setIsNavigationCollapsed(newState);
+    // Persist state to localStorage
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('navigation-collapsed', JSON.stringify(newState));
+    }
   };
+
+  // Sync with localStorage changes (in case of multiple tabs)
+  useEffect(() => {
+    const handleStorageChange = () => {
+      if (typeof window !== 'undefined') {
+        const saved = localStorage.getItem('navigation-collapsed');
+        if (saved !== null) {
+          setIsNavigationCollapsed(JSON.parse(saved));
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
 
   return (
     <div className={`page-wrapper ${className}`} style={style}>
@@ -77,6 +104,10 @@ export const PageWrapper: React.FC<PageWrapperProps> = ({
         .page-navigation {
           position: relative;
           flex-shrink: 0;
+          /* Isolate navigation from page styles */
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Inter', 'Helvetica Neue', sans-serif !important;
+          font-size: 14px !important;
+          line-height: 1.5 !important;
         }
         
         .navigation-toggle {

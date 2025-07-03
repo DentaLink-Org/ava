@@ -6,7 +6,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { RuntimeTheme, ThemeContext, ThemeOperations } from '../types/theme';
+import { RuntimeTheme, ThemeContext, ThemeOperations, ThemeVariationRecord } from '../types/theme';
 
 interface UseThemeManagerOptions {
   pageId?: string;
@@ -26,13 +26,16 @@ interface ThemeManagerState {
 
 interface ThemeManagerActions {
   loadTheme: (themeId: string) => Promise<RuntimeTheme>;
-  applyThemeToPage: (pageId: string, themeId: string) => Promise<void>;
+  applyThemeToPage: (pageId: string, themeId: string, isVariation?: boolean) => Promise<void>;
   getAllThemes: () => Promise<RuntimeTheme[]>;
   getPageTheme: (pageId: string) => Promise<RuntimeTheme>;
   refreshThemes: () => Promise<void>;
   clearCache: () => void;
   createCustomTheme: (theme: any) => Promise<string>;
   resetToDefault: (pageId: string) => Promise<void>;
+  // Variation operations
+  createThemeVariation: (parentThemeId: string, variation: any) => Promise<string>;
+  getThemeVariations: (themeId: string) => Promise<ThemeVariationRecord[]>;
 }
 
 type ThemeManagerReturn = ThemeManagerState & ThemeManagerActions;
@@ -215,7 +218,7 @@ export const useThemeManager = (options: UseThemeManagerOptions = {}): ThemeMana
   /**
    * Apply theme to a specific page
    */
-  const applyThemeToPage = useCallback(async (targetPageId: string, themeId: string): Promise<void> => {
+  const applyThemeToPage = useCallback(async (targetPageId: string, themeId: string, isVariation?: boolean): Promise<void> => {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
 
     try {
@@ -224,7 +227,7 @@ export const useThemeManager = (options: UseThemeManagerOptions = {}): ThemeMana
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ themeId }),
+        body: JSON.stringify({ themeId, isVariation }),
       });
 
       const result = await response.json();
@@ -387,6 +390,77 @@ export const useThemeManager = (options: UseThemeManagerOptions = {}): ThemeMana
     }));
   }, []);
 
+  /**
+   * Create theme variation
+   */
+  const createThemeVariation = useCallback(async (parentThemeId: string, variation: any): Promise<string> => {
+    setState(prev => ({ ...prev, isLoading: true, error: null }));
+
+    try {
+      const response = await fetch(`${apiBase}/variations`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ parentThemeId, variation }),
+      });
+
+      const result = await response.json();
+
+      if (!result || !result.id) {
+        throw new Error('Failed to create theme variation');
+      }
+
+      setState(prev => ({ 
+        ...prev, 
+        isLoading: false,
+        lastUpdated: new Date()
+      }));
+
+      return result.id;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      setState(prev => ({ 
+        ...prev, 
+        isLoading: false, 
+        error: errorMessage 
+      }));
+      throw error;
+    }
+  }, [apiBase]);
+
+  /**
+   * Get theme variations
+   */
+  const getThemeVariations = useCallback(async (themeId: string): Promise<ThemeVariationRecord[]> => {
+    setState(prev => ({ ...prev, isLoading: true, error: null }));
+
+    try {
+      const response = await fetch(`${apiBase}/variations?parentThemeId=${themeId}`);
+      const result = await response.json();
+
+      if (!Array.isArray(result)) {
+        throw new Error('Failed to fetch theme variations');
+      }
+
+      setState(prev => ({ 
+        ...prev, 
+        isLoading: false,
+        lastUpdated: new Date()
+      }));
+
+      return result as ThemeVariationRecord[];
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      setState(prev => ({ 
+        ...prev, 
+        isLoading: false, 
+        error: errorMessage 
+      }));
+      throw error;
+    }
+  }, [apiBase]);
+
   // Auto-refresh themes periodically
   useEffect(() => {
     if (!autoRefresh) return;
@@ -419,6 +493,8 @@ export const useThemeManager = (options: UseThemeManagerOptions = {}): ThemeMana
     refreshThemes,
     clearCache,
     createCustomTheme,
-    resetToDefault
+    resetToDefault,
+    createThemeVariation,
+    getThemeVariations
   };
 };

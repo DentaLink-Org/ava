@@ -7,7 +7,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { RuntimeTheme, ThemeRecord } from '@/pages/_shared/types/theme';
+import { RuntimeTheme, ThemeRecord, ThemeVariationRecord } from '@/pages/_shared/types/theme';
 
 // Initialize Supabase client
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -20,9 +20,9 @@ if (!supabaseUrl || !supabaseKey) {
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 /**
- * Convert theme record to runtime theme with CSS properties
+ * Convert theme properties to CSS custom properties
  */
-function themeToRuntime(theme: ThemeRecord): RuntimeTheme {
+function convertToCSS(theme: ThemeRecord | ThemeVariationRecord): Record<string, string> {
   const cssProperties: Record<string, string> = {};
   
   // Convert colors to CSS custom properties
@@ -38,6 +38,11 @@ function themeToRuntime(theme: ThemeRecord): RuntimeTheme {
     if (theme.typography.fontSize) {
       Object.entries(theme.typography.fontSize).forEach(([key, value]) => {
         cssProperties[`--font-size-${key}`] = value;
+      });
+    }
+    if (theme.typography.fontWeight) {
+      Object.entries(theme.typography.fontWeight).forEach(([key, value]) => {
+        cssProperties[`--font-weight-${key}`] = value;
       });
     }
   }
@@ -63,14 +68,42 @@ function themeToRuntime(theme: ThemeRecord): RuntimeTheme {
         cssProperties[`--radius-${key}`] = value;
       });
     }
+    if (theme.borders.width) {
+      Object.entries(theme.borders.width).forEach(([key, value]) => {
+        cssProperties[`--border-width-${key}`] = value;
+      });
+    }
   }
   
+  return cssProperties;
+}
+
+/**
+ * Convert theme record to runtime theme
+ */
+function themeToRuntime(theme: ThemeRecord): RuntimeTheme {
   return {
     id: theme.id,
     name: theme.name,
     displayName: theme.display_name,
     category: theme.category,
-    cssProperties
+    cssProperties: convertToCSS(theme),
+    type: 'theme'
+  };
+}
+
+/**
+ * Convert theme variation to runtime theme
+ */
+function variationToRuntime(variation: ThemeVariationRecord, parentCategory: string): RuntimeTheme {
+  return {
+    id: variation.id,
+    name: variation.name,
+    displayName: variation.display_name,
+    category: parentCategory as any,
+    cssProperties: convertToCSS(variation),
+    type: 'variation',
+    parentThemeId: variation.parent_theme_id
   };
 }
 
@@ -90,17 +123,37 @@ export async function GET(
       .from('page_theme_assignments')
       .select(`
         theme_id,
-        themes (*)
+        theme_variation_id,
+        is_variation,
+        themes (*),
+        theme_variations (*)
       `)
       .eq('page_id', pageId)
       .single();
     
-    let theme: ThemeRecord | null = null;
+    let runtimeTheme: RuntimeTheme | null = null;
     
-    if (assignment && assignment.themes && !Array.isArray(assignment.themes)) {
-      theme = assignment.themes as ThemeRecord;
-    } else {
-      // If no assignment, get default theme
+    if (assignment) {
+      if (assignment.is_variation && assignment.theme_variations && !Array.isArray(assignment.theme_variations)) {
+        // Page uses a theme variation
+        const variation = assignment.theme_variations as ThemeVariationRecord;
+        // Get parent theme category
+        const { data: parentTheme } = await supabase
+          .from('themes')
+          .select('category')
+          .eq('id', variation.parent_theme_id)
+          .single();
+        
+        runtimeTheme = variationToRuntime(variation, parentTheme?.category || 'custom');
+      } else if (assignment.themes && !Array.isArray(assignment.themes)) {
+        // Page uses a regular theme
+        const theme = assignment.themes as ThemeRecord;
+        runtimeTheme = themeToRuntime(theme);
+      }
+    }
+    
+    if (!runtimeTheme) {
+      // If no assignment or theme not found, get default theme
       const { data: defaultTheme, error: defaultError } = await supabase
         .from('themes')
         .select('*')
@@ -115,17 +168,8 @@ export async function GET(
         );
       }
       
-      theme = defaultTheme;
+      runtimeTheme = themeToRuntime(defaultTheme);
     }
-    
-    if (!theme) {
-      return NextResponse.json(
-        { success: false, error: 'No theme found' },
-        { status: 404 }
-      );
-    }
-    
-    const runtimeTheme = themeToRuntime(theme);
     
     return NextResponse.json({
       success: true,
@@ -152,7 +196,7 @@ export async function POST(
 ) {
   try {
     const { pageId } = params;
-    const { themeId } = await request.json();
+    const { themeId, isVariation = false } = await request.json();
     
     if (!themeId) {
       return NextResponse.json(
@@ -161,27 +205,58 @@ export async function POST(
       );
     }
     
-    // Verify theme exists
-    const { data: theme, error: themeError } = await supabase
-      .from('themes')
-      .select('*')
-      .eq('id', themeId)
-      .single();
+    let runtimeTheme: RuntimeTheme;
+    let assignmentData: any = { page_id: pageId, is_variation: isVariation };
     
-    if (themeError || !theme) {
-      return NextResponse.json(
-        { success: false, error: 'Theme not found' },
-        { status: 404 }
-      );
+    if (isVariation) {
+      // Verify variation exists
+      const { data: variation, error: variationError } = await supabase
+        .from('theme_variations')
+        .select('*')
+        .eq('id', themeId)
+        .single();
+      
+      if (variationError || !variation) {
+        return NextResponse.json(
+          { success: false, error: 'Theme variation not found' },
+          { status: 404 }
+        );
+      }
+      
+      // Get parent theme category
+      const { data: parentTheme } = await supabase
+        .from('themes')
+        .select('category')
+        .eq('id', variation.parent_theme_id)
+        .single();
+      
+      runtimeTheme = variationToRuntime(variation, parentTheme?.category || 'custom');
+      assignmentData.theme_variation_id = themeId;
+      assignmentData.theme_id = variation.parent_theme_id; // Keep reference to parent theme
+    } else {
+      // Verify theme exists
+      const { data: theme, error: themeError } = await supabase
+        .from('themes')
+        .select('*')
+        .eq('id', themeId)
+        .single();
+      
+      if (themeError || !theme) {
+        return NextResponse.json(
+          { success: false, error: 'Theme not found' },
+          { status: 404 }
+        );
+      }
+      
+      runtimeTheme = themeToRuntime(theme);
+      assignmentData.theme_id = themeId;
+      assignmentData.theme_variation_id = null; // Clear any existing variation
     }
     
     // Upsert page theme assignment
     const { data: assignment, error: assignmentError } = await supabase
       .from('page_theme_assignments')
-      .upsert(
-        { page_id: pageId, theme_id: themeId },
-        { onConflict: 'page_id' }
-      )
+      .upsert(assignmentData, { onConflict: 'page_id' })
       .select()
       .single();
     
@@ -192,8 +267,6 @@ export async function POST(
         { status: 500 }
       );
     }
-    
-    const runtimeTheme = themeToRuntime(theme);
     
     return NextResponse.json({
       success: true,

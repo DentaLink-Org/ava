@@ -60,9 +60,13 @@
   min-height: 100vh;
   background-color: var(--color-background);
   font-family: var(--font-family);
-  font-size: 14px;
   line-height: 1.6;
   color: var(--color-text);
+}
+
+/* Apply font-size only to dashboard content, not navigation */
+.page-dashboard .page-content {
+  font-size: 14px;
 }
 
 .dashboard-page-container {
