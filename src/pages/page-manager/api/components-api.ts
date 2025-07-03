@@ -3,7 +3,6 @@
  * Handles CRUD operations for page components using Supabase
  */
 
-import express from 'express';
 import { supabaseClient } from '../../databases/api/supabase';
 import { 
   PageComponent, 
@@ -16,7 +15,6 @@ import {
 } from '../types/components';
 
 const COMPONENTS_TABLE = 'page_components';
-const router = express.Router();
 
 export class ComponentsAPI {
   /**
@@ -441,169 +439,5 @@ export class ComponentsAPI {
   }
 }
 
-// Express.js routes
-router.get('/', async (req, res) => {
-  try {
-    const filter = req.query;
-    const result = await ComponentsAPI.getComponents(filter);
-    if (result.success) {
-      res.json(result.data);
-    } else {
-      res.status(400).json({ error: result.error });
-    }
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-router.get('/:id', async (req, res) => {
-  try {
-    const result = await ComponentsAPI.getComponent(req.params.id);
-    if (result.success) {
-      if (result.data) {
-        res.json(result.data);
-      } else {
-        res.status(404).json({ error: 'Component not found' });
-      }
-    } else {
-      res.status(400).json({ error: result.error });
-    }
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-router.post('/', async (req, res) => {
-  try {
-    const result = await ComponentsAPI.createComponent(req.body);
-    if (result.success) {
-      res.status(201).json(result.data);
-    } else {
-      res.status(400).json({ error: result.error });
-    }
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-router.put('/:id', async (req, res) => {
-  try {
-    const updateData = { ...req.body, id: req.params.id };
-    const result = await ComponentsAPI.updateComponent(updateData);
-    if (result.success) {
-      res.json(result.data);
-    } else {
-      res.status(400).json({ error: result.error });
-    }
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-router.delete('/:id', async (req, res) => {
-  try {
-    const result = await ComponentsAPI.deleteComponent(req.params.id);
-    if (result.success) {
-      res.status(204).send();
-    } else {
-      res.status(400).json({ error: result.error });
-    }
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-router.get('/stats/summary', async (req, res) => {
-  try {
-    const result = await ComponentsAPI.getComponentStats();
-    if (result.success) {
-      res.json(result.data);
-    } else {
-      res.status(400).json({ error: result.error });
-    }
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-router.get('/stats/overview', async (req, res) => {
-  try {
-    const result = await ComponentsAPI.getComponentSummary();
-    if (result.success) {
-      res.json(result.data);
-    } else {
-      res.status(400).json({ error: result.error });
-    }
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-router.get('/by-name/:name', async (req, res) => {
-  try {
-    const result = await ComponentsAPI.getComponentByName(req.params.name);
-    if (result.success) {
-      if (result.data) {
-        res.json(result.data);
-      } else {
-        res.status(404).json({ error: 'Component not found' });
-      }
-    } else {
-      res.status(400).json({ error: result.error });
-    }
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-router.get('/by-category/:category', async (req, res) => {
-  try {
-    const result = await ComponentsAPI.getComponentsByCategory(req.params.category);
-    if (result.success) {
-      res.json(result.data);
-    } else {
-      res.status(400).json({ error: result.error });
-    }
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-router.get('/by-group/:group', async (req, res) => {
-  try {
-    const result = await ComponentsAPI.getComponentsByGroup(req.params.group);
-    if (result.success) {
-      res.json(result.data);
-    } else {
-      res.status(400).json({ error: result.error });
-    }
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-router.get('/search/:searchTerm', async (req, res) => {
-  try {
-    const result = await ComponentsAPI.searchComponents(req.params.searchTerm);
-    if (result.success) {
-      res.json(result.data);
-    } else {
-      res.status(400).json({ error: result.error });
-    }
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-router.post('/initialize', async (req, res) => {
-  try {
-    const result = await ComponentsAPI.initializeTable();
-    res.json({ success: result });
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-module.exports = router;
 
 export default ComponentsAPI;
