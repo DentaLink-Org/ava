@@ -266,7 +266,7 @@ async function runSetup(force: boolean = false): Promise<SetupResult> {
         summary: {
           themes: themes?.length || 0,
           tasks: tasks?.length || 0,
-          url: supabaseUrl.substring(0, 30) + '...'
+          url: process.env.AVA_NEXT_PUBLIC_SUPABASE_URL?.substring(0, 30) + '...' || 'supabase-url'
         }
       }
     };
