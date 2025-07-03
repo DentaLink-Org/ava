@@ -61,6 +61,14 @@ export interface KPICardsProps {
   pageId?: string;
 }
 
+export interface GroupSelectorProps {
+  groups: string[];
+  defaultSelected?: string[];
+  onSelectionChange?: (selectedGroups: string[]) => void;
+  componentId?: string;
+  pageId?: string;
+}
+
 // Playground data types
 export interface OrderData {
   count: number;
@@ -129,7 +137,8 @@ export type PlaygroundComponent =
   | 'DatabaseLinkCard'
   | 'TasksLinkCard'
   | 'QuickStartCard' 
-  | 'KPICards';
+  | 'KPICards'
+  | 'GroupSelector';
 
 export type PlaygroundLayout = 'grid' | 'flex' | 'custom';
 

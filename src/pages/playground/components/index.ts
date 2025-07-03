@@ -9,6 +9,8 @@ export { DatabaseLinkCard } from './DatabaseLinkCard';
 export { TasksLinkCard } from './TasksLinkCard';
 export { QuickStartCard } from './QuickStartCard';
 export { KPICards } from './KPICards';
+export { GroupSelector } from './GroupSelector';
+export { PlaygroundPageRenderer } from './PlaygroundPageRenderer';
 
 // Re-export types for convenience
 export type {
@@ -17,5 +19,6 @@ export type {
   TasksLinkCardProps,
   QuickStartCardProps,
   KPICardsProps,
-  KPIMetric
+  KPIMetric,
+  GroupSelectorProps
 } from '../types';

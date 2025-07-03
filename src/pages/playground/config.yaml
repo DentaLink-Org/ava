@@ -11,26 +11,68 @@ layout:
   columns: 8
   gap: 2
   padding: 3
+  grouping:
+    enabled: true
+    selector:
+      position:
+        col: 1
+        row: 1
+        span: 8
+      multiSelect: true
+      defaultGroups: ["headers", "navigation", "data", "interactive"]
 
 # Theme configuration removed - using dynamic database themes instead
 
+componentGroups:
+  headers:
+    name: "Headers & Welcome"
+    description: "Page headers and welcome components"
+    color: "#3B82F6"
+  navigation:
+    name: "Navigation & Links"
+    description: "Navigation cards and link components"
+    color: "#10B981"
+  data:
+    name: "Data Display"
+    description: "Charts, metrics, and data visualization"
+    color: "#8B5CF6"
+  interactive:
+    name: "Interactive Components"
+    description: "Chat, forms, and interactive widgets"
+    color: "#F59E0B"
+
 components:
-  - id: "welcome-header"
-    type: "WelcomeHeader"
+  # Group Selector Component
+  - id: "group-selector"
+    type: "GroupSelector"
     position:
       col: 1
       row: 1
       span: 8
     props:
-      title: "Playground"
-      subtitle: "Component Testing & Development"
-      
-  - id: "database-link-card"
-    type: "DatabaseLinkCard"
+      groups: ["headers", "navigation", "data", "interactive"]
+      defaultSelected: ["headers", "navigation", "data", "interactive"]
+
+  # Headers & Welcome Components
+  - id: "welcome-header"
+    type: "WelcomeHeader"
+    group: "headers"
     position:
       col: 1
       row: 2
-      span: 4
+      span: 8
+    props:
+      title: "Playground"
+      subtitle: "Component Testing & Development"
+      
+  # Navigation & Link Cards
+  - id: "database-link-card"
+    type: "DatabaseLinkCard"
+    group: "navigation"
+    position:
+      col: 1
+      row: 3
+      span: 2
     props:
       title: "Databases"
       description: "Manage your databases"
@@ -39,21 +81,38 @@ components:
       
   - id: "tasks-link-card"
     type: "TasksLinkCard"
+    group: "navigation"
     position:
-      col: 5
-      row: 2
-      span: 4
+      col: 3
+      row: 3
+      span: 2
     props:
       title: "Task Management"
       description: "Organize and track tasks"
       href: "/tasks"
       icon: "CheckSquare"
 
+  - id: "quick-start-card"
+    type: "QuickStartCard"
+    group: "navigation"
+    position:
+      col: 5
+      row: 3
+      span: 2
+    props:
+      title: "Quick Start"
+      description: "Get started quickly"
+      primaryAction:
+        text: "Get Started"
+        href: "/quickstart"
+
+  # Data Display Components
   - id: "kpi-cards"
     type: "KPICards"
+    group: "data"
     position:
       col: 1
-      row: 3
+      row: 4
       span: 8
     props:
       metrics:
@@ -62,37 +121,25 @@ components:
           value: 0
           suffix: ""
           description: "From orders table"
-        - id: "active-users"
-          title: "Active Users" 
-          value: 0
-          suffix: ""
-          description: "From customers table"
-        - id: "orders-processed"
-          title: "Orders Processed"
-          value: 247
-          suffix: ""
-          description: "This month"
-        - id: "page-builder"
-          title: "Page Builder"
-          value: "Ready"
-          suffix: ""
-          description: "Create custom pages"
 
+  # Interactive Components
   - id: "chatbot"
     type: "ChatBot"
+    group: "interactive"
     position:
       col: 1
-      row: 4
-      span: 8
+      row: 5
+      span: 4
     props:
       className: "playground-chatbot"
 
   - id: "issue-tracker"
     type: "IssueTracker"
+    group: "interactive"
     position:
-      col: 1
+      col: 5
       row: 5
-      span: 8
+      span: 4
     props:
       pageId: "playground"
       className: "playground-issue-tracker"

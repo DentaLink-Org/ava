@@ -48,7 +48,10 @@ export function testComponentRegistration() {
     const { componentRegistry } = require('../_shared/runtime/ComponentRegistry');
     
     const playgroundComponents = componentRegistry.getPageComponents('playground');
-    const expectedComponents = ['WelcomeHeader', 'DatabaseLinkCard', 'TasksLinkCard', 'QuickStartCard', 'KPICards'];
+    const expectedComponents = [
+      'WelcomeHeader', 'DatabaseLinkCard', 'TasksLinkCard', 'QuickStartCard', 'KPICards',
+      'GroupSelector', 'ChatBot', 'IssueTracker'
+    ];
     
     for (const componentType of expectedComponents) {
       const component = componentRegistry.get('playground', componentType);

@@ -14,6 +14,7 @@ import { notFound } from 'next/navigation';
 import { PageRenderer } from '../../pages/_shared/runtime/PageRenderer';
 import { PageWrapper } from '../../pages/_shared/components/PageWrapper';
 import { DatabaseThemeProvider } from '../../pages/_shared/runtime/DatabaseThemeProvider';
+import { PlaygroundPageRenderer } from '../../pages/playground/components/PlaygroundPageRenderer';
 
 // Valid page IDs that can be rendered
 const VALID_PAGES = [
@@ -99,17 +100,31 @@ export default function DynamicPage({ params, searchParams }: PageProps) {
         showNavigation={true}
         showBreadcrumbs={true}
       >
-        <PageRenderer
-          pageId={pageId}
-          onError={(error) => {
-            console.error(`Page ${pageId} error:`, error);
-            // Could integrate with error reporting service here
-          }}
-          onLoad={() => {
-            console.log(`Page ${pageId} loaded successfully`);
-            // Could track page views or analytics here
-          }}
-        />
+        {pageId === 'playground' ? (
+          <PlaygroundPageRenderer
+            pageId={pageId}
+            onError={(error) => {
+              console.error(`Page ${pageId} error:`, error);
+              // Could integrate with error reporting service here
+            }}
+            onLoad={() => {
+              console.log(`Page ${pageId} loaded successfully`);
+              // Could track page views or analytics here
+            }}
+          />
+        ) : (
+          <PageRenderer
+            pageId={pageId}
+            onError={(error) => {
+              console.error(`Page ${pageId} error:`, error);
+              // Could integrate with error reporting service here
+            }}
+            onLoad={() => {
+              console.log(`Page ${pageId} loaded successfully`);
+              // Could track page views or analytics here
+            }}
+          />
+        )}
       </PageWrapper>
     </DatabaseThemeProvider>
   );
