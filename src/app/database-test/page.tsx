@@ -300,8 +300,8 @@ export default function DatabaseTest() {
         </h3>
         <div style={{ fontSize: '14px', fontFamily: 'monospace', color: '#4b5563' }}>
           <div>🔐 Using Vercel Supabase Integration</div>
-          <div>📡 AVA_NEXT_PUBLIC_SUPABASE_URL: {process.env.NEXT_PUBLIC_AVA_NEXT_PUBLIC_SUPABASE_URL ? '✅ Set' : '❌ Not set'}</div>
-          <div>🔑 AVA_NEXT_PUBLIC_SUPABASE_ANON_KEY: {process.env.NEXT_PUBLIC_AVA_NEXT_PUBLIC_SUPABASE_ANON_KEY ? '✅ Set' : '❌ Not set'}</div>
+          <div>📡 AVA_NEXT_PUBLIC_SUPABASE_URL: {process.env.AVA_NEXT_PUBLIC_SUPABASE_URL ? '✅ Set' : '❌ Not set'}</div>
+          <div>🔑 AVA_NEXT_PUBLIC_SUPABASE_ANON_KEY: {process.env.AVA_NEXT_PUBLIC_SUPABASE_ANON_KEY ? '✅ Set' : '❌ Not set'}</div>
         </div>
       </div>
 
