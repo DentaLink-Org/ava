@@ -5,7 +5,7 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Database, Plus, Settings, Table, BarChart3, History, RefreshCw } from 'lucide-react';
 import { useRealtimeDatabases } from '../hooks/useRealtimeDatabases';
 import { DatabaseGrid } from './DatabaseGrid';
@@ -35,7 +35,23 @@ export const DatabaseManager: React.FC<DatabaseManagerProps> = ({ className = ''
     deleteDatabase 
   } = useRealtimeDatabases();
 
-  const isConfigured = isSupabaseConfigured();
+  // Configuration state management
+  const [isConfigured, setIsConfigured] = useState<boolean | null>(null);
+  
+  // Check Supabase configuration on component mount
+  useEffect(() => {
+    const checkConfiguration = async () => {
+      try {
+        const configured = await isSupabaseConfigured();
+        setIsConfigured(configured);
+      } catch (error) {
+        console.error('Error checking Supabase configuration:', error);
+        setIsConfigured(false);
+      }
+    };
+    
+    checkConfiguration();
+  }, []);
 
   // Default theme if none provided
   const defaultTheme: PageTheme = {
@@ -74,7 +90,27 @@ export const DatabaseManager: React.FC<DatabaseManagerProps> = ({ className = ''
     setSelectedDatabaseId(null);
   };
 
-  if (!isConfigured) {
+  // Show loading state while checking configuration
+  if (isConfigured === null) {
+    return (
+      <div className={`database-manager-container ${className}`}>
+        <div className="database-manager-error-card">
+          <div className="text-center">
+            <RefreshCw className="mx-auto h-12 w-12 text-gray-400 mb-4 animate-spin" />
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              Checking Configuration...
+            </h3>
+            <p className="text-gray-500">
+              Verifying Supabase connection settings.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show configuration error if not configured
+  if (isConfigured === false) {
     return (
       <div className={`database-manager-container ${className}`}>
         <div className="database-manager-error-card">
