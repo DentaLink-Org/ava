@@ -17,7 +17,8 @@ import {
   DatabaseCreator,
   DatabaseEditor,
   DatabaseInfo,
-  DataManager
+  DataManager,
+  ComponentsDatabase
 } from './components';
 
 // Register all database page components
@@ -44,6 +45,7 @@ export function registerDatabaseComponents(registry: ComponentRegistry) {
   registry.register(pageId, 'DatabaseEditor', DatabaseEditor as any);
   registry.register(pageId, 'DatabaseInfo', DatabaseInfo as any);
   registry.register(pageId, 'DataManager', DataManager as any);
+  registry.register(pageId, 'ComponentsDatabase', ComponentsDatabase as any);
   
   console.log('✅ Database page components registered');
 }

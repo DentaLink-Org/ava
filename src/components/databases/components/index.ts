@@ -20,6 +20,7 @@ export { DatabaseEditor } from './DatabaseEditor';
 export { DatabaseInfo } from './DatabaseInfo';
 export { DataManager } from './DataManager';
 export { FeaturesDatabase } from './FeaturesDatabase';
+export { ComponentsDatabase } from './ComponentsDatabase';
 
 // Export component types
 export type { DatabaseCardProps } from './DatabaseCard';

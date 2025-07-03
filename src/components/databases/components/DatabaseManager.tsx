@@ -6,12 +6,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Database, Plus, Settings, Table, BarChart3, History, RefreshCw } from 'lucide-react';
+import { Database, Plus, Settings, Table, BarChart3, History, RefreshCw, Package } from 'lucide-react';
 import { useRealtimeDatabases } from '../hooks/useRealtimeDatabases';
 import { DatabaseGrid } from './DatabaseGrid';
 import { DatabaseCreator } from './DatabaseCreator';
 import { DatabaseEditor } from './DatabaseEditor';
 import { FeaturesDatabase } from './FeaturesDatabase';
+import { ComponentsDatabase } from './ComponentsDatabase';
 import { isSupabaseConfigured } from '../api/supabase';
 import { PageTheme } from "@/components/_shared/runtime/types";
 
@@ -20,7 +21,7 @@ export interface DatabaseManagerProps {
   theme?: PageTheme;
 }
 
-type TabView = 'overview' | 'create' | 'edit' | 'features';
+type TabView = 'overview' | 'create' | 'edit' | 'features' | 'components';
 
 export const DatabaseManager: React.FC<DatabaseManagerProps> = ({ className = '', theme }) => {
   const [currentTab, setCurrentTab] = useState<TabView>('overview');
@@ -252,6 +253,20 @@ export const DatabaseManager: React.FC<DatabaseManagerProps> = ({ className = ''
               </div>
             </button>
             
+            <button
+              onClick={() => setCurrentTab('components')}
+              className={`py-3 px-1 border-b-2 font-medium text-sm ${
+                currentTab === 'components'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <Package className="h-4 w-4" />
+                Components Database
+              </div>
+            </button>
+            
             {selectedDatabaseId && (
               <button
                 onClick={() => setCurrentTab('edit')}
@@ -293,6 +308,10 @@ export const DatabaseManager: React.FC<DatabaseManagerProps> = ({ className = ''
           
           {currentTab === 'features' && (
             <FeaturesDatabase />
+          )}
+          
+          {currentTab === 'components' && (
+            <ComponentsDatabase />
           )}
           
           {currentTab === 'edit' && selectedDatabaseId && (
