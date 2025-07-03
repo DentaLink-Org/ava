@@ -39,7 +39,7 @@ export {
 export {
   supabaseClient,
   isSupabaseConfigured,
-  getDatabaseConfig
+  getSupabaseConfig
 } from './supabase';
 
 export {
