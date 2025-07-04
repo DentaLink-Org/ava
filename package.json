@@ -15,6 +15,8 @@
     "db:setup": "node scripts/setup-database.js",
     "db:test": "node scripts/setup-database.js test",
     "db:verify": "node scripts/setup-database.js verify",
+    "db:migrate": "node scripts/run-migrations.js",
+    "db:migrate:create": "node scripts/create-migration.js",
     "postbuild": "node scripts/check-database.js"
   },
   "dependencies": {
