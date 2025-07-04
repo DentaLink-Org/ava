@@ -116,7 +116,21 @@ function getColumnDefinition(columnName: string): string {
     'version': 'VARCHAR(20) DEFAULT \'1.0.0\'',
     'tags': 'TEXT[] DEFAULT \'{}\'',
     'is_system': 'BOOLEAN DEFAULT FALSE',
-    'metadata': 'JSONB DEFAULT \'{}\''
+    'metadata': 'JSONB DEFAULT \'{}\'',
+    'created_by': 'VARCHAR(100)',
+    'updated_by': 'VARCHAR(100)',
+    'status': 'VARCHAR(50) DEFAULT \'active\'',
+    'priority': 'VARCHAR(20) DEFAULT \'medium\'',
+    'implementation_status': 'VARCHAR(50) DEFAULT \'not_started\'',
+    'estimated_hours': 'DECIMAL(8,2)',
+    'actual_hours': 'DECIMAL(8,2)',
+    'dependencies': 'TEXT[] DEFAULT \'{}\'',
+    'features': 'TEXT[] DEFAULT \'{}\'',
+    'file_path': 'TEXT',
+    'framework': 'VARCHAR(50) DEFAULT \'react\'',
+    'title': 'VARCHAR(200)',
+    'functionality': 'TEXT',
+    'group_type': 'VARCHAR(50) DEFAULT \'utility\''
   };
   
   return definitions[columnName] || 'TEXT';
@@ -124,6 +138,8 @@ function getColumnDefinition(columnName: string): string {
 
 function getCompleteSchemaFix(): string {
   return `-- COMPLETE SCHEMA FIX - Run this in Supabase SQL Editor
+-- This adds ALL possible missing columns that the application might need
+
 ALTER TABLE page_components ADD COLUMN IF NOT EXISTS category VARCHAR(100) DEFAULT 'custom';
 ALTER TABLE page_components ADD COLUMN IF NOT EXISTS name VARCHAR(200);
 ALTER TABLE page_components ADD COLUMN IF NOT EXISTS display_name VARCHAR(250);
@@ -134,10 +150,37 @@ ALTER TABLE page_components ADD COLUMN IF NOT EXISTS tags TEXT[] DEFAULT '{}';
 ALTER TABLE page_components ADD COLUMN IF NOT EXISTS is_system BOOLEAN DEFAULT FALSE;
 ALTER TABLE page_components ADD COLUMN IF NOT EXISTS metadata JSONB DEFAULT '{}';
 
--- Add indexes
+-- Additional columns that might be needed
+ALTER TABLE page_components ADD COLUMN IF NOT EXISTS created_by VARCHAR(100);
+ALTER TABLE page_components ADD COLUMN IF NOT EXISTS updated_by VARCHAR(100);
+ALTER TABLE page_components ADD COLUMN IF NOT EXISTS status VARCHAR(50) DEFAULT 'active';
+ALTER TABLE page_components ADD COLUMN IF NOT EXISTS priority VARCHAR(20) DEFAULT 'medium';
+ALTER TABLE page_components ADD COLUMN IF NOT EXISTS implementation_status VARCHAR(50) DEFAULT 'not_started';
+ALTER TABLE page_components ADD COLUMN IF NOT EXISTS estimated_hours DECIMAL(8,2);
+ALTER TABLE page_components ADD COLUMN IF NOT EXISTS actual_hours DECIMAL(8,2);
+ALTER TABLE page_components ADD COLUMN IF NOT EXISTS dependencies TEXT[] DEFAULT '{}';
+ALTER TABLE page_components ADD COLUMN IF NOT EXISTS features TEXT[] DEFAULT '{}';
+ALTER TABLE page_components ADD COLUMN IF NOT EXISTS file_path TEXT;
+ALTER TABLE page_components ADD COLUMN IF NOT EXISTS framework VARCHAR(50) DEFAULT 'react';
+ALTER TABLE page_components ADD COLUMN IF NOT EXISTS title VARCHAR(200);
+ALTER TABLE page_components ADD COLUMN IF NOT EXISTS functionality TEXT;
+ALTER TABLE page_components ADD COLUMN IF NOT EXISTS group_type VARCHAR(50) DEFAULT 'utility';
+
+-- Add all necessary indexes
 CREATE INDEX IF NOT EXISTS idx_page_components_category ON page_components(category);
 CREATE INDEX IF NOT EXISTS idx_page_components_name ON page_components(name);
-CREATE INDEX IF NOT EXISTS idx_page_components_is_system ON page_components(is_system);`;
+CREATE INDEX IF NOT EXISTS idx_page_components_is_system ON page_components(is_system);
+CREATE INDEX IF NOT EXISTS idx_page_components_status ON page_components(status);
+CREATE INDEX IF NOT EXISTS idx_page_components_priority ON page_components(priority);
+CREATE INDEX IF NOT EXISTS idx_page_components_created_by ON page_components(created_by);
+CREATE INDEX IF NOT EXISTS idx_page_components_framework ON page_components(framework);
+
+-- Verify the schema is complete
+SELECT column_name, data_type, is_nullable, column_default 
+FROM information_schema.columns 
+WHERE table_name = 'page_components' 
+AND table_schema = 'public'
+ORDER BY ordinal_position;`;
 }
 
 // GET endpoint to check schema status
