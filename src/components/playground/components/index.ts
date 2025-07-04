@@ -12,6 +12,11 @@ export { KPICards } from './KPICards';
 export { GroupSelector } from './GroupSelector';
 export { PlaygroundPageRenderer } from './PlaygroundPageRenderer';
 
+// Milestone components
+export { MilestoneBoard } from './MilestoneBoard';
+export { MilestoneProgressTracker } from './MilestoneProgressTracker';
+export { MilestoneDependencyManager } from './MilestoneDependencyManager';
+
 // Re-export types for convenience
 export type {
   WelcomeHeaderProps,
