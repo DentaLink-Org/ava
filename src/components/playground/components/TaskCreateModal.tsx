@@ -27,12 +27,14 @@ import type {
   TeamMember, 
   TaskStatus, 
   TaskPriority,
-  TaskComplexity,
-  TaskEffort,
-  TaskRisk,
   TaskTemplate,
   TaskDependency,
   DependencyType
+} from '../../tasks/types';
+import { 
+  TaskComplexity,
+  TaskEffort,
+  TaskRisk
 } from '../../tasks/types';
 
 interface TaskCreateModalProps {
@@ -119,9 +121,9 @@ export const TaskCreateModal: React.FC<TaskCreateModalProps> = ({
     tags: [],
     estimatedHours: 0,
     storyPoints: 0,
-    effortLevel: 'moderate',
-    complexity: 'moderate',
-    riskLevel: 'low',
+    effortLevel: TaskEffort.MODERATE,
+    complexity: TaskComplexity.MODERATE,
+    riskLevel: TaskRisk.LOW,
     templateId: '',
     dependencies: [],
     customFields: {},
@@ -275,9 +277,9 @@ export const TaskCreateModal: React.FC<TaskCreateModalProps> = ({
       tags: [],
       estimatedHours: 0,
       storyPoints: 0,
-      effortLevel: 'moderate',
-      complexity: 'moderate',
-      riskLevel: 'low',
+      effortLevel: TaskEffort.MODERATE,
+      complexity: TaskComplexity.MODERATE,
+      riskLevel: TaskRisk.LOW,
       templateId: '',
       dependencies: [],
       customFields: {},

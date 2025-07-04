@@ -431,22 +431,27 @@ components:
         - id: "comment-1"
           taskId: "task-1"
           content: "I've started working on the initial wireframes. Should have the first draft ready by tomorrow."
-          authorId: "user-1"
+          userId: "user-1"
+          commentType: "general"
           createdAt: "2025-07-04T09:30:00Z"
-          reactions:
-            - emoji: "👍"
-              count: 2
-              users: ["user-2", "user-3"]
+          updatedAt: "2025-07-04T09:30:00Z"
+          isEdited: false
+          mentions: []
+          reactions: 
+            "👍": 2
+          metadata: {}
         - id: "comment-2"
           taskId: "task-1"
           content: "Great! Make sure to follow the new design system guidelines we discussed."
-          authorId: "user-2"
+          userId: "user-2"
+          commentType: "general"
           createdAt: "2025-07-04T10:15:00Z"
+          updatedAt: "2025-07-04T10:15:00Z"
+          isEdited: false
+          mentions: []
+          reactions: {}
+          metadata: {}
           parentId: "comment-1"
-          attachments:
-            - name: "design-guidelines.pdf"
-              url: "/files/design-guidelines.pdf"
-              size: 2048000
       teamMembers:
         - id: "user-1"
           name: "John Doe"

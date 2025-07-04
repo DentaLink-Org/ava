@@ -73,7 +73,7 @@ interface TaskCommentsSystemProps {
   enableNotifications?: boolean;
   enableModeration?: boolean;
   maxCommentLength?: number;
-  onCommentCreate?: (comment: Omit<TaskComment, 'id' | 'createdAt' | 'updatedAt'>) => Promise<void>;
+  onCommentCreate?: (comment: Omit<TaskComment, 'id' | 'createdAt' | 'updatedAt' | 'isEdited' | 'editedAt' | 'mentions' | 'reactions' | 'metadata' | 'commentType'>) => Promise<void>;
   onCommentUpdate?: (commentId: string, updates: Partial<TaskComment>) => Promise<void>;
   onCommentDelete?: (commentId: string) => Promise<void>;
   onReactionAdd?: (commentId: string, reaction: string) => Promise<void>;
@@ -180,8 +180,8 @@ export const TaskCommentsSystem: React.FC<TaskCommentsSystemProps> = ({
     // Apply filters
     if (filters.author) {
       filtered = filtered.filter(thread => 
-        thread.rootComment.authorId === filters.author ||
-        thread.replies.some(reply => reply.authorId === filters.author)
+        thread.rootComment.userId === filters.author ||
+        thread.replies.some((reply: TaskComment) => reply.userId === filters.author)
       );
     }
 
@@ -194,21 +194,23 @@ export const TaskCommentsSystem: React.FC<TaskCommentsSystemProps> = ({
       });
     }
 
-    if (filters.hasAttachments) {
-      filtered = filtered.filter(thread => 
-        thread.rootComment.attachments && thread.rootComment.attachments.length > 0
-      );
-    }
+    // TODO: Re-enable when attachments are supported
+    // if (filters.hasAttachments) {
+    //   filtered = filtered.filter(thread => 
+    //     thread.rootComment.attachments && thread.rootComment.attachments.length > 0
+    //   );
+    // }
 
     if (filters.hasReactions) {
       filtered = filtered.filter(thread => 
-        thread.rootComment.reactions && thread.rootComment.reactions.length > 0
+        thread.rootComment.reactions && Object.keys(thread.rootComment.reactions).length > 0
       );
     }
 
-    if (filters.showResolved === false) {
-      filtered = filtered.filter(thread => !thread.rootComment.resolved);
-    }
+    // TODO: Add resolved property to TaskComment interface
+    // if (filters.showResolved === false) {
+    //   filtered = filtered.filter(thread => !thread.rootComment.resolved);
+    // }
 
     // Apply search
     if (searchTerm) {
@@ -254,7 +256,7 @@ export const TaskCommentsSystem: React.FC<TaskCommentsSystemProps> = ({
       await onCommentCreate({
         taskId: task.id,
         content: newComment,
-        authorId: currentUser.id,
+        userId: currentUser.id,
         parentId: replyingTo || undefined
       });
 
@@ -349,8 +351,8 @@ export const TaskCommentsSystem: React.FC<TaskCommentsSystemProps> = ({
 
   // Render comment
   const renderComment = (comment: TaskComment, isReply: boolean = false) => {
-    const author = teamMembers.find(member => member.id === comment.authorId);
-    const isOwner = comment.authorId === currentUser.id;
+    const author = teamMembers.find(member => member.id === comment.userId);
+    const isOwner = comment.userId === currentUser.id;
     const isEditing = editingComment === comment.id;
 
     return (
@@ -453,8 +455,8 @@ export const TaskCommentsSystem: React.FC<TaskCommentsSystemProps> = ({
             <div className="prose prose-sm max-w-none">
               <div className="whitespace-pre-wrap">{comment.content}</div>
               
-              {/* Attachments */}
-              {comment.attachments && comment.attachments.length > 0 && (
+              {/* Attachments - TODO: Add attachments support to TaskComment interface */}
+              {/* {comment.attachments && comment.attachments.length > 0 && (
                 <div className="mt-2 space-y-1">
                   {comment.attachments.map((attachment, index) => (
                     <div key={index} className="flex items-center space-x-2 text-sm">
@@ -470,19 +472,19 @@ export const TaskCommentsSystem: React.FC<TaskCommentsSystemProps> = ({
                     </div>
                   ))}
                 </div>
-              )}
+              )} */}
 
               {/* Reactions */}
-              {comment.reactions && comment.reactions.length > 0 && (
+              {comment.reactions && Object.keys(comment.reactions).length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-2">
-                  {comment.reactions.map((reaction, index) => (
+                  {Object.entries(comment.reactions).map(([emoji, count]) => (
                     <button
-                      key={index}
-                      onClick={() => handleReaction(comment.id, reaction.emoji)}
+                      key={emoji}
+                      onClick={() => handleReaction(comment.id, emoji)}
                       className="inline-flex items-center px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 rounded-full"
                     >
-                      <span className="mr-1">{reaction.emoji}</span>
-                      <span>{reaction.count}</span>
+                      <span className="mr-1">{emoji}</span>
+                      <span>{count as number}</span>
                     </button>
                   ))}
                 </div>
