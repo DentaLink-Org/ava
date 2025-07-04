@@ -485,6 +485,20 @@ components:
       span: 4
     props:
       templates: []
+      projects: []
+      teamMembers:
+        - id: "user-1"
+          name: "John Doe"
+          email: "john@example.com"
+          role: "admin"
+          isActive: true
+          joinedAt: "2025-01-01T00:00:00Z"
+        - id: "user-2"
+          name: "Jane Smith"
+          email: "jane@example.com"
+          role: "member"
+          isActive: true
+          joinedAt: "2025-01-01T00:00:00Z"
       categories: 
         - id: "web"
           name: "Web Development"
@@ -503,10 +517,12 @@ components:
       sortBy: "name"
       sortOrder: "asc"
       onTemplateCreate: "console.log"
-      onTemplateEdit: "console.log"
+      onTemplateUpdate: "console.log"
       onTemplateDelete: "console.log"
+      onTemplateApply: "console.log"
       onTemplateExport: "console.log"
       onTemplateImport: "console.log"
+      onTemplateShare: "console.log"
 
   - id: "milestone-approval-workflow"
     type: "MilestoneApprovalWorkflow"
@@ -516,9 +532,28 @@ components:
       row: 15
       span: 8
     props:
-      milestoneId: "milestone-1"
-      projectId: "project-1"
-      stakeholders:
+      milestone:
+        id: "milestone-1"
+        projectId: "project-1"
+        title: "MVP Release"
+        description: "Launch minimum viable product"
+        status: "in_progress"
+        priority: "high"
+        color: "#3b82f6"
+        progress: 45
+        dueDate: "2025-08-01T23:59:59Z"
+        createdAt: "2025-06-01T10:00:00Z"
+        updatedAt: "2025-06-30T14:30:00Z"
+        createdBy: "user-1"
+        assignedTo: ["user-1", "user-2"]
+        metadata:
+          tags: ["release", "mvp"]
+        isArchived: false
+        dependencies: []
+        tasks: []
+      workflows: []
+      approvalRequests: []
+      teamMembers:
         - id: "user-1"
           name: "John Doe"
           email: "john@example.com"
@@ -531,8 +566,26 @@ components:
           role: "member"
           isActive: true
           joinedAt: "2025-01-01T00:00:00Z"
-      approvalStages: []
-      currentStage: 0
+      users:
+        - id: "user-1"
+          name: "John Doe"
+          email: "john@example.com"
+          role: "admin"
+          isActive: true
+          joinedAt: "2025-01-01T00:00:00Z"
+        - id: "user-2"
+          name: "Jane Smith"
+          email: "jane@example.com"
+          role: "member"
+          isActive: true
+          joinedAt: "2025-01-01T00:00:00Z"
+      currentUser:
+        id: "user-1"
+        name: "John Doe"
+        email: "john@example.com"
+        role: "admin"
+        isActive: true
+        joinedAt: "2025-01-01T00:00:00Z"
       enableNotifications: true
       enableEscalation: true
       enableDelegation: true
@@ -541,10 +594,12 @@ components:
       showProgressBar: true
       showStakeholders: true
       autoAdvance: false
-      onApprove: "console.log"
-      onReject: "console.log"
-      onDelegate: "console.log"
-      onEscalate: "console.log"
+      onRequestApproval: "console.log"
+      onSubmitDecision: "console.log"
+      onCancelRequest: "console.log"
+      onEscalateRequest: "console.log"
+      onDelegateApproval: "console.log"
+      onAddComment: "console.log"
 
   - id: "project-phase-manager"
     type: "ProjectPhaseManager"
@@ -554,7 +609,34 @@ components:
       row: 16
       span: 8
     props:
-      projectId: "project-1"
+      project:
+        id: "project-1"
+        name: "Website Redesign"
+        description: "Complete overhaul of company website"
+        color: "#3b82f6"
+        ownerId: "user-1"
+        createdAt: "2025-01-01T00:00:00Z"
+        updatedAt: "2025-07-04T00:00:00Z"
+        isArchived: false
+        isFavorite: false
+        teamMembers: ["user-1", "user-2"]
+        settings:
+          allowComments: true
+          allowAttachments: true
+          requireDueDates: false
+          customStatuses: []
+        stats:
+          totalTasks: 25
+          completedTasks: 8
+          overdueTasks: 2
+          activeTasks: 15
+          completionRate: 32
+        milestones: []
+        milestoneCount: 3
+        completedMilestones: 1
+        overdueMilestones: 0
+        activeMilestones: 2
+        milestoneCompletionRate: 33
       phases: []
       milestones: []
       teamMembers:
@@ -570,6 +652,7 @@ components:
           role: "member"
           isActive: true
           joinedAt: "2025-01-01T00:00:00Z"
+      phaseProgress: []
       enablePhaseGates: true
       enableDependencies: true
       enableProgressTracking: true
@@ -583,6 +666,10 @@ components:
       onPhaseCreate: "console.log"
       onPhaseUpdate: "console.log"
       onPhaseDelete: "console.log"
+      onPhaseReorder: "console.log"
+      onMilestoneAssign: "console.log"
+      onGateApprovalSubmit: "console.log"
+      onPhaseStatusChange: "console.log"
 
   - id: "milestone-comment-system"
     type: "MilestoneCommentSystem"
@@ -592,9 +679,33 @@ components:
       row: 17
       span: 4
     props:
-      milestoneId: "milestone-1"
-      projectId: "project-1"
+      milestone:
+        id: "milestone-1"
+        projectId: "project-1"
+        title: "MVP Release"
+        description: "Launch minimum viable product"
+        status: "in_progress"
+        priority: "high"
+        color: "#3b82f6"
+        progress: 45
+        dueDate: "2025-08-01T23:59:59Z"
+        createdAt: "2025-06-01T10:00:00Z"
+        updatedAt: "2025-06-30T14:30:00Z"
+        createdBy: "user-1"
+        assignedTo: ["user-1", "user-2"]
+        metadata:
+          tags: ["release", "mvp"]
+        isArchived: false
+        dependencies: []
+        tasks: []
       comments: []
+      currentUser:
+        id: "user-1"
+        name: "John Doe"
+        email: "john@example.com"
+        role: "admin"
+        isActive: true
+        joinedAt: "2025-01-01T00:00:00Z"
       teamMembers:
         - id: "user-1"
           name: "John Doe"
@@ -608,7 +719,6 @@ components:
           role: "member"
           isActive: true
           joinedAt: "2025-01-01T00:00:00Z"
-      currentUserId: "user-1"
       enableMentions: true
       enableRichText: true
       enableAttachments: true
@@ -622,7 +732,12 @@ components:
       onCommentCreate: "console.log"
       onCommentUpdate: "console.log"
       onCommentDelete: "console.log"
+      onCommentPin: "console.log"
+      onCommentFlag: "console.log"
       onReactionAdd: "console.log"
+      onReactionRemove: "console.log"
+      onAttachmentUpload: "console.log"
+      onMentionSearch: "console.log"
 
   - id: "milestone-timeline-editor"
     type: "MilestoneTimelineEditor"
@@ -709,16 +824,52 @@ components:
       row: 19
       span: 4
     props:
-      userId: "user-1"
-      projectId: "project-1"
-      notifications: []
-      preferences: {
-        email: true,
-        sms: false,
-        slack: false,
-        webhooks: false,
-        realtime: true
-      }
+      project:
+        id: "project-1"
+        name: "Website Redesign"
+        description: "Complete overhaul of company website"
+        color: "#3b82f6"
+        ownerId: "user-1"
+        createdAt: "2025-01-01T00:00:00Z"
+        updatedAt: "2025-07-04T00:00:00Z"
+        isArchived: false
+        isFavorite: false
+        teamMembers: ["user-1", "user-2"]
+        settings:
+          allowComments: true
+          allowAttachments: true
+          requireDueDates: false
+          customStatuses: []
+        stats:
+          totalTasks: 25
+          completedTasks: 8
+          overdueTasks: 2
+          activeTasks: 15
+          completionRate: 32
+      milestones: []
+      teamMembers:
+        - id: "user-1"
+          name: "John Doe"
+          email: "john@example.com"
+          role: "admin"
+          isActive: true
+          joinedAt: "2025-01-01T00:00:00Z"
+        - id: "user-2"
+          name: "Jane Smith"
+          email: "jane@example.com"
+          role: "member"
+          isActive: true
+          joinedAt: "2025-01-01T00:00:00Z"
+      rules: []
+      history: []
+      analytics:
+        totalSent: 0
+        deliveryRate: 0
+        openRate: 0
+        clickRate: 0
+        errorRate: 0
+        topChannels: []
+        recentActivity: []
       enableRealtime: true
       enableEmail: true
       enableSMS: false
@@ -730,9 +881,15 @@ components:
       maxNotifications: 50
       autoMarkRead: true
       groupSimilar: true
-      onNotificationRead: "console.log"
-      onPreferenceUpdate: "console.log"
-      onNotificationDelete: "console.log"
+      onRuleCreate: "console.log"
+      onRuleUpdate: "console.log"
+      onRuleDelete: "console.log"
+      onRuleTest: "console.log"
+      onTemplateCreate: "console.log"
+      onTemplateUpdate: "console.log"
+      onExport: "console.log"
+      onImport: "console.log"
+      onHistoryCleanup: "console.log"
 
   - id: "milestone-status-updater"
     type: "MilestoneStatusUpdater"
@@ -742,9 +899,29 @@ components:
       row: 19
       span: 4
     props:
-      projectId: "project-1"
       milestones: []
-      selectedMilestones: []
+      projects:
+        - id: "project-1"
+          name: "Website Redesign"
+          description: "Complete overhaul of company website"
+          color: "#3b82f6"
+          ownerId: "user-1"
+          createdAt: "2025-01-01T00:00:00Z"
+          updatedAt: "2025-07-04T00:00:00Z"
+          isArchived: false
+          isFavorite: false
+          teamMembers: ["user-1", "user-2"]
+          settings:
+            allowComments: true
+            allowAttachments: true
+            requireDueDates: false
+            customStatuses: []
+          stats:
+            totalTasks: 25
+            completedTasks: 8
+            overdueTasks: 2
+            activeTasks: 15
+            completionRate: 32
       teamMembers:
         - id: "user-1"
           name: "John Doe"
@@ -758,19 +935,22 @@ components:
           role: "member"
           isActive: true
           joinedAt: "2025-01-01T00:00:00Z"
-      enableBulkUpdate: true
-      enableValidation: true
+      rules: []
+      suggestions: []
+      enableBulkOperations: true
       enableSuggestions: true
-      enableHistory: true
-      enableNotifications: true
-      enableWorkflow: true
-      showProgress: true
-      showDependencies: true
-      showImpact: true
-      confirmChanges: true
+      enableRules: true
+      enableValidation: true
+      showProgressTracking: true
+      showDependencyValidation: true
       onStatusUpdate: "console.log"
       onBulkUpdate: "console.log"
-      onValidationError: "console.log"
+      onRuleCreate: "console.log"
+      onRuleUpdate: "console.log"
+      onRuleDelete: "console.log"
+      onSuggestionApply: "console.log"
+      onSuggestionDismiss: "console.log"
+      onValidation: "console.log"
 
   - id: "team-milestone-assignment"
     type: "TeamMilestoneAssignment"
@@ -780,7 +960,6 @@ components:
       row: 20
       span: 8
     props:
-      projectId: "project-1"
       milestones: []
       teamMembers:
         - id: "user-1"
@@ -795,22 +974,52 @@ components:
           role: "member"
           isActive: true
           joinedAt: "2025-01-01T00:00:00Z"
+      projects:
+        - id: "project-1"
+          name: "Website Redesign"
+          description: "Complete overhaul of company website"
+          color: "#3b82f6"
+          ownerId: "user-1"
+          createdAt: "2025-01-01T00:00:00Z"
+          updatedAt: "2025-07-04T00:00:00Z"
+          isArchived: false
+          isFavorite: false
+          teamMembers: ["user-1", "user-2"]
+          settings:
+            allowComments: true
+            allowAttachments: true
+            requireDueDates: false
+            customStatuses: []
+          stats:
+            totalTasks: 25
+            completedTasks: 8
+            overdueTasks: 2
+            activeTasks: 15
+            completionRate: 32
       assignments: []
-      skillsMatrix: []
-      workloadData: []
+      rules: []
+      suggestions: []
+      conflicts: []
+      enableSuggestions: true
+      enableRules: true
+      enableConflictDetection: true
       enableSkillsMatching: true
       enableWorkloadAnalysis: true
-      enableConflictDetection: true
-      enableRecommendations: true
       enableBulkAssignment: true
       showTeamCapacity: true
       showSkillsGap: true
       showWorkloadChart: true
       showAvailability: true
       viewMode: "grid"
-      onAssignmentUpdate: "console.log"
+      onAssign: "console.log"
+      onUnassign: "console.log"
       onBulkAssign: "console.log"
-      onRecommendationApply: "console.log"
+      onRuleCreate: "console.log"
+      onRuleUpdate: "console.log"
+      onSuggestionApply: "console.log"
+      onConflictResolve: "console.log"
+      onWorkloadAnalysis: "console.log"
+      onSkillGapAnalysis: "console.log"
 
   - id: "milestone-search-filter"
     type: "MilestoneSearchFilter"
