@@ -438,10 +438,18 @@ export interface UseMilestoneDependenciesReturn {
   error: Error | null;
   createDependency: (dependency: CreateDependencyData) => Promise<MilestoneDependency>;
   deleteDependency: (dependencyId: string) => Promise<void>;
-  validateDependencies: (dependencies: MilestoneDependency[]) => ValidationResult;
+  validateDependencies: (dependencies: MilestoneDependency[]) => Promise<ValidationResult>;
   getCriticalPath: (milestoneIds: string[]) => Milestone[];
   getDependencyGraph: (milestoneId: string) => DependencyGraph;
   refetch: () => void;
+  checkForCycle: (fromId: string, toId: string) => Promise<boolean>;
+  validateCurrentDependencies: () => Promise<ValidationResult>;
+  getDependenciesForMilestone: (milestoneId: string) => MilestoneDependency[];
+  getDependentMilestones: (milestoneId: string) => MilestoneDependency[];
+  validationResult: ValidationResult | null;
+  isValid: boolean;
+  validationErrors: ValidationError[];
+  validationWarnings: ValidationWarning[];
 }
 
 export interface ProgressTrend {
