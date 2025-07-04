@@ -135,6 +135,7 @@ export const useRealtimeSchemas = (databaseId: string): UseRealtimeSchemasResult
           database_id: databaseId,
           table_name: tableName,
           display_name: tableName,
+          schema_name: 'public', // Add the required schema_name
           column_count: columns.length,
           record_count: 0
         })
@@ -180,6 +181,9 @@ export const useRealtimeSchemas = (databaseId: string): UseRealtimeSchemasResult
         { table_name: tableName, columns },
         { table_name: tableName }
       );
+
+      // Force immediate refresh to ensure UI updates
+      await fetchSchemas();
 
       return { success: true };
     } catch (err) {
