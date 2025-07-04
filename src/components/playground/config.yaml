@@ -179,6 +179,213 @@ components:
     props:
       projectId: "project-1"
 
+  # New Milestone Components
+  - id: "milestone-card"
+    type: "MilestoneCard"
+    group: "milestones"
+    position:
+      col: 1
+      row: 8
+      span: 4
+    props:
+      milestone:
+        id: "milestone-demo"
+        projectId: "project-1"
+        title: "Demo Milestone"
+        description: "Example milestone for testing"
+        status: "in_progress"
+        priority: "high"
+        color: "#3b82f6"
+        progress: 65
+        dueDate: "2025-08-15T23:59:59Z"
+        createdAt: "2025-07-01T10:00:00Z"
+        updatedAt: "2025-07-04T14:30:00Z"
+        createdBy: "user-1"
+        assignedTo: ["user-1", "user-2"]
+        metadata:
+          tags: ["demo", "testing"]
+          estimatedHours: 120
+          actualHours: 80
+        isArchived: false
+        dependencies: []
+        tasks: []
+      onEdit: "console.log"
+      onDelete: "console.log"
+      onStatusChange: "console.log"
+      onProgressUpdate: "console.log"
+
+  - id: "milestone-create-modal"
+    type: "MilestoneCreateModal"
+    group: "milestones"
+    position:
+      col: 5
+      row: 8
+      span: 4
+    props:
+      isOpen: false
+      projects:
+        - id: "project-1"
+          name: "Website Redesign"
+          description: "Complete overhaul of company website"
+          color: "#3b82f6"
+          ownerId: "user-1"
+          createdAt: "2025-01-01T00:00:00Z"
+          updatedAt: "2025-07-04T00:00:00Z"
+          isArchived: false
+          isFavorite: false
+          teamMembers: ["user-1", "user-2", "user-3"]
+          settings:
+            allowComments: true
+            allowAttachments: true
+            requireDueDates: false
+            customStatuses: []
+          stats:
+            totalTasks: 0
+            completedTasks: 0
+            overdueTasks: 0
+            activeTasks: 0
+            completionRate: 0
+          milestones: []
+          milestoneCount: 0
+          completedMilestones: 0
+          overdueMilestones: 0
+          activeMilestones: 0
+          milestoneCompletionRate: 0
+      teamMembers:
+        - id: "user-1"
+          name: "John Doe"
+          email: "john@example.com"
+          role: "admin"
+          isActive: true
+          joinedAt: "2025-01-01T00:00:00Z"
+        - id: "user-2"
+          name: "Jane Smith"
+          email: "jane@example.com"
+          role: "member"
+          isActive: true
+          joinedAt: "2025-01-01T00:00:00Z"
+      existingMilestones: []
+      onClose: "console.log"
+      onSubmit: "console.log"
+
+  - id: "task-milestone-selector"
+    type: "TaskMilestoneSelector"
+    group: "milestones"
+    position:
+      col: 1
+      row: 9
+      span: 4
+    props:
+      projectId: "project-1"
+      milestones:
+        - id: "milestone-1"
+          projectId: "project-1"
+          title: "MVP Release"
+          description: "Launch minimum viable product"
+          status: "in_progress"
+          priority: "high"
+          color: "#3b82f6"
+          progress: 45
+          dueDate: "2025-08-01T23:59:59Z"
+          createdAt: "2025-06-01T10:00:00Z"
+          updatedAt: "2025-06-30T14:30:00Z"
+          createdBy: "user-1"
+          assignedTo: ["user-1", "user-2"]
+          metadata:
+            tags: ["release", "mvp"]
+          isArchived: false
+          dependencies: []
+          tasks: []
+        - id: "milestone-2"
+          projectId: "project-1"
+          title: "Beta Testing"
+          description: "Complete beta testing phase"
+          status: "pending"
+          priority: "high"
+          color: "#10b981"
+          progress: 0
+          dueDate: "2025-09-15T23:59:59Z"
+          createdAt: "2025-06-01T10:00:00Z"
+          updatedAt: "2025-06-15T09:20:00Z"
+          createdBy: "user-1"
+          assignedTo: ["user-2"]
+          metadata:
+            tags: ["testing", "qa"]
+          isArchived: false
+          dependencies: []
+          tasks: []
+      onMilestoneSelect: "console.log"
+      enableCreate: true
+      onMilestoneCreate: "console.log"
+
+  - id: "milestone-task-list"
+    type: "MilestoneTaskList"
+    group: "milestones"
+    position:
+      col: 5
+      row: 9
+      span: 4
+    props:
+      milestone:
+        id: "milestone-1"
+        projectId: "project-1"
+        title: "MVP Release"
+        description: "Launch minimum viable product"
+        status: "in_progress"
+        priority: "high"
+        color: "#3b82f6"
+        progress: 45
+        dueDate: "2025-08-01T23:59:59Z"
+        createdAt: "2025-06-01T10:00:00Z"
+        updatedAt: "2025-06-30T14:30:00Z"
+        createdBy: "user-1"
+        assignedTo: ["user-1", "user-2"]
+        metadata:
+          tags: ["release", "mvp"]
+        isArchived: false
+        dependencies: []
+        tasks: []
+      tasks:
+        - id: "task-1"
+          title: "Design user interface"
+          description: "Create mockups and prototypes"
+          status:
+            id: "in_progress"
+            name: "In Progress"
+            isCompleted: false
+          priority: "high"
+          dueDate: "2025-07-15T17:00:00Z"
+          assigneeId: "user-1"
+          tags: ["design", "ui"]
+          createdAt: "2025-06-01T10:00:00Z"
+          updatedAt: "2025-07-04T14:30:00Z"
+          milestoneId: "milestone-1"
+        - id: "task-2"
+          title: "Implement authentication"
+          description: "User login and registration"
+          status:
+            id: "completed"
+            name: "Completed"
+            isCompleted: true
+          priority: "high"
+          dueDate: "2025-07-10T17:00:00Z"
+          assigneeId: "user-2"
+          tags: ["backend", "auth"]
+          createdAt: "2025-06-01T10:00:00Z"
+          updatedAt: "2025-07-02T16:45:00Z"
+          milestoneId: "milestone-1"
+      teamMembers:
+        - id: "user-1"
+          name: "John Doe"
+          avatarUrl: "https://via.placeholder.com/32"
+        - id: "user-2"
+          name: "Jane Smith"
+          avatarUrl: "https://via.placeholder.com/32"
+      onTaskCreate: "console.log"
+      onTaskUpdate: "console.log"
+      onTaskDelete: "console.log"
+      onTaskUnlink: "console.log"
+
 data:
   sources:
     - name: "orders"
