@@ -413,6 +413,14 @@ export interface UseMilestoneDataReturn {
   deleteMilestone: (milestoneId: string) => Promise<void>;
   calculateProgress: (milestoneId: string) => Promise<number>;
   refetch: () => void;
+  archiveMilestone: (milestoneId: string) => Promise<void>;
+  restoreMilestone: (milestoneId: string) => Promise<void>;
+  completedMilestones: Milestone[];
+  activeMilestones: Milestone[];
+  overdueMilestones: Milestone[];
+  upcomingMilestones: Milestone[];
+  averageProgress: number;
+  stats: MilestoneStats;
 }
 
 export interface UseMilestoneProgressReturn {
