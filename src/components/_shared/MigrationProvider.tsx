@@ -26,7 +26,16 @@ export function MigrationProvider({ children }: { children: React.ReactNode }) {
       if (nativeResponse.ok) {
         const nativeData = await nativeResponse.json();
         
-        // If schema needs migration, prioritize that
+        // If schema validation passes, no need to show migration banner
+        if (nativeData.success) {
+          setMigrationStatus({
+            pendingCount: 0, // Schema is valid, no banner needed
+            loading: false
+          });
+          return;
+        }
+        
+        // If schema needs migration, show the banner
         if (!nativeData.success) {
           setMigrationStatus({
             pendingCount: 1, // Show that there's a schema issue

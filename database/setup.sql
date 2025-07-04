@@ -117,10 +117,27 @@ CREATE TABLE IF NOT EXISTS page_components (
   page_id UUID REFERENCES pages(id) ON DELETE CASCADE,
   component_id UUID REFERENCES components(id) ON DELETE CASCADE,
   component_type VARCHAR(100) NOT NULL,
+  name VARCHAR(200) NOT NULL,
+  title VARCHAR(200) NOT NULL,
+  description TEXT,
+  functionality TEXT,
+  status VARCHAR(50) DEFAULT 'active',
+  priority VARCHAR(20) DEFAULT 'medium',
+  category VARCHAR(100) DEFAULT 'general',
+  group_name VARCHAR(100) DEFAULT 'general',
+  implementation_status VARCHAR(50) DEFAULT 'not_started',
   position JSONB DEFAULT '{}',
   props JSONB DEFAULT '{}',
   styles JSONB DEFAULT '{}',
   is_active BOOLEAN DEFAULT TRUE,
+  created_by VARCHAR(100) DEFAULT 'system',
+  estimated_hours DECIMAL(8,2),
+  actual_hours DECIMAL(8,2),
+  dependencies TEXT[] DEFAULT '{}',
+  features TEXT[] DEFAULT '{}',
+  file_path VARCHAR(500),
+  tags TEXT[] DEFAULT '{}',
+  metadata JSONB DEFAULT '{}',
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -186,6 +203,86 @@ CREATE TABLE IF NOT EXISTS database_schemas (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- User databases table for database management UI
+CREATE TABLE IF NOT EXISTS user_databases (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name VARCHAR(255) NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  type VARCHAR(50) NOT NULL,
+  connection_config JSONB NOT NULL,
+  status VARCHAR(50) DEFAULT 'active',
+  record_count INTEGER DEFAULT 0,
+  table_count INTEGER DEFAULT 0,
+  size VARCHAR(50) DEFAULT '0 MB',
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- =================================================
+-- PAGE FEATURES TABLES
+-- =================================================
+
+-- Create custom types for features
+DO $$ BEGIN
+    CREATE TYPE feature_status AS ENUM ('active', 'inactive', 'deprecated', 'planned');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+    CREATE TYPE feature_priority AS ENUM ('low', 'medium', 'high', 'critical');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+    CREATE TYPE feature_category AS ENUM (
+        'ui_component', 
+        'functionality', 
+        'integration', 
+        'performance', 
+        'security', 
+        'accessibility', 
+        'analytics', 
+        'other'
+    );
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+    CREATE TYPE implementation_status AS ENUM (
+        'not_started', 
+        'in_progress', 
+        'completed', 
+        'testing', 
+        'deployed', 
+        'needs_review'
+    );
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
+-- Page features table for storing page feature tracking
+CREATE TABLE IF NOT EXISTS page_features (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    page_id TEXT NOT NULL,
+    name TEXT NOT NULL,
+    description TEXT NOT NULL,
+    status feature_status DEFAULT 'planned',
+    priority feature_priority DEFAULT 'medium',
+    category feature_category DEFAULT 'functionality',
+    implementation_status implementation_status DEFAULT 'not_started',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    created_by TEXT DEFAULT 'system',
+    estimated_hours DECIMAL(8,2),
+    actual_hours DECIMAL(8,2),
+    dependencies TEXT[] DEFAULT '{}',
+    tags TEXT[] DEFAULT '{}',
+    metadata JSONB DEFAULT '{}'
+);
+
 -- =================================================
 -- ENABLE ROW LEVEL SECURITY
 -- =================================================
@@ -201,6 +298,8 @@ ALTER TABLE tasks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE task_comments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE database_connections ENABLE ROW LEVEL SECURITY;
 ALTER TABLE database_schemas ENABLE ROW LEVEL SECURITY;
+ALTER TABLE user_databases ENABLE ROW LEVEL SECURITY;
+ALTER TABLE page_features ENABLE ROW LEVEL SECURITY;
 
 -- =================================================
 -- CREATE RLS POLICIES
@@ -218,6 +317,8 @@ CREATE POLICY "public_read_tasks" ON tasks FOR SELECT TO anon USING (true);
 CREATE POLICY "public_read_task_comments" ON task_comments FOR SELECT TO anon USING (true);
 CREATE POLICY "public_read_database_connections" ON database_connections FOR SELECT TO anon USING (true);
 CREATE POLICY "public_read_database_schemas" ON database_schemas FOR SELECT TO anon USING (true);
+CREATE POLICY "public_read_user_databases" ON user_databases FOR SELECT TO anon USING (true);
+CREATE POLICY "public_read_page_features" ON page_features FOR SELECT TO anon USING (true);
 
 -- Allow public write access (for demo purposes - restrict in production)
 CREATE POLICY "public_write_themes" ON themes FOR ALL TO anon USING (true);
@@ -231,6 +332,8 @@ CREATE POLICY "public_write_tasks" ON tasks FOR ALL TO anon USING (true);
 CREATE POLICY "public_write_task_comments" ON task_comments FOR ALL TO anon USING (true);
 CREATE POLICY "public_write_database_connections" ON database_connections FOR ALL TO anon USING (true);
 CREATE POLICY "public_write_database_schemas" ON database_schemas FOR ALL TO anon USING (true);
+CREATE POLICY "public_write_user_databases" ON user_databases FOR ALL TO anon USING (true);
+CREATE POLICY "public_write_page_features" ON page_features FOR ALL TO anon USING (true);
 
 -- =================================================
 -- INSERT SAMPLE DATA
