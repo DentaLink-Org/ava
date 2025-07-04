@@ -65,9 +65,12 @@ export async function POST(request: NextRequest) {
     const errorMessage = insertError?.message || 'Unknown insertion error';
     
     // Check if it's specifically a missing column error
-    if (errorMessage.includes('column') && errorMessage.includes('does not exist')) {
-      // Extract the missing column name from the error message
-      const columnMatch = errorMessage.match(/column "([^"]+)" of relation "page_components" does not exist/);
+    if (errorMessage.includes('column') && (errorMessage.includes('does not exist') || errorMessage.includes('schema cache'))) {
+      // Extract the missing column name from different error message formats
+      let columnMatch = errorMessage.match(/column "([^"]+)" of relation "page_components" does not exist/);
+      if (!columnMatch) {
+        columnMatch = errorMessage.match(/Could not find the '([^']+)' column of 'page_components'/);
+      }
       const missingColumn = columnMatch ? columnMatch[1] : 'unknown';
       
       return NextResponse.json({
@@ -77,7 +80,8 @@ export async function POST(request: NextRequest) {
         missingColumn,
         action: 'manual_migration_required',
         instruction: 'The automated migration cannot proceed without RPC access. Please run the manual schema fix.',
-        sqlCommand: `ALTER TABLE page_components ADD COLUMN IF NOT EXISTS ${missingColumn} ${getColumnDefinition(missingColumn)};`
+        sqlCommand: getCompleteSchemaFix(),
+        singleColumnFix: `ALTER TABLE page_components ADD COLUMN IF NOT EXISTS ${missingColumn} ${getColumnDefinition(missingColumn)};`
       });
     }
     
@@ -116,6 +120,24 @@ function getColumnDefinition(columnName: string): string {
   };
   
   return definitions[columnName] || 'TEXT';
+}
+
+function getCompleteSchemaFix(): string {
+  return `-- COMPLETE SCHEMA FIX - Run this in Supabase SQL Editor
+ALTER TABLE page_components ADD COLUMN IF NOT EXISTS category VARCHAR(100) DEFAULT 'custom';
+ALTER TABLE page_components ADD COLUMN IF NOT EXISTS name VARCHAR(200);
+ALTER TABLE page_components ADD COLUMN IF NOT EXISTS display_name VARCHAR(250);
+ALTER TABLE page_components ADD COLUMN IF NOT EXISTS description TEXT;
+ALTER TABLE page_components ADD COLUMN IF NOT EXISTS author VARCHAR(100);
+ALTER TABLE page_components ADD COLUMN IF NOT EXISTS version VARCHAR(20) DEFAULT '1.0.0';
+ALTER TABLE page_components ADD COLUMN IF NOT EXISTS tags TEXT[] DEFAULT '{}';
+ALTER TABLE page_components ADD COLUMN IF NOT EXISTS is_system BOOLEAN DEFAULT FALSE;
+ALTER TABLE page_components ADD COLUMN IF NOT EXISTS metadata JSONB DEFAULT '{}';
+
+-- Add indexes
+CREATE INDEX IF NOT EXISTS idx_page_components_category ON page_components(category);
+CREATE INDEX IF NOT EXISTS idx_page_components_name ON page_components(name);
+CREATE INDEX IF NOT EXISTS idx_page_components_is_system ON page_components(is_system);`;
 }
 
 // GET endpoint to check schema status
@@ -173,7 +195,10 @@ export async function GET() {
     
     // Schema needs fixing
     const errorMessage = error.message || 'Unknown error';
-    const columnMatch = errorMessage.match(/column "([^"]+)" of relation "page_components" does not exist/);
+    let columnMatch = errorMessage.match(/column "([^"]+)" of relation "page_components" does not exist/);
+    if (!columnMatch) {
+      columnMatch = errorMessage.match(/Could not find the '([^']+)' column of 'page_components'/);
+    }
     const missingColumn = columnMatch ? columnMatch[1] : null;
     
     return NextResponse.json({
