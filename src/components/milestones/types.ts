@@ -3,6 +3,9 @@
 
 import type { Task, TaskPriority, TeamMember, Project } from '../tasks/types';
 
+// Re-export commonly used types from tasks
+export type { TaskPriority, TeamMember, Project, Task } from '../tasks/types';
+
 // Core Milestone Types
 export interface Milestone {
   id: string;

@@ -13,8 +13,14 @@ import {
   KPICards,
   GroupSelector,
   MilestoneBoard,
+  MilestoneCard,
+  MilestoneCreateModal,
+  MilestoneEditModal,
   MilestoneProgressTracker,
-  MilestoneDependencyManager
+  MilestoneDependencyManager,
+  TaskMilestoneSelector,
+  MilestoneTaskList,
+  MilestoneDataProvider
 } from './components';
 import { ChatBot, IssueTracker } from '../_shared/components';
 
@@ -37,10 +43,16 @@ export const registerPlaygroundComponents = () => {
   
   // Register milestone components
   componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneBoard', MilestoneBoard as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneCard', MilestoneCard as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneCreateModal', MilestoneCreateModal as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneEditModal', MilestoneEditModal as any);
   componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneProgressTracker', MilestoneProgressTracker as any);
   componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneDependencyManager', MilestoneDependencyManager as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'TaskMilestoneSelector', TaskMilestoneSelector as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneTaskList', MilestoneTaskList as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneDataProvider', MilestoneDataProvider as any);
   
-  console.log('Playground components registered successfully (including milestone components)');
+  console.log('Playground components registered successfully (including all milestone components)');
 };
 
 /**
