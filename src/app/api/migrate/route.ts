@@ -6,7 +6,7 @@ import { join } from 'path';
 // API endpoint for running migrations
 export async function POST(request: NextRequest) {
   try {
-    const supabaseUrl = process.env.AVA_NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseUrl = process.env.AVA_NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.AVA_SUPABASE_URL;
     const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.AVA_SUPABASE_SERVICE_ROLE_KEY;
     
     if (!supabaseUrl || !supabaseServiceKey) {
@@ -16,14 +16,14 @@ export async function POST(request: NextRequest) {
           details: {
             hasUrl: !!supabaseUrl,
             hasServiceKey: !!supabaseServiceKey,
-            message: 'Please add SUPABASE_SERVICE_ROLE_KEY to Vercel environment variables'
+            message: 'Please check environment variables: AVA_NEXT_PUBLIC_SUPABASE_URL and AVA_SUPABASE_SERVICE_ROLE_KEY'
           }
         },
         { status: 500 }
       );
     }
     
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    const supabase = createClient(supabaseUrl!, supabaseServiceKey!);
     
     // Get executed migrations
     const { data: executedMigrations, error: queryError } = await supabase
@@ -126,10 +126,24 @@ export async function POST(request: NextRequest) {
 // GET endpoint to check migration status
 export async function GET() {
   try {
-    const supabaseUrl = process.env.AVA_NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseUrl = process.env.AVA_NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.AVA_SUPABASE_URL;
     const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.AVA_SUPABASE_SERVICE_ROLE_KEY;
     
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    if (!supabaseUrl || !supabaseServiceKey) {
+      return NextResponse.json(
+        { 
+          error: 'Missing Supabase configuration',
+          details: {
+            hasUrl: !!supabaseUrl,
+            hasServiceKey: !!supabaseServiceKey,
+            message: 'Please check environment variables: AVA_NEXT_PUBLIC_SUPABASE_URL and AVA_SUPABASE_SERVICE_ROLE_KEY'
+          }
+        },
+        { status: 500 }
+      );
+    }
+    
+    const supabase = createClient(supabaseUrl!, supabaseServiceKey!);
     
     // Get executed migrations
     const { data: executedMigrations, error } = await supabase
