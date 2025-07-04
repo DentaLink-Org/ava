@@ -99,7 +99,7 @@ export function MigrationDebug() {
     );
   }
 
-  if (debugInfo?.needsMigration) {
+  if (!debugInfo?.success) {
     return (
       <div style={{ 
         position: 'fixed', 
@@ -136,20 +136,26 @@ export function MigrationDebug() {
     );
   }
 
-  return (
-    <div style={{ 
-      position: 'fixed', 
-      top: 0, 
-      left: 0, 
-      right: 0, 
-      background: '#e8f5e8', 
-      padding: '4px', 
-      textAlign: 'center',
-      zIndex: 9999,
-      fontSize: '12px',
-      color: '#2e7d32'
-    }}>
-      ✅ Database schema is complete
-    </div>
-  );
+  // Only show "complete" message if API explicitly returns success: true
+  if (debugInfo?.success) {
+    return (
+      <div style={{ 
+        position: 'fixed', 
+        top: 0, 
+        left: 0, 
+        right: 0, 
+        background: '#e8f5e8', 
+        padding: '4px', 
+        textAlign: 'center',
+        zIndex: 9999,
+        fontSize: '12px',
+        color: '#2e7d32'
+      }}>
+        ✅ Database schema is complete
+      </div>
+    );
+  }
+
+  // Default: don't show anything if status is unclear
+  return null;
 }

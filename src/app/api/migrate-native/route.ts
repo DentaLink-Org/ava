@@ -36,6 +36,17 @@ export async function POST(request: NextRequest) {
       is_system: true,
       metadata: { test: true, timestamp: Date.now() }
     };
+
+    // Also test user_databases table schema
+    const testDatabaseRecord = {
+      name: 'schema_test_db_' + Date.now(),
+      type: 'postgresql',
+      connection_config: { host: 'test', port: 5432, database: 'test' },
+      status: 'active',
+      size: '0 KB',
+      table_count: 0,
+      record_count: 0
+    };
     
     // Try to insert the test record
     const { data: insertResult, error: insertError } = await supabase
@@ -44,7 +55,7 @@ export async function POST(request: NextRequest) {
       .select('id, name');
     
     if (!insertError && insertResult && insertResult.length > 0) {
-      // Success! The schema has all required columns
+      // Success! The schema has all required columns for page_components
       const insertedId = insertResult[0].id;
       
       // Clean up the test record
@@ -53,12 +64,60 @@ export async function POST(request: NextRequest) {
         .delete()
         .eq('id', insertedId);
       
-      return NextResponse.json({
-        success: true,
-        message: 'Schema validation passed - all required columns exist',
-        action: 'no_migration_needed',
-        details: 'Test record inserted and deleted successfully'
-      });
+      // Now test user_databases table schema
+      const { data: dbInsertResult, error: dbInsertError } = await supabase
+        .from('user_databases')
+        .insert(testDatabaseRecord)
+        .select('id, name');
+      
+      if (!dbInsertError && dbInsertResult && dbInsertResult.length > 0) {
+        // Success! Clean up the test database record
+        const dbInsertedId = dbInsertResult[0].id;
+        await supabase
+          .from('user_databases')
+          .delete()
+          .eq('id', dbInsertedId);
+        
+        return NextResponse.json({
+          success: true,
+          message: 'Schema validation passed - all required columns exist',
+          action: 'no_migration_needed',
+          details: 'Test records inserted and deleted successfully for both tables'
+        });
+      } else {
+        // user_databases table has schema issues
+        const dbErrorMessage = dbInsertError?.message || 'Unknown insertion error';
+        
+        // Check if it's specifically a missing column error
+        if (dbErrorMessage.includes('column') && (dbErrorMessage.includes('does not exist') || dbErrorMessage.includes('schema cache'))) {
+          // Extract the missing column name from different error message formats
+          let columnMatch = dbErrorMessage.match(/column "([^"]+)" of relation "user_databases" does not exist/);
+          if (!columnMatch) {
+            columnMatch = dbErrorMessage.match(/Could not find the '([^']+)' column of 'user_databases'/);
+          }
+          const missingColumn = columnMatch ? columnMatch[1] : 'unknown';
+          
+          return NextResponse.json({
+            success: false,
+            message: `Schema migration needed - missing column in user_databases: ${missingColumn}`,
+            error: dbErrorMessage,
+            missingColumn,
+            table: 'user_databases',
+            action: 'manual_migration_required',
+            instruction: 'The automated migration cannot proceed without RPC access. Please run the manual schema fix.',
+            sqlCommand: getUserDatabasesSchemaFix(),
+            singleColumnFix: `ALTER TABLE user_databases ADD COLUMN IF NOT EXISTS ${missingColumn} ${getUserDatabasesColumnDefinition(missingColumn)};`
+          });
+        }
+        
+        return NextResponse.json({
+          success: false,
+          message: 'Schema validation failed for user_databases table',
+          error: dbErrorMessage,
+          table: 'user_databases',
+          action: 'unknown_error'
+        });
+      }
     }
     
     // If we get here, there's a schema issue
@@ -179,6 +238,47 @@ CREATE INDEX IF NOT EXISTS idx_page_components_framework ON page_components(fram
 SELECT column_name, data_type, is_nullable, column_default 
 FROM information_schema.columns 
 WHERE table_name = 'page_components' 
+AND table_schema = 'public'
+ORDER BY ordinal_position;`;
+}
+
+function getUserDatabasesColumnDefinition(columnName: string): string {
+  const definitions: Record<string, string> = {
+    'status': 'VARCHAR(50) DEFAULT \'active\'',
+    'size': 'VARCHAR(50) DEFAULT \'0 KB\'',
+    'table_count': 'INTEGER DEFAULT 0',
+    'record_count': 'INTEGER DEFAULT 0',
+    'type': 'VARCHAR(50) DEFAULT \'postgresql\'',
+    'description': 'TEXT',
+    'last_connected': 'TIMESTAMP WITH TIME ZONE',
+    'is_active': 'BOOLEAN DEFAULT TRUE'
+  };
+  
+  return definitions[columnName] || 'TEXT';
+}
+
+function getUserDatabasesSchemaFix(): string {
+  return `-- USER DATABASES SCHEMA FIX - Run this in Supabase SQL Editor
+-- This adds ALL possible missing columns that the user_databases table might need
+
+ALTER TABLE user_databases ADD COLUMN IF NOT EXISTS status VARCHAR(50) DEFAULT 'active';
+ALTER TABLE user_databases ADD COLUMN IF NOT EXISTS size VARCHAR(50) DEFAULT '0 KB';
+ALTER TABLE user_databases ADD COLUMN IF NOT EXISTS table_count INTEGER DEFAULT 0;
+ALTER TABLE user_databases ADD COLUMN IF NOT EXISTS record_count INTEGER DEFAULT 0;
+ALTER TABLE user_databases ADD COLUMN IF NOT EXISTS type VARCHAR(50) DEFAULT 'postgresql';
+ALTER TABLE user_databases ADD COLUMN IF NOT EXISTS description TEXT;
+ALTER TABLE user_databases ADD COLUMN IF NOT EXISTS last_connected TIMESTAMP WITH TIME ZONE;
+ALTER TABLE user_databases ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT TRUE;
+
+-- Add useful indexes
+CREATE INDEX IF NOT EXISTS idx_user_databases_status ON user_databases(status);
+CREATE INDEX IF NOT EXISTS idx_user_databases_type ON user_databases(type);
+CREATE INDEX IF NOT EXISTS idx_user_databases_is_active ON user_databases(is_active);
+
+-- Verify the schema is complete
+SELECT column_name, data_type, is_nullable, column_default 
+FROM information_schema.columns 
+WHERE table_name = 'user_databases' 
 AND table_schema = 'public'
 ORDER BY ordinal_position;`;
 }

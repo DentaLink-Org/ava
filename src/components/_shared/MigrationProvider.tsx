@@ -27,7 +27,7 @@ export function MigrationProvider({ children }: { children: React.ReactNode }) {
         const nativeData = await nativeResponse.json();
         
         // If schema needs migration, prioritize that
-        if (nativeData.needsMigration) {
+        if (!nativeData.success) {
           setMigrationStatus({
             pendingCount: 1, // Show that there's a schema issue
             loading: false

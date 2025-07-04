@@ -162,7 +162,7 @@ export class FeaturesAPI {
     } catch (error) {
       console.error('Error creating feature:', error);
       return {
-        data: null as any,
+        data: null,
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error occurred'
       };
@@ -199,7 +199,7 @@ export class FeaturesAPI {
     } catch (error) {
       console.error('Error updating feature:', error);
       return {
-        data: null as any,
+        data: null,
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error occurred'
       };
@@ -301,7 +301,7 @@ export class FeaturesAPI {
     } catch (error) {
       console.error('Error fetching feature stats:', error);
       return {
-        data: null as any,
+        data: null,
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error occurred'
       };
