@@ -386,6 +386,95 @@ components:
       onTaskDelete: "console.log"
       onTaskUnlink: "console.log"
 
+  # Phase 2 Enhanced Visualization Components
+  - id: "project-roadmap"
+    type: "ProjectRoadmap"
+    group: "milestones"
+    position:
+      col: 1
+      row: 10
+      span: 8
+    props:
+      projectId: "project-1"
+      timeRange: "quarter"
+      viewMode: "timeline"
+      enableExport: true
+      enableZoom: true
+      enableFiltering: true
+
+  - id: "milestone-calendar"
+    type: "MilestoneCalendar"
+    group: "milestones"
+    position:
+      col: 1
+      row: 11
+      span: 8
+    props:
+      projectId: "project-1"
+      viewMode: "month"
+      showWeekends: true
+      enableDragDrop: true
+      enableMilestoneCreate: true
+      enableMilestoneEdit: true
+      enableExport: true
+
+  - id: "milestone-progress-report"
+    type: "MilestoneProgressReport"
+    group: "milestones"
+    position:
+      col: 1
+      row: 12
+      span: 8
+    props:
+      projectId: "project-1"
+      timeRange: "30d"
+      showHistoricalData: true
+      enableExport: true
+      enableRealtime: true
+      reportType: "detailed"
+      comparisonMode: "previous_period"
+
+  - id: "project-health-dashboard"
+    type: "ProjectHealthDashboard"
+    group: "milestones"
+    position:
+      col: 1
+      row: 13
+      span: 8
+    props:
+      projectId: "project-1"
+      showAlerts: true
+      showTrends: true
+      showTeamMetrics: true
+      showBudgetMetrics: true
+      enableRealtime: true
+      enableNotifications: true
+      alertThresholds:
+        riskScore: 70
+        velocityMin: 0.5
+        budgetThreshold: 90
+
+  - id: "milestone-navigation-sidebar"
+    type: "MilestoneNavigationSidebar"
+    group: "milestones"
+    position:
+      col: 1
+      row: 14
+      span: 4
+    props:
+      projectId: "project-1"
+      showSearch: true
+      showFilters: true
+      showFavorites: true
+      showRecentActivity: true
+      enableDragDrop: true
+      enableQuickActions: true
+      collapsible: false
+      defaultExpanded: true
+      groupBy: "status"
+      sortBy: "dueDate"
+      sortOrder: "asc"
+
 data:
   sources:
     - name: "orders"
