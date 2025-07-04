@@ -330,6 +330,7 @@ export async function GET() {
         .eq('name', testRecord.name);
       
       return NextResponse.json({
+        success: true,
         schemaStatus: 'complete',
         message: 'All required columns exist',
         needsMigration: false
