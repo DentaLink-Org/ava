@@ -42,12 +42,12 @@ import type {
   TaskRisk,
   TaskTemplate,
   TaskDependency,
-  DependencyType,
   TaskHistory,
   TaskComment,
   TaskAttachment,
   TaskTimeEntry
 } from '../../tasks/types';
+import { DependencyType } from '../../tasks/types';
 
 interface TaskEditModalProps {
   isOpen: boolean;
@@ -379,7 +379,7 @@ export const TaskEditModal: React.FC<TaskEditModalProps> = ({
           id: `temp-${Date.now()}`,
           taskId: task?.id || '',
           dependsOnId: '',
-          dependencyType: 'finish_to_start',
+          dependencyType: DependencyType.FINISH_TO_START,
           lagHours: 0,
           isBlocking: true,
           createdAt: new Date().toISOString(),

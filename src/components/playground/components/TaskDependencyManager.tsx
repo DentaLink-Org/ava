@@ -33,11 +33,11 @@ import type {
   Project, 
   TeamMember, 
   TaskDependency, 
-  TaskDependencyType,
   TaskPriority,
   TaskComplexity,
   UpdateTaskData
 } from '../../tasks/types';
+import { DependencyType } from '../../tasks/types';
 
 interface TaskDependencyManagerProps {
   tasks: Task[];
@@ -77,12 +77,12 @@ interface DependencyEdge {
   id: string;
   source: string;
   target: string;
-  type: TaskDependencyType;
+  dependencyType: DependencyType;
   critical?: boolean;
 }
 
 interface DependencyFilters {
-  type?: TaskDependencyType;
+  type?: DependencyType;
   priority?: TaskPriority;
   project?: string;
   showBlocked?: boolean;
@@ -156,26 +156,26 @@ export const TaskDependencyManager: React.FC<TaskDependencyManagerProps> = ({
 
     // Build nodes
     filteredTasks.forEach(task => {
-      const taskDependencies = dependencies.filter(dep => dep.dependentTaskId === task.id);
-      const taskDependents = dependencies.filter(dep => dep.prerequisiteTaskId === task.id);
+      const taskDependencies = dependencies.filter(dep => dep.taskId === task.id);
+      const taskDependents = dependencies.filter(dep => dep.dependsOnId === task.id);
 
       nodes.push({
         id: task.id,
         task,
         level: 0, // Will be calculated later
-        dependencies: taskDependencies.map(dep => dep.prerequisiteTaskId),
-        dependents: taskDependents.map(dep => dep.dependentTaskId)
+        dependencies: taskDependencies.map(dep => dep.dependsOnId),
+        dependents: taskDependents.map(dep => dep.taskId)
       });
     });
 
     // Build edges
     dependencies.forEach(dep => {
-      if (taskMap.has(dep.prerequisiteTaskId) && taskMap.has(dep.dependentTaskId)) {
+      if (taskMap.has(dep.dependsOnId) && taskMap.has(dep.taskId)) {
         edges.push({
           id: dep.id,
-          source: dep.prerequisiteTaskId,
-          target: dep.dependentTaskId,
-          type: dep.type
+          source: dep.dependsOnId,
+          target: dep.taskId,
+          dependencyType: dep.dependencyType
         });
       }
     });
@@ -296,7 +296,7 @@ export const TaskDependencyManager: React.FC<TaskDependencyManagerProps> = ({
   }, [dependencyGraph, enableCriticalPath]);
 
   // Handle dependency creation
-  const handleCreateDependency = useCallback(async (prerequisiteId: string, dependentId: string, type: TaskDependencyType = 'finish_to_start') => {
+  const handleCreateDependency = useCallback(async (prerequisiteId: string, dependentId: string, type: DependencyType = DependencyType.FINISH_TO_START) => {
     if (!onDependencyCreate) return;
 
     // Check for circular dependency
@@ -328,9 +328,11 @@ export const TaskDependencyManager: React.FC<TaskDependencyManagerProps> = ({
 
     try {
       await onDependencyCreate({
-        prerequisiteTaskId: prerequisiteId,
-        dependentTaskId: dependentId,
-        type,
+        dependsOnId: prerequisiteId,
+        taskId: dependentId,
+        dependencyType: type,
+        lagHours: 0,
+        isBlocking: true,
         createdAt: new Date().toISOString()
       });
     } catch (error) {
@@ -650,8 +652,8 @@ export const TaskDependencyManager: React.FC<TaskDependencyManagerProps> = ({
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {dependencies.map(dep => {
-                  const prerequisiteTask = tasks.find(t => t.id === dep.prerequisiteTaskId);
-                  const dependentTask = tasks.find(t => t.id === dep.dependentTaskId);
+                  const prerequisiteTask = tasks.find(t => t.id === dep.dependsOnId);
+                  const dependentTask = tasks.find(t => t.id === dep.taskId);
                   
                   if (!prerequisiteTask || !dependentTask) return null;
 
@@ -669,7 +671,7 @@ export const TaskDependencyManager: React.FC<TaskDependencyManagerProps> = ({
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className="inline-flex px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
-                          {dep.type.replace('_', ' ')}
+                          {dep.dependencyType.replace('_', ' ')}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -685,7 +687,7 @@ export const TaskDependencyManager: React.FC<TaskDependencyManagerProps> = ({
                           <span className="text-sm text-gray-600">
                             {typeof prerequisiteTask.status === 'string' ? 
                               prerequisiteTask.status : 
-                              prerequisiteTask.status.label}
+                              prerequisiteTask.status.name}
                           </span>
                         </div>
                       </td>

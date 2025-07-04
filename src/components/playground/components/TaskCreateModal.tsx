@@ -28,9 +28,9 @@ import type {
   TaskStatus, 
   TaskPriority,
   TaskTemplate,
-  TaskDependency,
-  DependencyType
+  TaskDependency
 } from '../../tasks/types';
+import { DependencyType } from '../../tasks/types';
 import { 
   TaskComplexity,
   TaskEffort,
@@ -305,9 +305,9 @@ export const TaskCreateModal: React.FC<TaskCreateModalProps> = ({
       priority: templateData.priority || template.defaultPriority,
       estimatedHours: template.defaultEstimatedHours || 0,
       tags: template.defaultTags || [],
-      effortLevel: templateData.effortLevel || 'moderate',
-      complexity: templateData.complexity || 'moderate',
-      riskLevel: templateData.riskLevel || 'low',
+      effortLevel: templateData.effortLevel || TaskEffort.MODERATE,
+      complexity: templateData.complexity || TaskComplexity.MODERATE,
+      riskLevel: templateData.riskLevel || TaskRisk.LOW,
       storyPoints: templateData.storyPoints || 0,
       assigneeId: template.defaultAssigneeId || '',
       projectId: template.defaultProjectId || prev.projectId,
@@ -348,7 +348,7 @@ export const TaskCreateModal: React.FC<TaskCreateModalProps> = ({
           id: `temp-${Date.now()}`,
           taskId: '',
           dependsOnId: '',
-          dependencyType: 'finish_to_start',
+          dependencyType: DependencyType.FINISH_TO_START,
           lagHours: 0,
           isBlocking: true,
           createdAt: new Date().toISOString(),
