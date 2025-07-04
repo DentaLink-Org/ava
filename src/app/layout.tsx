@@ -11,6 +11,7 @@ import '../components/databases/styles.css';
 import '../components/tasks/styles.css';
 import '../components/themes/styles.css';
 import '../components/_shared/components/ThemeSelector.css';
+import { MigrationProvider } from '../components/_shared/MigrationProvider';
 
 export const metadata: Metadata = {
   title: 'Claude Admin Dashboard',
@@ -30,7 +31,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
       </head>
       <body>
         {/* Minimal root layout - pages handle their own layout completely */}
-        {children}
+        <MigrationProvider>
+          {children}
+        </MigrationProvider>
       </body>
     </html>
   );
