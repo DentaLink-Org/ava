@@ -316,6 +316,8 @@ export interface UpdateMilestoneData {
   assignedTo?: string[];
   metadata?: Partial<MilestoneMetadata>;
   isArchived?: boolean;
+  completedAt?: string;
+  progress?: number;
 }
 
 export interface CreateDependencyData {
