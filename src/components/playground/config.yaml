@@ -484,6 +484,14 @@ components:
       row: 14
       span: 4
     props:
+      templates: []
+      categories: 
+        - id: "web"
+          name: "Web Development"
+          color: "#3b82f6"
+        - id: "mobile"
+          name: "Mobile Apps"
+          color: "#10b981"
       enableCreate: true
       enableEdit: true
       enableDelete: true
@@ -494,6 +502,11 @@ components:
       viewMode: "grid"
       sortBy: "name"
       sortOrder: "asc"
+      onTemplateCreate: "console.log"
+      onTemplateEdit: "console.log"
+      onTemplateDelete: "console.log"
+      onTemplateExport: "console.log"
+      onTemplateImport: "console.log"
 
   - id: "milestone-approval-workflow"
     type: "MilestoneApprovalWorkflow"
@@ -505,6 +518,21 @@ components:
     props:
       milestoneId: "milestone-1"
       projectId: "project-1"
+      stakeholders:
+        - id: "user-1"
+          name: "John Doe"
+          email: "john@example.com"
+          role: "admin"
+          isActive: true
+          joinedAt: "2025-01-01T00:00:00Z"
+        - id: "user-2"
+          name: "Jane Smith"
+          email: "jane@example.com"
+          role: "member"
+          isActive: true
+          joinedAt: "2025-01-01T00:00:00Z"
+      approvalStages: []
+      currentStage: 0
       enableNotifications: true
       enableEscalation: true
       enableDelegation: true
@@ -513,6 +541,10 @@ components:
       showProgressBar: true
       showStakeholders: true
       autoAdvance: false
+      onApprove: "console.log"
+      onReject: "console.log"
+      onDelegate: "console.log"
+      onEscalate: "console.log"
 
   - id: "project-phase-manager"
     type: "ProjectPhaseManager"
@@ -523,6 +555,21 @@ components:
       span: 8
     props:
       projectId: "project-1"
+      phases: []
+      milestones: []
+      teamMembers:
+        - id: "user-1"
+          name: "John Doe"
+          email: "john@example.com"
+          role: "admin"
+          isActive: true
+          joinedAt: "2025-01-01T00:00:00Z"
+        - id: "user-2"
+          name: "Jane Smith"
+          email: "jane@example.com"
+          role: "member"
+          isActive: true
+          joinedAt: "2025-01-01T00:00:00Z"
       enablePhaseGates: true
       enableDependencies: true
       enableProgressTracking: true
@@ -533,6 +580,9 @@ components:
       showResourceAllocation: true
       showBudgetTracking: true
       viewMode: "timeline"
+      onPhaseCreate: "console.log"
+      onPhaseUpdate: "console.log"
+      onPhaseDelete: "console.log"
 
   - id: "milestone-comment-system"
     type: "MilestoneCommentSystem"
@@ -544,6 +594,21 @@ components:
     props:
       milestoneId: "milestone-1"
       projectId: "project-1"
+      comments: []
+      teamMembers:
+        - id: "user-1"
+          name: "John Doe"
+          email: "john@example.com"
+          role: "admin"
+          isActive: true
+          joinedAt: "2025-01-01T00:00:00Z"
+        - id: "user-2"
+          name: "Jane Smith"
+          email: "jane@example.com"
+          role: "member"
+          isActive: true
+          joinedAt: "2025-01-01T00:00:00Z"
+      currentUserId: "user-1"
       enableMentions: true
       enableRichText: true
       enableAttachments: true
@@ -554,6 +619,10 @@ components:
       showTimestamps: true
       showUserAvatars: true
       sortOrder: "newest"
+      onCommentCreate: "console.log"
+      onCommentUpdate: "console.log"
+      onCommentDelete: "console.log"
+      onReactionAdd: "console.log"
 
   - id: "milestone-timeline-editor"
     type: "MilestoneTimelineEditor"
@@ -564,6 +633,20 @@ components:
       span: 4
     props:
       projectId: "project-1"
+      milestones: []
+      teamMembers:
+        - id: "user-1"
+          name: "John Doe"
+          email: "john@example.com"
+          role: "admin"
+          isActive: true
+          joinedAt: "2025-01-01T00:00:00Z"
+        - id: "user-2"
+          name: "Jane Smith"
+          email: "jane@example.com"
+          role: "member"
+          isActive: true
+          joinedAt: "2025-01-01T00:00:00Z"
       enableConstraints: true
       enableDependencies: true
       enableGanttView: true
@@ -575,6 +658,9 @@ components:
       showResourceAllocation: true
       viewMode: "gantt"
       timeScale: "days"
+      onMilestoneUpdate: "console.log"
+      onDependencyCreate: "console.log"
+      onDependencyDelete: "console.log"
 
   - id: "project-risk-tracker"
     type: "ProjectRiskTracker"
@@ -585,6 +671,21 @@ components:
       span: 8
     props:
       projectId: "project-1"
+      risks: []
+      milestones: []
+      teamMembers:
+        - id: "user-1"
+          name: "John Doe"
+          email: "john@example.com"
+          role: "admin"
+          isActive: true
+          joinedAt: "2025-01-01T00:00:00Z"
+        - id: "user-2"
+          name: "Jane Smith"
+          email: "jane@example.com"
+          role: "member"
+          isActive: true
+          joinedAt: "2025-01-01T00:00:00Z"
       enableRiskAssessment: true
       enableMitigation: true
       enableMonitoring: true
@@ -595,6 +696,10 @@ components:
       showTrends: true
       showActions: true
       viewMode: "dashboard"
+      onRiskCreate: "console.log"
+      onRiskUpdate: "console.log"
+      onRiskDelete: "console.log"
+      onMitigationCreate: "console.log"
 
   - id: "milestone-notifications"
     type: "MilestoneNotifications"
@@ -606,6 +711,14 @@ components:
     props:
       userId: "user-1"
       projectId: "project-1"
+      notifications: []
+      preferences: {
+        email: true,
+        sms: false,
+        slack: false,
+        webhooks: false,
+        realtime: true
+      }
       enableRealtime: true
       enableEmail: true
       enableSMS: false
@@ -617,6 +730,9 @@ components:
       maxNotifications: 50
       autoMarkRead: true
       groupSimilar: true
+      onNotificationRead: "console.log"
+      onPreferenceUpdate: "console.log"
+      onNotificationDelete: "console.log"
 
   - id: "milestone-status-updater"
     type: "MilestoneStatusUpdater"
@@ -627,6 +743,21 @@ components:
       span: 4
     props:
       projectId: "project-1"
+      milestones: []
+      selectedMilestones: []
+      teamMembers:
+        - id: "user-1"
+          name: "John Doe"
+          email: "john@example.com"
+          role: "admin"
+          isActive: true
+          joinedAt: "2025-01-01T00:00:00Z"
+        - id: "user-2"
+          name: "Jane Smith"
+          email: "jane@example.com"
+          role: "member"
+          isActive: true
+          joinedAt: "2025-01-01T00:00:00Z"
       enableBulkUpdate: true
       enableValidation: true
       enableSuggestions: true
@@ -637,6 +768,9 @@ components:
       showDependencies: true
       showImpact: true
       confirmChanges: true
+      onStatusUpdate: "console.log"
+      onBulkUpdate: "console.log"
+      onValidationError: "console.log"
 
   - id: "team-milestone-assignment"
     type: "TeamMilestoneAssignment"
@@ -647,6 +781,23 @@ components:
       span: 8
     props:
       projectId: "project-1"
+      milestones: []
+      teamMembers:
+        - id: "user-1"
+          name: "John Doe"
+          email: "john@example.com"
+          role: "admin"
+          isActive: true
+          joinedAt: "2025-01-01T00:00:00Z"
+        - id: "user-2"
+          name: "Jane Smith"
+          email: "jane@example.com"
+          role: "member"
+          isActive: true
+          joinedAt: "2025-01-01T00:00:00Z"
+      assignments: []
+      skillsMatrix: []
+      workloadData: []
       enableSkillsMatching: true
       enableWorkloadAnalysis: true
       enableConflictDetection: true
@@ -657,6 +808,9 @@ components:
       showWorkloadChart: true
       showAvailability: true
       viewMode: "grid"
+      onAssignmentUpdate: "console.log"
+      onBulkAssign: "console.log"
+      onRecommendationApply: "console.log"
 
   - id: "milestone-search-filter"
     type: "MilestoneSearchFilter"
@@ -667,6 +821,52 @@ components:
       span: 4
     props:
       projectId: "project-1"
+      milestones: []
+      projects:
+        - id: "project-1"
+          name: "Website Redesign"
+          description: "Complete overhaul of company website"
+          color: "#3b82f6"
+          ownerId: "user-1"
+          createdAt: "2025-01-01T00:00:00Z"
+          updatedAt: "2025-07-04T00:00:00Z"
+          isArchived: false
+          isFavorite: false
+          teamMembers: ["user-1", "user-2"]
+          settings:
+            allowComments: true
+            allowAttachments: true
+            requireDueDates: false
+            customStatuses: []
+          stats:
+            totalTasks: 0
+            completedTasks: 0
+            overdueTasks: 0
+            activeTasks: 0
+            completionRate: 0
+          milestones: []
+          milestoneCount: 0
+          completedMilestones: 0
+          overdueMilestones: 0
+          activeMilestones: 0
+          milestoneCompletionRate: 0
+      teamMembers:
+        - id: "user-1"
+          name: "John Doe"
+          email: "john@example.com"
+          role: "admin"
+          isActive: true
+          joinedAt: "2025-01-01T00:00:00Z"
+        - id: "user-2"
+          name: "Jane Smith"
+          email: "jane@example.com"
+          role: "member"
+          isActive: true
+          joinedAt: "2025-01-01T00:00:00Z"
+      context:
+        projectId: "project-1"
+        userId: "user-1"
+        teamId: "team-1"
       enableFullTextSearch: true
       enableAdvancedFilters: true
       enableSavedSearches: true
@@ -677,6 +877,9 @@ components:
       showFilterChips: true
       showQuickFilters: true
       maxResults: 100
+      onSearch: "console.log"
+      onFilterChange: "console.log"
+      onSearchSave: "console.log"
 
   - id: "milestone-quick-actions"
     type: "MilestoneQuickActions"
@@ -687,6 +890,9 @@ components:
       span: 4
     props:
       projectId: "project-1"
+      selectedMilestones: []
+      availableActions: []
+      actionHistory: []
       enableBulkOperations: true
       enableKeyboardShortcuts: true
       enableCustomActions: true
@@ -697,6 +903,9 @@ components:
       showResults: true
       maxSelection: 50
       actionTimeout: 30
+      onActionExecute: "console.log"
+      onUndo: "console.log"
+      onSelectionChange: "console.log"
 
   - id: "project-overview-card"
     type: "ProjectOverviewCard"
@@ -706,7 +915,34 @@ components:
       row: 22
       span: 4
     props:
-      projectId: "project-1"
+      project:
+        id: "project-1"
+        name: "Website Redesign"
+        description: "Complete overhaul of company website"
+        color: "#3b82f6"
+        ownerId: "user-1"
+        createdAt: "2025-01-01T00:00:00Z"
+        updatedAt: "2025-07-04T00:00:00Z"
+        isArchived: false
+        isFavorite: false
+        teamMembers: ["user-1", "user-2"]
+        settings:
+          allowComments: true
+          allowAttachments: true
+          requireDueDates: false
+          customStatuses: []
+        stats:
+          totalTasks: 25
+          completedTasks: 8
+          overdueTasks: 2
+          activeTasks: 15
+          completionRate: 32
+        milestones: []
+        milestoneCount: 3
+        completedMilestones: 1
+        overdueMilestones: 0
+        activeMilestones: 2
+        milestoneCompletionRate: 33
       showMetrics: true
       showProgress: true
       showTeam: true
@@ -717,6 +953,8 @@ components:
       enableRealtime: true
       enableNotifications: true
       compact: false
+      onStatusUpdate: "console.log"
+      onFavoriteToggle: "console.log"
 
   - id: "milestone-event-manager"
     type: "MilestoneEventManager"
@@ -727,6 +965,10 @@ components:
       span: 4
     props:
       projectId: "project-1"
+      eventTypes: []
+      subscriptions: []
+      eventHistory: []
+      integrations: []
       enablePublishing: true
       enableSubscriptions: true
       enableWebhooks: true
@@ -737,6 +979,10 @@ components:
       showSubscribers: true
       showMetrics: true
       maxEvents: 1000
+      onSubscriptionCreate: "console.log"
+      onSubscriptionUpdate: "console.log"
+      onSubscriptionDelete: "console.log"
+      onEventPublish: "console.log"
 
   - id: "milestone-validation-service"
     type: "MilestoneValidationService"
@@ -747,6 +993,10 @@ components:
       span: 8
     props:
       projectId: "project-1"
+      validationRules: []
+      businessRules: []
+      validationResults: []
+      milestones: []
       enableDataValidation: true
       enableBusinessRules: true
       enableDependencyValidation: true
@@ -757,6 +1007,10 @@ components:
       showRuleEditor: true
       showHistory: true
       autoValidate: true
+      onRuleCreate: "console.log"
+      onRuleUpdate: "console.log"
+      onRuleDelete: "console.log"
+      onValidationRun: "console.log"
 
 data:
   sources:
