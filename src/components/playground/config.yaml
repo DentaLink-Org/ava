@@ -968,12 +968,102 @@ components:
           role: "admin"
           isActive: true
           joinedAt: "2025-01-01T00:00:00Z"
+          skills: []
+          availability:
+            status: "available"
+            capacity: 100
+            hoursPerWeek: 40
+            currentLoad: 75
+            nextAvailable: "2025-07-05T00:00:00Z"
+            unavailableDates: []
+            workingHours:
+              start: "09:00"
+              end: "17:00"
+              timezone: "America/New_York"
+            preferences:
+              maxHoursPerDay: 8
+              preferredProjects: []
+              blackoutDates: []
+          workload:
+            currentHours: 30
+            allocatedHours: 40
+            efficiency: 85
+            burnoutRisk: "low"
+            projects: []
+            tasks: []
+          performance:
+            completionRate: 92
+            qualityScore: 88
+            velocityScore: 90
+            collaborationScore: 95
+            recentProjects: []
+          preferences:
+            workTypes: ["development", "design"]
+            industries: ["tech", "startup"]
+            projectSizes: ["medium", "large"]
+            communicationStyle: "direct"
+            workingStyle: "collaborative"
+          certifications: []
+          experience:
+            totalYears: 5
+            domains: ["web", "mobile"]
+            technologies: ["react", "typescript"]
+            leadership: true
+            mentoring: true
+          timezone: "America/New_York"
+          costPerHour: 75
+          department: "Engineering"
         - id: "user-2"
           name: "Jane Smith"
           email: "jane@example.com"
           role: "member"
           isActive: true
           joinedAt: "2025-01-01T00:00:00Z"
+          skills: []
+          availability:
+            status: "available"
+            capacity: 100
+            hoursPerWeek: 40
+            currentLoad: 60
+            nextAvailable: "2025-07-05T00:00:00Z"
+            unavailableDates: []
+            workingHours:
+              start: "09:00"
+              end: "17:00"
+              timezone: "America/New_York"
+            preferences:
+              maxHoursPerDay: 8
+              preferredProjects: []
+              blackoutDates: []
+          workload:
+            currentHours: 24
+            allocatedHours: 40
+            efficiency: 90
+            burnoutRisk: "low"
+            projects: []
+            tasks: []
+          performance:
+            completionRate: 95
+            qualityScore: 90
+            velocityScore: 88
+            collaborationScore: 92
+            recentProjects: []
+          preferences:
+            workTypes: ["design", "ux"]
+            industries: ["tech", "startup"]
+            projectSizes: ["small", "medium"]
+            communicationStyle: "collaborative"
+            workingStyle: "independent"
+          certifications: []
+          experience:
+            totalYears: 3
+            domains: ["design", "ux"]
+            technologies: ["figma", "adobe"]
+            leadership: false
+            mentoring: false
+          timezone: "America/New_York"
+          costPerHour: 65
+          department: "Design"
       projects:
         - id: "project-1"
           name: "Website Redesign"
