@@ -372,14 +372,12 @@ export interface ProjectMilestonesResponse {
 }
 
 export interface MilestoneStats {
-  totalMilestones: number;
-  completedMilestones: number;
-  overdueMilestones: number;
-  activeMilestones: number;
+  total: number;
+  completed: number;
+  active: number;
+  overdue: number;
+  upcoming: number;
   averageProgress: number;
-  completionRate: number;
-  averageDaysToComplete: number;
-  upcomingDeadlines: Milestone[];
 }
 
 // Real-time Event Types
