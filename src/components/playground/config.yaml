@@ -19,7 +19,7 @@ layout:
         row: 1
         span: 8
       multiSelect: true
-      defaultGroups: ["headers", "navigation", "data", "interactive"]
+      defaultGroups: ["headers", "navigation", "data", "interactive", "milestones"]
 
 # Theme configuration removed - using dynamic database themes instead
 
@@ -40,6 +40,10 @@ componentGroups:
     name: "Interactive Components"
     description: "Chat, forms, and interactive widgets"
     color: "#F59E0B"
+  milestones:
+    name: "Milestone Management"
+    description: "Milestone tracking and project management"
+    color: "#EF4444"
 
 components:
   # Group Selector Component
@@ -50,8 +54,8 @@ components:
       row: 1
       span: 8
     props:
-      groups: ["headers", "navigation", "data", "interactive"]
-      defaultSelected: ["headers", "navigation", "data", "interactive"]
+      groups: ["headers", "navigation", "data", "interactive", "milestones"]
+      defaultSelected: ["headers", "navigation", "data", "interactive", "milestones"]
 
   # Headers & Welcome Components
   - id: "welcome-header"
@@ -143,6 +147,37 @@ components:
     props:
       pageId: "playground"
       className: "playground-issue-tracker"
+
+  # Milestone Management Components
+  - id: "milestone-board"
+    type: "MilestoneBoard"
+    group: "milestones"
+    position:
+      col: 1
+      row: 6
+      span: 8
+    props:
+      projectId: "project-1"
+
+  - id: "milestone-progress-tracker"
+    type: "MilestoneProgressTracker"
+    group: "milestones"
+    position:
+      col: 1
+      row: 7
+      span: 4
+    props:
+      milestoneId: "milestone-1"
+
+  - id: "milestone-dependency-manager"
+    type: "MilestoneDependencyManager"
+    group: "milestones"
+    position:
+      col: 5
+      row: 7
+      span: 4
+    props:
+      projectId: "project-1"
 
 data:
   sources:
