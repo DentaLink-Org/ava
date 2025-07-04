@@ -440,7 +440,7 @@ export interface UseMilestoneDependenciesReturn {
   deleteDependency: (dependencyId: string) => Promise<void>;
   validateDependencies: (dependencies: MilestoneDependency[]) => Promise<ValidationResult>;
   getCriticalPath: (milestoneIds: string[]) => Promise<Milestone[]>;
-  getDependencyGraph: (milestoneId: string) => DependencyGraph;
+  getDependencyGraph: (milestoneId: string) => Promise<DependencyGraph>;
   refetch: () => void;
   checkForCycle: (fromId: string, toId: string) => Promise<boolean>;
   validateCurrentDependencies: () => Promise<ValidationResult>;
