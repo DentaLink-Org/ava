@@ -5,8 +5,7 @@
 SELECT 
     schemaname,
     tablename,
-    rowsecurity,
-    hasrls
+    rowsecurity
 FROM pg_tables 
 WHERE tablename = 'database_schemas';
 

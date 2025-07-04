@@ -99,6 +99,9 @@ export const useRealtimeDatabases = (): UseRealtimeDatabasesResult => {
         size: '0 B',
       };
 
+      // Force immediate refresh to update UI
+      await fetchDatabases();
+
       return { success: true, data: transformedDatabase };
     } catch (err) {
       console.error('Error creating database:', err);
@@ -123,6 +126,9 @@ export const useRealtimeDatabases = (): UseRealtimeDatabasesResult => {
         console.error('Error deleting database:', deleteError);
         return { success: false, error: deleteError.message };
       }
+
+      // Force immediate refresh to update UI
+      await fetchDatabases();
 
       return { success: true };
     } catch (err) {
