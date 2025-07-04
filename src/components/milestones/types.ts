@@ -264,6 +264,7 @@ export interface MilestoneFilter {
   search?: string;
   overdue?: boolean;
   completedOnly?: boolean;
+  includeArchived?: boolean;
 }
 
 export interface MilestoneSort {
