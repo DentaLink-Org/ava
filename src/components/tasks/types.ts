@@ -20,6 +20,7 @@ export interface Task {
   position?: number; // For ordering within status columns
   estimatedHours?: number;
   actualHours?: number;
+  milestoneId?: string; // Link to milestone
 }
 
 export interface Project {
@@ -341,6 +342,7 @@ export interface TaskFormData {
   dueDate: string;
   tags: string[];
   estimatedHours: number;
+  milestoneId: string; // Milestone selection
 }
 
 export interface ProjectFormData {

@@ -11,7 +11,10 @@ import {
   TasksLinkCard,
   QuickStartCard,
   KPICards,
-  GroupSelector
+  GroupSelector,
+  MilestoneBoard,
+  MilestoneProgressTracker,
+  MilestoneDependencyManager
 } from './components';
 import { ChatBot, IssueTracker } from '../_shared/components';
 
@@ -32,7 +35,12 @@ export const registerPlaygroundComponents = () => {
   componentRegistry.register(PLAYGROUND_PAGE_ID, 'ChatBot', ChatBot as any);
   componentRegistry.register(PLAYGROUND_PAGE_ID, 'IssueTracker', IssueTracker as any);
   
-  console.log('Playground components registered successfully');
+  // Register milestone components
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneBoard', MilestoneBoard as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneProgressTracker', MilestoneProgressTracker as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneDependencyManager', MilestoneDependencyManager as any);
+  
+  console.log('Playground components registered successfully (including milestone components)');
 };
 
 /**

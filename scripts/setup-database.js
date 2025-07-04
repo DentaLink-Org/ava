@@ -87,6 +87,23 @@ async function executeSQLFile(filePath) {
 }
 
 /**
+ * Setup milestone database schema
+ */
+async function setupMilestones() {
+  console.log('🎯 Setting up milestone management system...');
+  
+  const milestoneSqlPath = path.join(__dirname, '..', 'database', 'schema', 'milestones.sql');
+  
+  try {
+    await executeSQLFile(milestoneSqlPath);
+    console.log('✅ Milestone schema setup completed');
+  } catch (error) {
+    console.error('❌ Failed to setup milestone schema:', error.message);
+    throw error;
+  }
+}
+
+/**
  * Alternative approach using direct SQL execution
  */
 async function executeSQL(sql, description = '') {
@@ -443,6 +460,36 @@ async function verifySetup() {
     if (pagesError) throw pagesError;
     console.log(`✅ Found ${pages.length} pages`);
     
+    // Check milestone tables
+    try {
+      const { data: milestones, error: milestonesError } = await supabase
+        .from('milestones')
+        .select('id, title, status')
+        .limit(5);
+      
+      if (milestonesError) throw milestonesError;
+      console.log(`✅ Found ${milestones.length} milestones`);
+      
+      const { data: projects, error: projectsError } = await supabase
+        .from('projects')
+        .select('id, name')
+        .limit(5);
+      
+      if (projectsError) throw projectsError;
+      console.log(`✅ Found ${projects.length} projects`);
+      
+      const { data: users, error: usersError } = await supabase
+        .from('users')
+        .select('id, name')
+        .limit(5);
+      
+      if (usersError) throw usersError;
+      console.log(`✅ Found ${users.length} users`);
+      
+    } catch (milestoneError) {
+      console.log(`⚠️  Milestone tables not found (this is normal if milestones haven't been set up yet)`);
+    }
+    
     return true;
   } catch (error) {
     console.error(`❌ Verification failed: ${error.message}`);
@@ -460,6 +507,7 @@ async function setupDatabase() {
     await createTables();
     await enableRLS();
     await insertSampleData();
+    await setupMilestones();
     
     const isVerified = await verifySetup();
     
@@ -469,6 +517,7 @@ async function setupDatabase() {
       console.log('');
       console.log('📊 Summary:');
       console.log('  • Database schema created');
+      console.log('  • Milestone management system setup');
       console.log('  • Row Level Security enabled');
       console.log('  • Sample data inserted');
       console.log('  • Setup verified');
@@ -478,6 +527,7 @@ async function setupDatabase() {
       console.log('  2. Navigate to /themes to test theme switching');
       console.log('  3. Check /tasks to see sample tasks');
       console.log('  4. Visit /databases to manage data');
+      console.log('  5. Explore milestone management features');
       console.log('');
     } else {
       console.log('❌ Setup completed but verification failed');
@@ -517,6 +567,15 @@ switch (command) {
   case undefined:
     setupDatabase();
     break;
+  case 'milestones':
+    setupMilestones().then(() => {
+      console.log('🎯 Milestone setup completed!');
+      process.exit(0);
+    }).catch(error => {
+      console.error('❌ Milestone setup failed:', error.message);
+      process.exit(1);
+    });
+    break;
   case 'test':
     testConnection().then(success => {
       process.exit(success ? 0 : 1);
@@ -528,9 +587,10 @@ switch (command) {
     });
     break;
   default:
-    console.log('Usage: node setup-database.js [setup|test|verify]');
-    console.log('  setup  - Create database schema and insert sample data (default)');
-    console.log('  test   - Test connection to Supabase');
-    console.log('  verify - Verify database setup');
+    console.log('Usage: node setup-database.js [setup|milestones|test|verify]');
+    console.log('  setup      - Create database schema and insert sample data (default)');
+    console.log('  milestones - Setup milestone management system only');
+    console.log('  test       - Test connection to Supabase');
+    console.log('  verify     - Verify database setup');
     process.exit(1);
 }
