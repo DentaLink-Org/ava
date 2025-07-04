@@ -27,7 +27,7 @@ import {
   Download,
   Upload,
   Shuffle,
-  Balance,
+  Scale,
   Award,
   Star,
   Loader,
@@ -360,7 +360,7 @@ export const TaskAssignmentManager: React.FC<TaskAssignmentManagerProps> = ({
               disabled={loading}
               className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50"
             >
-              <Balance className="w-4 h-4 mr-2" />
+              <Scale className="w-4 h-4 mr-2" />
               Balance Workload
             </button>
           )}
@@ -688,7 +688,7 @@ export const TaskAssignmentManager: React.FC<TaskAssignmentManagerProps> = ({
                       </div>
                       
                       <div className="ml-6 space-y-2">
-                        {recommendations.map((rec, index) => (
+                        {recommendations.filter(rec => rec !== null).map((rec, index) => (
                           <button
                             key={rec.member.id}
                             onClick={() => handleAssignTask(task.id, rec.member.id, rec.reasons.join(', '))}

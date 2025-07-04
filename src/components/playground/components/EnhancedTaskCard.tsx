@@ -399,10 +399,14 @@ export const EnhancedTaskCard: React.FC<EnhancedTaskCardProps> = ({
             {/* Warning indicators */}
             <div className="flex items-center space-x-1">
               {isBlocked && (
-                <AlertTriangle className="w-4 h-4 text-red-500" title={task.blockedReason} />
+                <div title={task.blockedReason}>
+                  <AlertTriangle className="w-4 h-4 text-red-500" />
+                </div>
               )}
               {isOverdue && (
-                <Clock className="w-4 h-4 text-orange-500" title="Overdue" />
+                <div title="Overdue">
+                  <Clock className="w-4 h-4 text-orange-500" />
+                </div>
               )}
             </div>
           </div>

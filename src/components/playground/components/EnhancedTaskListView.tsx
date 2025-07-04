@@ -36,7 +36,8 @@ import {
   Timer,
   TrendingUp,
   Users,
-  Plus
+  Plus,
+  X
 } from 'lucide-react';
 import type { 
   Task, 
@@ -166,8 +167,10 @@ export const EnhancedTaskListView: React.FC<EnhancedTaskListViewProps> = ({
     }
     if (filter.status) {
       const statusId = typeof filter.status === 'string' ? filter.status : filter.status.id;
-      const taskStatusId = typeof task.status === 'string' ? task.status : task.status.id;
-      filtered = filtered.filter(task => taskStatusId === statusId);
+      filtered = filtered.filter(task => {
+        const taskStatusId = typeof task.status === 'string' ? task.status : task.status.id;
+        return taskStatusId === statusId;
+      });
     }
     if (filter.priority) {
       filtered = filtered.filter(task => task.priority === filter.priority);
@@ -235,12 +238,12 @@ export const EnhancedTaskListView: React.FC<EnhancedTaskListViewProps> = ({
         let bValue: any = b[sort.field as keyof Task];
         
         // Handle special sorting fields
-        if (sort.field === 'assignee') {
+        if (sort.field === 'assignee' as any) {
           const aAssignee = teamMembers.find(m => m.id === a.assigneeId);
           const bAssignee = teamMembers.find(m => m.id === b.assigneeId);
           aValue = aAssignee?.name || '';
           bValue = bAssignee?.name || '';
-        } else if (sort.field === 'project') {
+        } else if (sort.field === 'project' as any) {
           const aProject = projects.find(p => p.id === a.projectId);
           const bProject = projects.find(p => p.id === b.projectId);
           aValue = aProject?.name || '';

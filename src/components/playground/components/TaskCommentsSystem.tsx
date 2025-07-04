@@ -9,7 +9,6 @@ import {
   Heart,
   Flag,
   Share2,
-  At,
   Hash,
   Bold,
   Italic,
@@ -45,10 +44,21 @@ import {
 import type { 
   Task, 
   TaskComment, 
-  TeamMember,
-  TaskCommentThread,
-  TaskCommentReaction
+  TeamMember
 } from '../../tasks/types';
+
+// Define missing types locally
+interface TaskCommentThread {
+  id: string;
+  rootComment: TaskComment;
+  replies: TaskComment[];
+}
+
+interface TaskCommentReaction {
+  emoji: string;
+  count: number;
+  users: string[];
+}
 
 interface TaskCommentsSystemProps {
   task: Task;
