@@ -113,7 +113,7 @@ export function MigrationDebug() {
         borderBottom: '2px solid #ff9800'
       }}>
         <div style={{ marginBottom: '8px' }}>
-          🚨 <strong>Database Schema Issue!</strong> {debugInfo.message || 'Schema validation failed'}
+          🚨 <strong>Database Schema Issue!</strong> Missing column: {debugInfo.missingColumn || 'unknown'}
         </div>
         <button 
           onClick={runMigrations}
@@ -127,10 +127,10 @@ export function MigrationDebug() {
             marginRight: '8px'
           }}
         >
-          Check Schema
+          Get SQL Fix
         </button>
         <span style={{ fontSize: '12px', color: '#666' }}>
-          This will fix the "category column not found" error
+          Click to copy SQL commands to fix all missing columns
         </span>
       </div>
     );
