@@ -126,7 +126,7 @@ export interface FeaturesTableSchema {
 
 // API response types
 export interface FeatureApiResponse<T> {
-  data: T;
+  data: T | null;
   success: boolean;
   message?: string;
   error?: string;

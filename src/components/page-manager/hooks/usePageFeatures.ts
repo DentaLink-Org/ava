@@ -68,10 +68,11 @@ export const usePageFeatures = (options: UsePageFeaturesOptions = {}): UsePageFe
 
       const response = await FeaturesAPI.getFeatures(appliedFilter);
       
-      if (response.success) {
+      if (response.success && response.data) {
         setFeatures(response.data);
       } else {
         setError(response.error || 'Failed to load features');
+        setFeatures([]);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error occurred');
@@ -86,10 +87,11 @@ export const usePageFeatures = (options: UsePageFeaturesOptions = {}): UsePageFe
     try {
       const response = await FeaturesAPI.getFeatureStats(pageId);
       
-      if (response.success) {
+      if (response.success && response.data) {
         setStats(response.data);
       } else {
         console.error('Failed to load feature stats:', response.error);
+        setStats(null);
       }
     } catch (err) {
       console.error('Error loading feature stats:', err);
