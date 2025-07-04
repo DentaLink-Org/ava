@@ -11,7 +11,14 @@ export async function POST(request: NextRequest) {
     
     if (!supabaseUrl || !supabaseServiceKey) {
       return NextResponse.json(
-        { error: 'Missing Supabase configuration' },
+        { 
+          error: 'Missing Supabase configuration',
+          details: {
+            hasUrl: !!supabaseUrl,
+            hasServiceKey: !!supabaseServiceKey,
+            message: 'Please add SUPABASE_SERVICE_ROLE_KEY to Vercel environment variables'
+          }
+        },
         { status: 500 }
       );
     }
