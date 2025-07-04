@@ -35,16 +35,16 @@ export function MigrationDebug() {
 
   async function runMigrations() {
     try {
-      console.log('🚀 Running migrations...');
-      const response = await fetch('/api/migrate', { method: 'POST' });
+      console.log('🚀 Running simple schema migration...');
+      const response = await fetch('/api/migrate-simple', { method: 'POST' });
       const result = await response.json();
       console.log('✅ Migration result:', result);
       
-      if (response.ok) {
-        alert('Migrations completed! Refreshing page...');
+      if (response.ok && result.success) {
+        alert(`Migration completed! ${result.message}\nRefreshing page...`);
         window.location.reload();
       } else {
-        alert('Migration failed: ' + (result.error || 'Unknown error'));
+        alert('Migration failed: ' + (result.error || result.message || 'Unknown error'));
       }
     } catch (error) {
       console.error('❌ Migration execution failed:', error);

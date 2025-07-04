@@ -70,15 +70,39 @@ export async function POST(request: NextRequest) {
           .map(s => s.trim())
           .filter(s => s.length > 0 && !s.startsWith('--'));
         
-        // Execute each statement
+        // Execute SQL statements using Supabase's SQL execution
         for (const statement of statements) {
           if (statement.trim()) {
-            const { error } = await supabase.rpc('query', { 
-              query: statement 
-            });
-            
-            if (error) {
-              throw new Error(`SQL Error: ${error.message}`);
+            try {
+              // Use Supabase's built-in SQL execution via REST API
+              const response = await fetch(`${supabaseUrl}/rest/v1/rpc/exec_sql`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${supabaseServiceKey}`,
+                  'apikey': supabaseServiceKey
+                },
+                body: JSON.stringify({ sql: statement })
+              });
+
+              if (!response.ok) {
+                // If exec_sql RPC doesn't exist, try direct SQL execution
+                const response2 = await fetch(`${supabaseUrl}/sql`, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${supabaseServiceKey}`,
+                    'apikey': supabaseServiceKey
+                  },
+                  body: JSON.stringify({ query: statement })
+                });
+
+                if (!response2.ok) {
+                  throw new Error(`Failed to execute SQL: ${statement.substring(0, 50)}...`);
+                }
+              }
+            } catch (sqlError) {
+              throw new Error(`SQL execution failed: ${sqlError instanceof Error ? sqlError.message : 'Unknown error'}`);
             }
           }
         }
