@@ -380,6 +380,14 @@ export interface MilestoneStats {
   averageProgress: number;
 }
 
+export interface ProgressStats {
+  min: number;
+  max: number;
+  average: number;
+  weeklyVelocity: number;
+  totalRecords: number;
+}
+
 // Real-time Event Types
 export interface MilestoneEvent {
   type: 'milestone-created' | 'milestone-updated' | 'milestone-deleted' | 'milestone-completed' | 'progress-updated';
@@ -430,6 +438,13 @@ export interface UseMilestoneProgressReturn {
   getProgressHistory: (milestoneId: string) => MilestoneProgress[];
   getProgressTrend: (milestoneId: string) => ProgressTrend;
   refetch: () => void;
+  calculateFromTasks: (milestoneId: string, completedTasks: number, totalTasks: number) => Promise<void>;
+  trend: ProgressTrend | null;
+  recentProgress: MilestoneProgress[];
+  progressStats: ProgressStats | null;
+  isComplete: boolean;
+  isOverdue: boolean;
+  estimatedCompletion: string;
 }
 
 export interface UseMilestoneDependenciesReturn {
