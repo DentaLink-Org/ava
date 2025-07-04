@@ -68,7 +68,7 @@ export function TaskList({
       filtered = filtered.filter(task => task.assigneeId === filter.assigneeId);
     }
     if (filter.status) {
-      filtered = filtered.filter(task => task.status.id === filter.status);
+      filtered = filtered.filter(task => task.status.id === filter.status!.id);
     }
     if (filter.priority) {
       filtered = filtered.filter(task => task.priority === filter.priority);

@@ -39,7 +39,16 @@ import {
   MilestoneQuickActions,
   ProjectOverviewCard,
   MilestoneEventManager,
-  MilestoneValidationService
+  MilestoneValidationService,
+  EnhancedTaskBoard,
+  EnhancedTaskCard,
+  TaskCreateModal,
+  TaskEditModal,
+  EnhancedTaskListView,
+  TaskProgressTracker,
+  TaskAssignmentManager,
+  TaskDependencyManager,
+  TaskCommentsSystem
 } from './components';
 import { ChatBot, IssueTracker } from '../_shared/components';
 
@@ -94,7 +103,18 @@ export const registerPlaygroundComponents = () => {
   componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneEventManager', MilestoneEventManager as any);
   componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneValidationService', MilestoneValidationService as any);
   
-  console.log('Playground components registered successfully (including all milestone components)');
+  // Register enhanced task management components
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'EnhancedTaskBoard', EnhancedTaskBoard as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'EnhancedTaskCard', EnhancedTaskCard as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'TaskCreateModal', TaskCreateModal as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'TaskEditModal', TaskEditModal as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'EnhancedTaskListView', EnhancedTaskListView as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'TaskProgressTracker', TaskProgressTracker as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'TaskAssignmentManager', TaskAssignmentManager as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'TaskDependencyManager', TaskDependencyManager as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'TaskCommentsSystem', TaskCommentsSystem as any);
+  
+  console.log('Playground components registered successfully (including all milestone and enhanced task components)');
 };
 
 /**

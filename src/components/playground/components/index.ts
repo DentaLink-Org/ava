@@ -46,6 +46,17 @@ export { default as ProjectOverviewCard } from './ProjectOverviewCard';
 export { default as MilestoneEventManager } from './MilestoneEventManager';
 export { default as MilestoneValidationService } from './MilestoneValidationService';
 
+// Enhanced Task Management Components
+export { EnhancedTaskBoard } from './EnhancedTaskBoard';
+export { EnhancedTaskCard } from './EnhancedTaskCard';
+export { TaskCreateModal } from './TaskCreateModal';
+export { TaskEditModal } from './TaskEditModal';
+export { EnhancedTaskListView } from './EnhancedTaskListView';
+export { TaskProgressTracker } from './TaskProgressTracker';
+export { TaskAssignmentManager } from './TaskAssignmentManager';
+export { TaskDependencyManager } from './TaskDependencyManager';
+export { TaskCommentsSystem } from './TaskCommentsSystem';
+
 // Re-export types for convenience
 export type {
   WelcomeHeaderProps,

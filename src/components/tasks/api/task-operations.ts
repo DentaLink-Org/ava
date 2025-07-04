@@ -4,6 +4,11 @@ import type {
   TaskFilter,
   TasksError
 } from '../types';
+import { 
+  TaskEffort,
+  TaskComplexity,
+  TaskRisk
+} from '../types';
 
 // Mock data store for development
 const mockTasks: Task[] = [
@@ -21,13 +26,25 @@ const mockTasks: Task[] = [
     dueDate: '2025-07-05T23:59:59Z',
     tags: ['authentication', 'security'],
     estimatedHours: 8,
-    position: 0
+    position: 0,
+    // Enhanced fields
+    storyPoints: 5,
+    effortLevel: TaskEffort.MODERATE,
+    complexity: TaskComplexity.MODERATE,
+    riskLevel: TaskRisk.LOW,
+    progress: 0,
+    customFields: {},
+    metadata: {},
+    dependencies: [],
+    timeEntries: [],
+    attachments: [],
+    comments: []
   },
   {
     id: 'task-2',
     title: 'Design database schema',
     description: 'Create comprehensive database design for the application',
-    status: { id: 'in-progress', name: 'In Progress', color: '#3b82f6', position: 1, isDefault: false, isCompleted: false },
+    status: { id: 'in_progress', name: 'In Progress', color: '#3b82f6', position: 1, isDefault: false, isCompleted: false },
     priority: 'medium',
     projectId: 'project-1',
     assigneeId: 'user-2',
@@ -38,7 +55,19 @@ const mockTasks: Task[] = [
     tags: ['database', 'design'],
     estimatedHours: 12,
     actualHours: 6,
-    position: 0
+    position: 0,
+    // Enhanced fields
+    storyPoints: 8,
+    effortLevel: TaskEffort.HEAVY,
+    complexity: TaskComplexity.COMPLEX,
+    riskLevel: TaskRisk.MEDIUM,
+    progress: 50,
+    customFields: {},
+    metadata: {},
+    dependencies: [],
+    timeEntries: [],
+    attachments: [],
+    comments: []
   },
   {
     id: 'task-3',
@@ -55,13 +84,25 @@ const mockTasks: Task[] = [
     tags: ['devops', 'automation'],
     estimatedHours: 6,
     actualHours: 5,
-    position: 0
+    position: 0,
+    // Enhanced fields
+    storyPoints: 3,
+    effortLevel: 'moderate' as any,
+    complexity: 'moderate' as any,
+    riskLevel: TaskRisk.HIGH,
+    progress: 85,
+    customFields: {},
+    metadata: {},
+    dependencies: [],
+    timeEntries: [],
+    attachments: [],
+    comments: []
   },
   {
     id: 'task-4',
     title: 'Write API documentation',
     description: 'Complete documentation for all API endpoints',
-    status: { id: 'done', name: 'Done', color: '#10b981', position: 3, isDefault: false, isCompleted: true },
+    status: { id: 'completed', name: 'Completed', color: '#10b981', position: 3, isDefault: false, isCompleted: true },
     priority: 'low',
     projectId: 'project-2',
     assigneeId: 'user-1',
@@ -73,7 +114,19 @@ const mockTasks: Task[] = [
     tags: ['documentation', 'api'],
     estimatedHours: 4,
     actualHours: 3,
-    position: 0
+    position: 0,
+    // Enhanced fields
+    storyPoints: 2,
+    effortLevel: TaskEffort.LIGHT,
+    complexity: TaskComplexity.SIMPLE,
+    riskLevel: 'low' as any,
+    progress: 100,
+    customFields: {},
+    metadata: {},
+    dependencies: [],
+    timeEntries: [],
+    attachments: [],
+    comments: []
   }
 ];
 
@@ -104,7 +157,7 @@ class TaskOperations {
       }
       
       if (filter.status) {
-        filteredTasks = filteredTasks.filter(task => task.status.id === filter.status);
+        filteredTasks = filteredTasks.filter(task => task.status.id === filter.status!.id);
       }
       
       if (filter.priority) {

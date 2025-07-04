@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import type { Task, UseTaskManagerReturn, TasksError } from '../types';
+import type { Task, UseTaskManagerReturn, TasksError, CreateTaskData, UpdateTaskData, BulkTaskUpdate, TaskBatchResult, TaskFilter, TaskValidationResult } from '../types';
 import { taskOperations } from '../api/task-operations';
 
 interface UseTaskManagerOptions {
@@ -14,6 +14,9 @@ export function useTaskManager(options: UseTaskManagerOptions = {}): UseTaskMana
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<TasksError | null>(null);
+  const [filter, setFilterState] = useState<TaskFilter>({});
+  const [isConnected, setIsConnected] = useState(true);
+  const [lastUpdated, setLastUpdated] = useState(new Date().toISOString());
 
   // Fetch tasks
   const fetchTasks = useCallback(async () => {
@@ -191,6 +194,58 @@ export function useTaskManager(options: UseTaskManagerOptions = {}): UseTaskMana
     return () => window.removeEventListener('task-event', handleTaskEvent as EventListener);
   }, [projectId, fetchTasks]);
 
+  // Enhanced filter functions
+  const setFilter = useCallback((newFilter: Partial<TaskFilter>) => {
+    setFilterState(prev => ({ ...prev, ...newFilter }));
+  }, []);
+
+  const clearFilter = useCallback(() => {
+    setFilterState({});
+  }, []);
+
+  // Bulk operations
+  const bulkUpdateTasks = useCallback(async (operation: BulkTaskUpdate): Promise<TaskBatchResult> => {
+    // Placeholder implementation - would need actual API endpoint
+    return {
+      success: true,
+      processedCount: operation.taskIds.length,
+      errorCount: 0,
+      results: operation.taskIds.map(taskId => ({
+        taskId,
+        success: true,
+        data: tasks.find(t => t.id === taskId)
+      })),
+      summary: {
+        totalRequested: operation.taskIds.length,
+        successful: operation.taskIds.length,
+        failed: 0,
+        skipped: 0
+      }
+    };
+  }, [tasks]);
+
+  // Validation function
+  const validateTask = useCallback((task: CreateTaskData | UpdateTaskData): TaskValidationResult => {
+    const errors: any[] = [];
+    const warnings: any[] = [];
+
+    // Basic validation
+    if ('title' in task && (!task.title || task.title.trim().length === 0)) {
+      errors.push({
+        field: 'title',
+        code: 'REQUIRED',
+        message: 'Title is required',
+        value: task.title
+      });
+    }
+
+    return {
+      isValid: errors.length === 0,
+      errors,
+      warnings
+    };
+  }, []);
+
   return {
     tasks,
     loading,
@@ -199,7 +254,16 @@ export function useTaskManager(options: UseTaskManagerOptions = {}): UseTaskMana
     updateTask,
     deleteTask,
     moveTask,
-    refetch
+    bulkUpdateTasks,
+    validateTask,
+    refetch,
+    // Enhanced filtering and search
+    filter,
+    setFilter,
+    clearFilter,
+    // Real-time updates
+    isConnected,
+    lastUpdated
   };
 }
 

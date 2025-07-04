@@ -19,7 +19,7 @@ layout:
         row: 1
         span: 8
       multiSelect: true
-      defaultGroups: ["headers", "navigation", "data", "interactive", "milestones"]
+      defaultGroups: ["headers", "navigation", "data", "interactive", "tasks", "milestones"]
 
 # Theme configuration removed - using dynamic database themes instead
 
@@ -40,6 +40,10 @@ componentGroups:
     name: "Interactive Components"
     description: "Chat, forms, and interactive widgets"
     color: "#F59E0B"
+  tasks:
+    name: "Enhanced Task Management"
+    description: "Advanced task management components with real-time features"
+    color: "#6366F1"
   milestones:
     name: "Milestone Management"
     description: "Milestone tracking and project management"
@@ -54,8 +58,8 @@ components:
       row: 1
       span: 8
     props:
-      groups: ["headers", "navigation", "data", "interactive", "milestones"]
-      defaultSelected: ["headers", "navigation", "data", "interactive", "milestones"]
+      groups: ["headers", "navigation", "data", "interactive", "tasks", "milestones"]
+      defaultSelected: ["headers", "navigation", "data", "interactive", "tasks", "milestones"]
 
   # Headers & Welcome Components
   - id: "welcome-header"
@@ -148,13 +152,495 @@ components:
       pageId: "playground"
       className: "playground-issue-tracker"
 
+  # Enhanced Task Management Components
+  - id: "enhanced-task-board"
+    type: "EnhancedTaskBoard"
+    group: "tasks"
+    position:
+      col: 1
+      row: 6
+      span: 8
+    props:
+      projectId: "project-1"
+      enableDragDrop: true
+      enableRealtime: true
+      enableBulkOperations: true
+      enableAdvancedFilters: true
+      enableAnalytics: true
+      enableCustomViews: true
+      showAnalyticsCards: true
+      onTaskCreate: "console.log"
+      onTaskUpdate: "console.log"
+      onTaskDelete: "console.log"
+      onBulkOperation: "console.log"
+
+  - id: "enhanced-task-list-view"
+    type: "EnhancedTaskListView"
+    group: "tasks"
+    position:
+      col: 1
+      row: 7
+      span: 8
+    props:
+      tasks:
+        - id: "task-1"
+          title: "Design user interface mockups"
+          description: "Create comprehensive UI mockups for the new dashboard"
+          status: "in_progress"
+          priority: "high"
+          complexity: "medium"
+          effort: "high"
+          risk: "low"
+          projectId: "project-1"
+          assigneeId: "user-1"
+          createdAt: "2025-07-01T10:00:00Z"
+          updatedAt: "2025-07-04T14:30:00Z"
+          dueDate: "2025-07-15T17:00:00Z"
+          estimatedHours: 20
+          actualHours: 12
+          storyPoints: 8
+          tags: ["design", "ui", "mockup"]
+        - id: "task-2"
+          title: "Implement authentication system"
+          description: "Set up user login and registration functionality"
+          status: "completed"
+          priority: "high"
+          complexity: "high"
+          effort: "high"
+          risk: "medium"
+          projectId: "project-1"
+          assigneeId: "user-2"
+          createdAt: "2025-06-15T09:00:00Z"
+          updatedAt: "2025-07-02T16:45:00Z"
+          completedAt: "2025-07-02T16:45:00Z"
+          dueDate: "2025-07-05T17:00:00Z"
+          estimatedHours: 30
+          actualHours: 28
+          storyPoints: 13
+          tags: ["backend", "auth", "security"]
+      projects:
+        - id: "project-1"
+          name: "Website Redesign"
+          description: "Complete overhaul of company website"
+          color: "#3b82f6"
+      teamMembers:
+        - id: "user-1"
+          name: "John Doe"
+          email: "john@example.com"
+          role: "admin"
+        - id: "user-2"
+          name: "Jane Smith"  
+          email: "jane@example.com"
+          role: "member"
+      enableSorting: true
+      enableFiltering: true
+      enableSearch: true
+      enableBulkActions: true
+      enableColumnCustomization: true
+      enableInlineEditing: true
+      enableExport: true
+      onTaskUpdate: "console.log"
+      onTaskDelete: "console.log"
+      onBulkAction: "console.log"
+
+  - id: "task-progress-tracker"
+    type: "TaskProgressTracker"
+    group: "tasks"
+    position:
+      col: 1
+      row: 8
+      span: 8
+    props:
+      tasks:
+        - id: "task-1"
+          title: "Design user interface mockups"
+          status: "in_progress"
+          priority: "high"
+          complexity: "medium"
+          projectId: "project-1"
+          assigneeId: "user-1"
+          createdAt: "2025-07-01T10:00:00Z"
+          estimatedHours: 20
+          actualHours: 12
+          storyPoints: 8
+        - id: "task-2"
+          title: "Implement authentication system"
+          status: "completed"
+          priority: "high"
+          complexity: "high"
+          projectId: "project-1"
+          assigneeId: "user-2"
+          createdAt: "2025-06-15T09:00:00Z"
+          completedAt: "2025-07-02T16:45:00Z"
+          estimatedHours: 30
+          actualHours: 28
+          storyPoints: 13
+      projects:
+        - id: "project-1"
+          name: "Website Redesign"
+          description: "Complete overhaul of company website"
+          color: "#3b82f6"
+      teamMembers:
+        - id: "user-1"
+          name: "John Doe"
+          email: "john@example.com"
+          role: "admin"
+        - id: "user-2"
+          name: "Jane Smith"  
+          email: "jane@example.com"
+          role: "member"
+      enableRealtime: true
+      enableFilters: true
+      enableExport: true
+      showPredictions: true
+      showTeamMetrics: true
+      showBurndown: true
+      showVelocity: true
+      onExport: "console.log"
+
+  - id: "task-assignment-manager"
+    type: "TaskAssignmentManager"
+    group: "tasks"
+    position:
+      col: 1
+      row: 9
+      span: 8
+    props:
+      tasks:
+        - id: "task-3"
+          title: "Setup deployment pipeline"
+          status: "pending"
+          priority: "medium"
+          complexity: "high"
+          projectId: "project-1"
+          createdAt: "2025-07-04T09:00:00Z"
+          estimatedHours: 16
+          storyPoints: 5
+        - id: "task-4"
+          title: "Write user documentation"
+          status: "pending"
+          priority: "low"
+          complexity: "low"
+          projectId: "project-1"
+          createdAt: "2025-07-04T10:00:00Z"
+          estimatedHours: 8
+          storyPoints: 3
+      teamMembers:
+        - id: "user-1"
+          name: "John Doe"
+          email: "john@example.com"
+          role: "admin"
+          skills: ["React", "TypeScript", "Node.js"]
+        - id: "user-2"
+          name: "Jane Smith"  
+          email: "jane@example.com"
+          role: "member"
+          skills: ["Design", "Figma", "UI/UX"]
+      projects:
+        - id: "project-1"
+          name: "Website Redesign"
+          description: "Complete overhaul of company website"
+          color: "#3b82f6"
+      enableAutoAssignment: true
+      enableWorkloadBalancing: true
+      enableSkillsMatching: true
+      enableCapacityPlanning: true
+      showAnalytics: true
+      onAssignTask: "console.log"
+      onUnassignTask: "console.log"
+      onBulkAssign: "console.log"
+
+  - id: "task-dependency-manager"
+    type: "TaskDependencyManager"
+    group: "tasks"
+    position:
+      col: 1
+      row: 10
+      span: 8
+    props:
+      tasks:
+        - id: "task-1"
+          title: "Design user interface mockups"
+          status: "in_progress"
+          priority: "high"
+          projectId: "project-1"
+          assigneeId: "user-1"
+        - id: "task-2"
+          title: "Implement authentication system"
+          status: "completed"
+          priority: "high"
+          projectId: "project-1"
+          assigneeId: "user-2"
+        - id: "task-3"
+          title: "Setup deployment pipeline"
+          status: "pending"
+          priority: "medium"
+          projectId: "project-1"
+        - id: "task-4"
+          title: "Write user documentation"
+          status: "pending"
+          priority: "low"
+          projectId: "project-1"
+      projects:
+        - id: "project-1"
+          name: "Website Redesign"
+          description: "Complete overhaul of company website"
+          color: "#3b82f6"
+      teamMembers:
+        - id: "user-1"
+          name: "John Doe"
+          email: "john@example.com"
+          role: "admin"
+        - id: "user-2"
+          name: "Jane Smith"  
+          email: "jane@example.com"
+          role: "member"
+      dependencies:
+        - id: "dep-1"
+          prerequisiteTaskId: "task-2"
+          dependentTaskId: "task-3"
+          type: "finish_to_start"
+          createdAt: "2025-07-04T12:00:00Z"
+      enableVisualization: true
+      enableCircularDetection: true
+      enableBulkOperations: true
+      enableCriticalPath: true
+      enableAutoSuggestions: true
+      showDependencyTypes: true
+      onDependencyCreate: "console.log"
+      onDependencyUpdate: "console.log"
+      onDependencyDelete: "console.log"
+
+  - id: "task-comments-system"
+    type: "TaskCommentsSystem"
+    group: "tasks"
+    position:
+      col: 1
+      row: 11
+      span: 8
+    props:
+      task:
+        id: "task-1"
+        title: "Design user interface mockups"
+        description: "Create comprehensive UI mockups for the new dashboard"
+        status: "in_progress"
+        priority: "high"
+        projectId: "project-1"
+        assigneeId: "user-1"
+      comments:
+        - id: "comment-1"
+          taskId: "task-1"
+          content: "I've started working on the initial wireframes. Should have the first draft ready by tomorrow."
+          authorId: "user-1"
+          createdAt: "2025-07-04T09:30:00Z"
+          reactions:
+            - emoji: "👍"
+              count: 2
+              users: ["user-2", "user-3"]
+        - id: "comment-2"
+          taskId: "task-1"
+          content: "Great! Make sure to follow the new design system guidelines we discussed."
+          authorId: "user-2"
+          createdAt: "2025-07-04T10:15:00Z"
+          parentId: "comment-1"
+          attachments:
+            - name: "design-guidelines.pdf"
+              url: "/files/design-guidelines.pdf"
+              size: 2048000
+      teamMembers:
+        - id: "user-1"
+          name: "John Doe"
+          email: "john@example.com"
+          role: "admin"
+        - id: "user-2"
+          name: "Jane Smith"  
+          email: "jane@example.com"
+          role: "member"
+        - id: "user-3"
+          name: "Mike Johnson"
+          email: "mike@example.com"
+          role: "member"
+      currentUser:
+        id: "user-1"
+        name: "John Doe"
+        email: "john@example.com"
+        role: "admin"
+      enableThreading: true
+      enableReactions: true
+      enableMentions: true
+      enableFileAttachments: true
+      enableRichText: true
+      enableNotifications: true
+      maxCommentLength: 2000
+      onCommentCreate: "console.log"
+      onCommentUpdate: "console.log"
+      onCommentDelete: "console.log"
+      onReactionAdd: "console.log"
+
+  - id: "enhanced-task-card"
+    type: "EnhancedTaskCard"
+    group: "tasks"
+    position:
+      col: 1
+      row: 12
+      span: 4
+    props:
+      task:
+        id: "task-demo"
+        title: "Demo Task Card"
+        description: "This is a demonstration task card showing rich metadata and features"
+        status: "in_progress"
+        priority: "high"
+        complexity: "medium"
+        effort: "high"
+        risk: "low"
+        projectId: "project-1"
+        assigneeId: "user-1"
+        createdAt: "2025-07-01T10:00:00Z"
+        updatedAt: "2025-07-04T14:30:00Z"
+        dueDate: "2025-07-15T17:00:00Z"
+        estimatedHours: 20
+        actualHours: 12
+        storyPoints: 8
+        progress: 60
+        tags: ["demo", "ui", "enhancement"]
+        timeEntries:
+          - id: "time-1"
+            userId: "user-1"
+            startTime: "2025-07-04T09:00:00Z"
+            endTime: "2025-07-04T13:00:00Z"
+            durationMinutes: 240
+            description: "Working on task card implementation"
+      viewMode: "standard"
+      showQuickActions: true
+      showProgress: true
+      showMetadata: true
+      showCollaboration: true
+      enableDragDrop: true
+      onEdit: "console.log"
+      onDelete: "console.log"
+      onStatusChange: "console.log"
+      onAssign: "console.log"
+
+  - id: "task-create-modal"
+    type: "TaskCreateModal"
+    group: "tasks"
+    position:
+      col: 5
+      row: 12
+      span: 4
+    props:
+      isOpen: false
+      projects:
+        - id: "project-1"
+          name: "Website Redesign"
+          description: "Complete overhaul of company website"
+          color: "#3b82f6"
+      teamMembers:
+        - id: "user-1"
+          name: "John Doe"
+          email: "john@example.com"
+          role: "admin"
+        - id: "user-2"
+          name: "Jane Smith"
+          email: "jane@example.com"
+          role: "member"
+      templates:
+        - id: "template-1"
+          name: "Bug Fix Template"
+          description: "Standard template for bug fixes"
+          tasks:
+            - title: "Investigate issue"
+              priority: "high"
+              estimatedHours: 2
+            - title: "Fix implementation"
+              priority: "high"
+              estimatedHours: 4
+            - title: "Test solution"
+              priority: "medium"
+              estimatedHours: 2
+      availableMilestones:
+        - id: "milestone-1"
+          title: "MVP Release"
+          dueDate: "2025-08-01T23:59:59Z"
+      enableTemplates: true
+      enableBulkCreate: true
+      enableDependencies: true
+      enableAdvancedFields: true
+      onClose: "console.log"
+      onSubmit: "console.log"
+
+  - id: "task-edit-modal"
+    type: "TaskEditModal"
+    group: "tasks"
+    position:
+      col: 1
+      row: 13
+      span: 8
+    props:
+      isOpen: false
+      task:
+        id: "task-edit-demo"
+        title: "Demo Task for Editing"
+        description: "This task demonstrates the editing capabilities"
+        status: "in_progress"
+        priority: "medium"
+        complexity: "high"
+        effort: "medium"
+        risk: "low"
+        projectId: "project-1"
+        assigneeId: "user-1"
+        createdAt: "2025-07-01T10:00:00Z"
+        updatedAt: "2025-07-04T14:30:00Z"
+        dueDate: "2025-07-20T17:00:00Z"
+        estimatedHours: 16
+        actualHours: 8
+        storyPoints: 5
+        progress: 50
+        tags: ["demo", "editing", "modal"]
+      projects:
+        - id: "project-1"
+          name: "Website Redesign"
+          description: "Complete overhaul of company website"
+          color: "#3b82f6"
+      teamMembers:
+        - id: "user-1"
+          name: "John Doe"
+          email: "john@example.com"
+          role: "admin"
+        - id: "user-2"
+          name: "Jane Smith"
+          email: "jane@example.com"
+          role: "member"
+      changeHistory:
+        - id: "change-1"
+          field: "priority"
+          oldValue: "low"
+          newValue: "medium"
+          changedBy: "user-1"
+          changedAt: "2025-07-04T10:00:00Z"
+          reason: "Increased priority due to deadline"
+      availableMilestones:
+        - id: "milestone-1"
+          title: "MVP Release"
+          dueDate: "2025-08-01T23:59:59Z"
+      enableHistory: true
+      enableWorkflow: true
+      enableBulkEdit: true
+      enableDependencies: true
+      enableAdvancedFields: true
+      onClose: "console.log"
+      onSubmit: "console.log"
+      onDelete: "console.log"
+      onArchive: "console.log"
+
   # Milestone Management Components
   - id: "milestone-board"
     type: "MilestoneBoard"
     group: "milestones"
     position:
       col: 1
-      row: 6
+      row: 12
       span: 8
     props:
       projectId: "project-1"
@@ -164,7 +650,7 @@ components:
     group: "milestones"
     position:
       col: 1
-      row: 7
+      row: 13
       span: 4
     props:
       milestoneId: "milestone-1"
@@ -174,7 +660,7 @@ components:
     group: "milestones"
     position:
       col: 5
-      row: 7
+      row: 13
       span: 4
     props:
       projectId: "project-1"

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { X, Calendar, User, Flag, Tag } from 'lucide-react';
-import type { Task, Project, TeamMember, TaskStatus, TaskPriority } from '../types';
+import type { Task, Project, TeamMember, TaskStatus, TaskPriority, CreateTaskData } from '../types';
+import { TaskEffort, TaskComplexity, TaskRisk } from '../types';
 import type { PageTheme } from '../../_shared/runtime/types';
 
 interface TaskCreateModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (task: Omit<Task, 'id' | 'createdAt' | 'updatedAt'>) => void;
+  onSubmit: (task: CreateTaskData) => void;
   projects: Project[];
   teamMembers: TeamMember[];
   statuses: TaskStatus[];
@@ -72,7 +73,7 @@ export function TaskCreateModal({
       return;
     }
 
-    const taskData: Omit<Task, 'id' | 'createdAt' | 'updatedAt'> = {
+    const taskData = {
       title: formData.title.trim(),
       description: formData.description.trim() || undefined,
       projectId: formData.projectId,
@@ -80,10 +81,20 @@ export function TaskCreateModal({
       status: selectedStatus,
       priority: formData.priority,
       dueDate: formData.dueDate || undefined,
-      tags: formData.tags.length > 0 ? formData.tags : undefined,
+      tags: formData.tags.length > 0 ? formData.tags : [],
       estimatedHours: formData.estimatedHours > 0 ? formData.estimatedHours : undefined,
       createdBy: 'current-user', // Would come from auth context
-      position: 0 // Will be set by the backend
+      position: 0, // Will be set by the backend
+      // Enhanced fields with defaults
+      storyPoints: 0,
+      effortLevel: TaskEffort.MODERATE,
+      complexity: TaskComplexity.MODERATE,
+      riskLevel: TaskRisk.LOW,
+      customFields: {},
+      metadata: {},
+      progress: 0,
+      dependencies: [],
+      timeEntries: []
     };
 
     onSubmit(taskData);
