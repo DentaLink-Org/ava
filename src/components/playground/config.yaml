@@ -475,6 +475,289 @@ components:
       sortBy: "dueDate"
       sortOrder: "asc"
 
+  # Phase 3 Advanced Workflow Components
+  - id: "project-template-manager"
+    type: "ProjectTemplateManager"
+    group: "milestones"
+    position:
+      col: 5
+      row: 14
+      span: 4
+    props:
+      enableCreate: true
+      enableEdit: true
+      enableDelete: true
+      enableExport: true
+      enableImport: true
+      showMarketplace: true
+      showFavorites: true
+      viewMode: "grid"
+      sortBy: "name"
+      sortOrder: "asc"
+
+  - id: "milestone-approval-workflow"
+    type: "MilestoneApprovalWorkflow"
+    group: "milestones"
+    position:
+      col: 1
+      row: 15
+      span: 8
+    props:
+      milestoneId: "milestone-1"
+      projectId: "project-1"
+      enableNotifications: true
+      enableEscalation: true
+      enableDelegation: true
+      enableComments: true
+      enableHistory: true
+      showProgressBar: true
+      showStakeholders: true
+      autoAdvance: false
+
+  - id: "project-phase-manager"
+    type: "ProjectPhaseManager"
+    group: "milestones"
+    position:
+      col: 1
+      row: 16
+      span: 8
+    props:
+      projectId: "project-1"
+      enablePhaseGates: true
+      enableDependencies: true
+      enableProgressTracking: true
+      enableGanttView: true
+      enableTimelineView: true
+      enableReports: true
+      showCriticalPath: true
+      showResourceAllocation: true
+      showBudgetTracking: true
+      viewMode: "timeline"
+
+  - id: "milestone-comment-system"
+    type: "MilestoneCommentSystem"
+    group: "milestones"
+    position:
+      col: 1
+      row: 17
+      span: 4
+    props:
+      milestoneId: "milestone-1"
+      projectId: "project-1"
+      enableMentions: true
+      enableRichText: true
+      enableAttachments: true
+      enableReactions: true
+      enableModeration: true
+      enableNotifications: true
+      enableThreads: true
+      showTimestamps: true
+      showUserAvatars: true
+      sortOrder: "newest"
+
+  - id: "milestone-timeline-editor"
+    type: "MilestoneTimelineEditor"
+    group: "milestones"
+    position:
+      col: 5
+      row: 17
+      span: 4
+    props:
+      projectId: "project-1"
+      enableConstraints: true
+      enableDependencies: true
+      enableGanttView: true
+      enableUndoRedo: true
+      enableZoom: true
+      enableExport: true
+      enableCollaboration: true
+      showCriticalPath: true
+      showResourceAllocation: true
+      viewMode: "gantt"
+      timeScale: "days"
+
+  - id: "project-risk-tracker"
+    type: "ProjectRiskTracker"
+    group: "milestones"
+    position:
+      col: 1
+      row: 18
+      span: 8
+    props:
+      projectId: "project-1"
+      enableRiskAssessment: true
+      enableMitigation: true
+      enableMonitoring: true
+      enableReports: true
+      enableNotifications: true
+      enablePredictive: true
+      showRiskMatrix: true
+      showTrends: true
+      showActions: true
+      viewMode: "dashboard"
+
+  - id: "milestone-notifications"
+    type: "MilestoneNotifications"
+    group: "milestones"
+    position:
+      col: 1
+      row: 19
+      span: 4
+    props:
+      userId: "user-1"
+      projectId: "project-1"
+      enableRealtime: true
+      enableEmail: true
+      enableSMS: false
+      enableSlack: false
+      enableWebhooks: false
+      showUnreadCount: true
+      showPreview: true
+      showTimestamps: true
+      maxNotifications: 50
+      autoMarkRead: true
+      groupSimilar: true
+
+  - id: "milestone-status-updater"
+    type: "MilestoneStatusUpdater"
+    group: "milestones"
+    position:
+      col: 5
+      row: 19
+      span: 4
+    props:
+      projectId: "project-1"
+      enableBulkUpdate: true
+      enableValidation: true
+      enableSuggestions: true
+      enableHistory: true
+      enableNotifications: true
+      enableWorkflow: true
+      showProgress: true
+      showDependencies: true
+      showImpact: true
+      confirmChanges: true
+
+  - id: "team-milestone-assignment"
+    type: "TeamMilestoneAssignment"
+    group: "milestones"
+    position:
+      col: 1
+      row: 20
+      span: 8
+    props:
+      projectId: "project-1"
+      enableSkillsMatching: true
+      enableWorkloadAnalysis: true
+      enableConflictDetection: true
+      enableRecommendations: true
+      enableBulkAssignment: true
+      showTeamCapacity: true
+      showSkillsGap: true
+      showWorkloadChart: true
+      showAvailability: true
+      viewMode: "grid"
+
+  - id: "milestone-search-filter"
+    type: "MilestoneSearchFilter"
+    group: "milestones"
+    position:
+      col: 1
+      row: 21
+      span: 4
+    props:
+      projectId: "project-1"
+      enableFullTextSearch: true
+      enableAdvancedFilters: true
+      enableSavedSearches: true
+      enableSearchHistory: true
+      enableExport: true
+      enableShareSearch: true
+      showResultCount: true
+      showFilterChips: true
+      showQuickFilters: true
+      maxResults: 100
+
+  - id: "milestone-quick-actions"
+    type: "MilestoneQuickActions"
+    group: "milestones"
+    position:
+      col: 5
+      row: 21
+      span: 4
+    props:
+      projectId: "project-1"
+      enableBulkOperations: true
+      enableKeyboardShortcuts: true
+      enableCustomActions: true
+      enableUndo: true
+      enableConfirmation: true
+      showActionHistory: true
+      showProgress: true
+      showResults: true
+      maxSelection: 50
+      actionTimeout: 30
+
+  - id: "project-overview-card"
+    type: "ProjectOverviewCard"
+    group: "milestones"
+    position:
+      col: 1
+      row: 22
+      span: 4
+    props:
+      projectId: "project-1"
+      showMetrics: true
+      showProgress: true
+      showTeam: true
+      showTimeline: true
+      showBudget: true
+      showRisks: true
+      showQuickActions: true
+      enableRealtime: true
+      enableNotifications: true
+      compact: false
+
+  - id: "milestone-event-manager"
+    type: "MilestoneEventManager"
+    group: "milestones"
+    position:
+      col: 5
+      row: 22
+      span: 4
+    props:
+      projectId: "project-1"
+      enablePublishing: true
+      enableSubscriptions: true
+      enableWebhooks: true
+      enableHistory: true
+      enableFiltering: true
+      enableExport: true
+      showEventLog: true
+      showSubscribers: true
+      showMetrics: true
+      maxEvents: 1000
+
+  - id: "milestone-validation-service"
+    type: "MilestoneValidationService"
+    group: "milestones"
+    position:
+      col: 1
+      row: 23
+      span: 8
+    props:
+      projectId: "project-1"
+      enableDataValidation: true
+      enableBusinessRules: true
+      enableDependencyValidation: true
+      enableCustomRules: true
+      enableReports: true
+      enableNotifications: true
+      showValidationResults: true
+      showRuleEditor: true
+      showHistory: true
+      autoValidate: true
+
 data:
   sources:
     - name: "orders"

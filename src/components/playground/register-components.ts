@@ -25,7 +25,21 @@ import {
   MilestoneCalendar,
   MilestoneProgressReport,
   ProjectHealthDashboard,
-  MilestoneNavigationSidebar
+  MilestoneNavigationSidebar,
+  ProjectTemplateManager,
+  MilestoneApprovalWorkflow,
+  ProjectPhaseManager,
+  MilestoneCommentSystem,
+  MilestoneTimelineEditor,
+  ProjectRiskTracker,
+  MilestoneNotifications,
+  MilestoneStatusUpdater,
+  TeamMilestoneAssignment,
+  MilestoneSearchFilter,
+  MilestoneQuickActions,
+  ProjectOverviewCard,
+  MilestoneEventManager,
+  MilestoneValidationService
 } from './components';
 import { ChatBot, IssueTracker } from '../_shared/components';
 
@@ -63,6 +77,22 @@ export const registerPlaygroundComponents = () => {
   componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneProgressReport', MilestoneProgressReport as any);
   componentRegistry.register(PLAYGROUND_PAGE_ID, 'ProjectHealthDashboard', ProjectHealthDashboard as any);
   componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneNavigationSidebar', MilestoneNavigationSidebar as any);
+  
+  // Register Phase 3 advanced workflow components
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'ProjectTemplateManager', ProjectTemplateManager as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneApprovalWorkflow', MilestoneApprovalWorkflow as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'ProjectPhaseManager', ProjectPhaseManager as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneCommentSystem', MilestoneCommentSystem as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneTimelineEditor', MilestoneTimelineEditor as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'ProjectRiskTracker', ProjectRiskTracker as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneNotifications', MilestoneNotifications as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneStatusUpdater', MilestoneStatusUpdater as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'TeamMilestoneAssignment', TeamMilestoneAssignment as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneSearchFilter', MilestoneSearchFilter as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneQuickActions', MilestoneQuickActions as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'ProjectOverviewCard', ProjectOverviewCard as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneEventManager', MilestoneEventManager as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneValidationService', MilestoneValidationService as any);
   
   console.log('Playground components registered successfully (including all milestone components)');
 };
