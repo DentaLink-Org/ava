@@ -22,6 +22,13 @@ export { MilestoneDependencyManager } from './MilestoneDependencyManager';
 export { TaskMilestoneSelector } from './TaskMilestoneSelector';
 export { MilestoneTaskList } from './MilestoneTaskList';
 export { MilestoneDataProvider, useMilestoneContext, MilestoneErrorBoundary } from './MilestoneDataProvider';
+export { default as ProjectRoadmap } from './ProjectRoadmap';
+export { default as MilestoneCalendar } from './MilestoneCalendar';
+
+// Phase 2 enhanced visualization components
+export { default as MilestoneProgressReport } from './MilestoneProgressReport';
+export { default as ProjectHealthDashboard } from './ProjectHealthDashboard';
+export { default as MilestoneNavigationSidebar } from './MilestoneNavigationSidebar';
 
 // Re-export types for convenience
 export type {

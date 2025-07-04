@@ -20,7 +20,12 @@ import {
   MilestoneDependencyManager,
   TaskMilestoneSelector,
   MilestoneTaskList,
-  MilestoneDataProvider
+  MilestoneDataProvider,
+  ProjectRoadmap,
+  MilestoneCalendar,
+  MilestoneProgressReport,
+  ProjectHealthDashboard,
+  MilestoneNavigationSidebar
 } from './components';
 import { ChatBot, IssueTracker } from '../_shared/components';
 
@@ -51,6 +56,13 @@ export const registerPlaygroundComponents = () => {
   componentRegistry.register(PLAYGROUND_PAGE_ID, 'TaskMilestoneSelector', TaskMilestoneSelector as any);
   componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneTaskList', MilestoneTaskList as any);
   componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneDataProvider', MilestoneDataProvider as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'ProjectRoadmap', ProjectRoadmap as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneCalendar', MilestoneCalendar as any);
+  
+  // Register Phase 2 enhanced visualization components
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneProgressReport', MilestoneProgressReport as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'ProjectHealthDashboard', ProjectHealthDashboard as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'MilestoneNavigationSidebar', MilestoneNavigationSidebar as any);
   
   console.log('Playground components registered successfully (including all milestone components)');
 };
