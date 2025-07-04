@@ -57,26 +57,7 @@ export async function POST(request: NextRequest) {
     }
     
     // If we get here, the schema needs to be fixed
-    // Since we can't execute DDL directly, we'll use PostgreSQL's built-in functions
-    
-    // Check what columns actually exist
-    const { data: currentColumns, error: checkError } = await supabase
-      .from('information_schema.columns')
-      .select('column_name, data_type')
-      .eq('table_name', 'page_components')
-      .eq('table_schema', 'public');
-    
-    if (checkError) {
-      return NextResponse.json({
-        success: false,
-        error: 'Failed to check current schema',
-        details: checkError.message
-      }, { status: 500 });
-    }
-    
-    const existingColumns = currentColumns?.map(col => col.column_name) || [];
-    const requiredColumns = ['category', 'name', 'display_name', 'description', 'author', 'version', 'tags', 'is_system', 'metadata'];
-    const missingColumns = requiredColumns.filter(col => !existingColumns.includes(col));
+    // We'll create a stored procedure to handle the migration automatically
     
     // Since Supabase doesn't allow direct DDL execution via API, 
     // we'll create a stored procedure to handle the migration
@@ -162,7 +143,6 @@ export async function POST(request: NextRequest) {
         success: true,
         message: 'Schema migration completed successfully',
         result: migrationResult,
-        missingColumns,
         action: 'migration_executed'
       });
       
@@ -171,8 +151,6 @@ export async function POST(request: NextRequest) {
         success: false,
         message: 'Automated migration failed - manual intervention required',
         error: error instanceof Error ? error.message : 'Unknown error',
-        missingColumns,
-        existingColumns,
         suggestedAction: 'Use Supabase SQL Editor to run the migration manually'
       }, { status: 500 });
     }

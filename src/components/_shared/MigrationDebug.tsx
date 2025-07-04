@@ -12,21 +12,21 @@ export function MigrationDebug() {
 
   async function checkMigrationStatus() {
     try {
-      console.log('🔍 Checking migration status...');
-      const response = await fetch('/api/migrate');
-      console.log('📡 Migration API response:', response.status, response.statusText);
+      console.log('🔍 Checking schema status...');
+      const response = await fetch('/api/migrate-native');
+      console.log('📡 Schema check response:', response.status, response.statusText);
       
       if (response.ok) {
         const data = await response.json();
-        console.log('📋 Migration data:', data);
+        console.log('📋 Schema data:', data);
         setDebugInfo(data);
       } else {
         const errorText = await response.text();
-        console.error('❌ Migration API error:', errorText);
+        console.error('❌ Schema check error:', errorText);
         setDebugInfo({ error: `API Error: ${response.status} - ${errorText}` });
       }
     } catch (error) {
-      console.error('❌ Migration check failed:', error);
+      console.error('❌ Schema check failed:', error);
       setDebugInfo({ error: error instanceof Error ? error.message : 'Unknown error' });
     } finally {
       setLoading(false);
@@ -35,20 +35,31 @@ export function MigrationDebug() {
 
   async function runMigrations() {
     try {
-      console.log('🚀 Running simple schema migration...');
-      const response = await fetch('/api/migrate-simple', { method: 'POST' });
+      console.log('🚀 Running native schema validation...');
+      const response = await fetch('/api/migrate-native', { method: 'POST' });
       const result = await response.json();
-      console.log('✅ Migration result:', result);
+      console.log('✅ Schema validation result:', result);
       
       if (response.ok && result.success) {
-        alert(`Migration completed! ${result.message}\nRefreshing page...`);
+        alert(`Schema validation passed! ${result.message}\nRefreshing page...`);
         window.location.reload();
+      } else if (result.sqlCommand) {
+        const runManual = confirm(
+          `Automated migration not possible.\n\n` +
+          `Missing: ${result.missingColumn}\n\n` +
+          `Would you like to copy the SQL command to run manually in Supabase?`
+        );
+        
+        if (runManual) {
+          navigator.clipboard.writeText(result.sqlCommand);
+          alert(`SQL command copied to clipboard!\n\nGo to Supabase SQL Editor and paste:\n${result.sqlCommand}`);
+        }
       } else {
-        alert('Migration failed: ' + (result.error || result.message || 'Unknown error'));
+        alert('Schema validation failed: ' + (result.error || result.message || 'Unknown error'));
       }
     } catch (error) {
-      console.error('❌ Migration execution failed:', error);
-      alert('Migration failed: ' + error);
+      console.error('❌ Schema validation failed:', error);
+      alert('Schema validation failed: ' + error);
     }
   }
 
@@ -88,7 +99,7 @@ export function MigrationDebug() {
     );
   }
 
-  if (debugInfo?.pendingCount > 0) {
+  if (debugInfo?.needsMigration) {
     return (
       <div style={{ 
         position: 'fixed', 
@@ -102,7 +113,7 @@ export function MigrationDebug() {
         borderBottom: '2px solid #ff9800'
       }}>
         <div style={{ marginBottom: '8px' }}>
-          🚨 <strong>Database Update Required!</strong> Found {debugInfo.pendingCount} pending migrations.
+          🚨 <strong>Database Schema Issue!</strong> {debugInfo.message || 'Schema validation failed'}
         </div>
         <button 
           onClick={runMigrations}
@@ -116,7 +127,7 @@ export function MigrationDebug() {
             marginRight: '8px'
           }}
         >
-          Run Migrations Now
+          Check Schema
         </button>
         <span style={{ fontSize: '12px', color: '#666' }}>
           This will fix the "category column not found" error
@@ -138,7 +149,7 @@ export function MigrationDebug() {
       fontSize: '12px',
       color: '#2e7d32'
     }}>
-      ✅ Database up to date ({debugInfo?.totalMigrations || 0} migrations)
+      ✅ Database schema is complete
     </div>
   );
 }
