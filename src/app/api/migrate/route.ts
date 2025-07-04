@@ -6,8 +6,8 @@ import { join } from 'path';
 // API endpoint for running migrations
 export async function POST(request: NextRequest) {
   try {
-    const supabaseUrl = process.env.AVA_NEXT_PUBLIC_SUPABASE_URL!;
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+    const supabaseUrl = process.env.AVA_NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.AVA_SUPABASE_SERVICE_ROLE_KEY;
     
     if (!supabaseUrl || !supabaseServiceKey) {
       return NextResponse.json(
@@ -126,8 +126,8 @@ export async function POST(request: NextRequest) {
 // GET endpoint to check migration status
 export async function GET() {
   try {
-    const supabaseUrl = process.env.AVA_NEXT_PUBLIC_SUPABASE_URL!;
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+    const supabaseUrl = process.env.AVA_NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.AVA_SUPABASE_SERVICE_ROLE_KEY;
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
     
