@@ -1,5 +1,5 @@
 export const vpsConfig = {
-  apiUrl: process.env.VPS_API_URL || 'http://localhost:4000',
+  apiUrl: process.env.VPS_API_URL || 'https://69.62.69.181',
   apiKey: process.env.VPS_API_KEY || '',
   apiSecret: process.env.VPS_API_SECRET || '',
   requestTimeout: parseInt(process.env.VPS_REQUEST_TIMEOUT || '30000', 10),

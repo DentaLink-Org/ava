@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// Handle self-signed SSL certificates for VPS server
+if (process.env.NODE_ENV !== 'development') {
+  process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
+}
+
 export async function GET(request: NextRequest) {
   const vpsUrl = process.env.VPS_API_URL;
   const vpsKey = process.env.VPS_API_KEY;
@@ -18,6 +23,11 @@ export async function GET(request: NextRequest) {
   // Check if VPS URL is HTTP while we're on HTTPS
   if (vpsUrl && vpsUrl.startsWith('http://') && request.url.startsWith('https://')) {
     diagnostics.issues.push('Mixed Content: HTTPS site trying to connect to HTTP VPS server');
+  }
+
+  // Validate HTTPS URL
+  if (vpsUrl && !vpsUrl.startsWith('https://')) {
+    diagnostics.issues.push('VPS_API_URL should use HTTPS (https://) for production');
   }
 
   // Check if credentials are missing
