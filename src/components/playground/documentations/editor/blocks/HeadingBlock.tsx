@@ -37,7 +37,7 @@ export function HeadingBlock({ block, onUpdate, isEditing }: HeadingBlockProps) 
       content: {
         ...block.content,
         heading: {
-          ...block.content.heading,
+          level: block.content.heading?.level || 2,
           text: newText
         }
       }
@@ -49,8 +49,8 @@ export function HeadingBlock({ block, onUpdate, isEditing }: HeadingBlockProps) 
       content: {
         ...block.content,
         heading: {
-          ...block.content.heading,
-          level: newLevel
+          level: newLevel as 1 | 2 | 3 | 4 | 5 | 6,
+          text: block.content.heading?.text || ''
         }
       }
     });

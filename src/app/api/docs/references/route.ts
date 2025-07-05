@@ -57,8 +57,6 @@ export async function POST(request: NextRequest) {
       target_doc_id,
       target_block_id,
       reference_type,
-      created_by,
-      metadata,
     };
 
     const reference = await referencesClient.createReference(referenceData);

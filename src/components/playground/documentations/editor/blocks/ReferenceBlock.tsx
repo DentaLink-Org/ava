@@ -26,9 +26,9 @@ interface Block {
 }
 
 const DISPLAY_TYPES = [
-  { value: 'link', label: 'Link', description: 'Simple clickable link' },
-  { value: 'embed', label: 'Embed', description: 'Show content inline' },
-  { value: 'mirror', label: 'Mirror', description: 'Live synced content' }
+  { value: 'link' as const, label: 'Link', description: 'Simple clickable link' },
+  { value: 'embed' as const, label: 'Embed', description: 'Show content inline' },
+  { value: 'mirror' as const, label: 'Mirror', description: 'Live synced content' }
 ];
 
 export function ReferenceBlock({ block, onUpdate, isEditing }: ReferenceBlockProps) {
@@ -147,7 +147,7 @@ export function ReferenceBlock({ block, onUpdate, isEditing }: ReferenceBlockPro
         reference: {
           ...ref,
           target_doc_id: docId,
-          target_block_id: blockId || null,
+          target_block_id: blockId,
           label: selectedDoc?.doc_name || 'Referenced Document',
           display_type: displayType
         }
@@ -159,13 +159,15 @@ export function ReferenceBlock({ block, onUpdate, isEditing }: ReferenceBlockPro
     setBlocks([]);
   };
 
-  const handleDisplayTypeChange = (newType: string) => {
+  const handleDisplayTypeChange = (newType: 'embed' | 'link' | 'mirror') => {
     onUpdate({
       content: {
         ...block.content,
         reference: {
-          ...ref,
-          display_type: newType
+          target_doc_id: ref?.target_doc_id || '',
+          target_block_id: ref?.target_block_id,
+          display_type: newType,
+          label: ref?.label
         }
       }
     });

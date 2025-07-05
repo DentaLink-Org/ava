@@ -1,16 +1,72 @@
-import { Database } from '@/lib/database.types';
+// import { Database } from '@/lib/database.types';
 
-export type DocumentMetadataRow = Database['public']['Tables']['document_metadata']['Row'];
-export type DocumentMetadataInsert = Database['public']['Tables']['document_metadata']['Insert'];
-export type DocumentMetadataUpdate = Database['public']['Tables']['document_metadata']['Update'];
+// TODO: Create database.types file when database schema is finalized
+// export type DocumentMetadataRow = Database['public']['Tables']['document_metadata']['Row'];
+// export type DocumentMetadataInsert = Database['public']['Tables']['document_metadata']['Insert'];
+// export type DocumentMetadataUpdate = Database['public']['Tables']['document_metadata']['Update'];
 
-export type ReferenceTrackingRow = Database['public']['Tables']['reference_tracking']['Row'];
-export type ReferenceTrackingInsert = Database['public']['Tables']['reference_tracking']['Insert'];
-export type ReferenceTrackingUpdate = Database['public']['Tables']['reference_tracking']['Update'];
+// export type ReferenceTrackingRow = Database['public']['Tables']['reference_tracking']['Row'];
+// export type ReferenceTrackingInsert = Database['public']['Tables']['reference_tracking']['Insert'];
+// export type ReferenceTrackingUpdate = Database['public']['Tables']['reference_tracking']['Update'];
 
-export type ReferenceCacheRow = Database['public']['Tables']['reference_cache']['Row'];
-export type ReferenceCacheInsert = Database['public']['Tables']['reference_cache']['Insert'];
-export type ReferenceCacheUpdate = Database['public']['Tables']['reference_cache']['Update'];
+// export type ReferenceCacheRow = Database['public']['Tables']['reference_cache']['Row'];
+// export type ReferenceCacheInsert = Database['public']['Tables']['reference_cache']['Insert'];
+// export type ReferenceCacheUpdate = Database['public']['Tables']['reference_cache']['Update'];
+
+// Temporary placeholder types until database schema is available
+export interface DocumentMetadataRow {
+  id: string;
+  doc_name: string;
+  database_id: string;
+  table_name: string;
+  created_by: string;
+  created_at: string;
+  updated_at: string;
+  metadata?: Record<string, any>;
+}
+
+export interface DocumentMetadataInsert extends Partial<DocumentMetadataRow> {
+  doc_name: string;
+  database_id: string;
+  table_name: string;
+  created_by: string;
+}
+
+export interface DocumentMetadataUpdate extends Partial<DocumentMetadataRow> {}
+
+export interface ReferenceTrackingRow {
+  id: string;
+  source_doc_id: string;
+  source_block_id: string;
+  target_doc_id: string;
+  target_block_id?: string;
+  reference_type: string;
+  created_at: string;
+}
+
+export interface ReferenceTrackingInsert extends Partial<ReferenceTrackingRow> {
+  source_doc_id: string;
+  source_block_id: string;
+  target_doc_id: string;
+  reference_type: string;
+}
+
+export interface ReferenceTrackingUpdate extends Partial<ReferenceTrackingRow> {}
+
+export interface ReferenceCacheRow {
+  cache_key: string;
+  cached_content: any;
+  expires_at: string;
+  created_at: string;
+}
+
+export interface ReferenceCacheInsert extends Partial<ReferenceCacheRow> {
+  cache_key: string;
+  cached_content: any;
+  expires_at: string;
+}
+
+export interface ReferenceCacheUpdate extends Partial<ReferenceCacheRow> {}
 
 export interface DocumentTableRow {
   block_id: string;

@@ -11,7 +11,7 @@ interface TextBlockProps {
 }
 
 export function TextBlock({ block, onUpdate, isEditing }: TextBlockProps) {
-  const [text, setText] = useState(block.content.text?.text || '');
+  const [text, setText] = useState(block.content.text || '');
   const [isHovered, setIsHovered] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -23,19 +23,19 @@ export function TextBlock({ block, onUpdate, isEditing }: TextBlockProps) {
   }, [isEditing]);
 
   useEffect(() => {
-    setText(block.content.text?.text || '');
-  }, [block.content.text?.text]);
+    setText(block.content.text || '');
+  }, [block.content.text]);
 
   const handleTextChange = (newText: string) => {
     setText(newText);
   };
 
   const handleBlur = () => {
-    if (text !== block.content.text?.text) {
+    if (text !== block.content.text) {
       onUpdate({
         content: {
           ...block.content,
-          text: { text }
+          text: text
         }
       });
     }
@@ -81,7 +81,7 @@ export function TextBlock({ block, onUpdate, isEditing }: TextBlockProps) {
     >
       {text ? (
         <div className={styles.textContent}>
-          {text.split('\n').map((line, index) => (
+          {text.split('\n').map((line: string, index: number) => (
             <p key={index} className={styles.paragraph}>
               {line || '\u00A0'}
             </p>
