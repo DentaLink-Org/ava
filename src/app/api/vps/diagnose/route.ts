@@ -11,7 +11,8 @@ export async function GET(request: NextRequest) {
       VPS_API_KEY: vpsKey ? 'SET' : 'NOT_SET',
       VPS_API_SECRET: process.env.VPS_API_SECRET ? 'SET' : 'NOT_SET',
     },
-    issues: [] as string[]
+    issues: [] as string[],
+    vpsHealth: null as any
   };
 
   // Check if VPS URL is HTTP while we're on HTTPS
