@@ -1,5 +1,5 @@
 import { vpsConfig } from '@/config/vps';
-import { HttpClient } from './http-client';
+import { HttpClient, HttpRequestOptions } from './http-client';
 import { VpsAuthToken, VpsRequestOptions } from './types';
 import { isTokenExpired, debugLog } from './utils';
 
@@ -50,16 +50,17 @@ export class AuthManager {
   }
 
   private async requestNewToken(options?: VpsRequestOptions): Promise<VpsAuthToken> {
+    const requestOptions: HttpRequestOptions = {
+      ...options,
+      headers: {
+        'X-API-Key': this.apiKey, // Send API key as header, not body
+      },
+    };
+
     const response = await this.httpClient.post<VpsAuthToken>(
       vpsConfig.endpoints.auth.token,
       {}, // Empty body - API key should be in headers
-      {
-        ...options,
-        headers: {
-          ...options?.headers,
-          'X-API-Key': this.apiKey, // Send API key as header, not body
-        },
-      }
+      requestOptions
     );
 
     debugLog(this.debug, 'Token received, expires at:', response.expiresAt);
