@@ -125,52 +125,64 @@ export type TaskPriority = 'low' | 'medium' | 'high' | 'urgent';
 export type TeamRole = 'admin' | 'manager' | 'member' | 'viewer';
 export type ViewMode = 'board' | 'list' | 'calendar' | 'team';
 
-// Enhanced Task Enums
-export enum TaskComplexity {
-  SIMPLE = 'simple',
-  MODERATE = 'moderate',
-  COMPLEX = 'complex',
-  VERY_COMPLEX = 'very_complex'
-}
+// Enhanced Task Enums - Using const assertions to avoid initialization issues
+export const TaskComplexity = {
+  SIMPLE: 'simple',
+  MODERATE: 'moderate',
+  COMPLEX: 'complex',
+  VERY_COMPLEX: 'very_complex'
+} as const;
 
-export enum TaskEffort {
-  MINIMAL = 'minimal',
-  LIGHT = 'light',
-  MODERATE = 'moderate',
-  HEAVY = 'heavy',
-  INTENSIVE = 'intensive'
-}
+export type TaskComplexity = typeof TaskComplexity[keyof typeof TaskComplexity];
 
-export enum TaskRisk {
-  LOW = 'low',
-  MEDIUM = 'medium',
-  HIGH = 'high',
-  CRITICAL = 'critical'
-}
+export const TaskEffort = {
+  MINIMAL: 'minimal',
+  LIGHT: 'light',
+  MODERATE: 'moderate',
+  HEAVY: 'heavy',
+  INTENSIVE: 'intensive'
+} as const;
 
-export enum DependencyType {
-  FINISH_TO_START = 'finish_to_start',
-  START_TO_START = 'start_to_start',
-  FINISH_TO_FINISH = 'finish_to_finish',
-  START_TO_FINISH = 'start_to_finish'
-}
+export type TaskEffort = typeof TaskEffort[keyof typeof TaskEffort];
 
-export enum TaskCommentType {
-  COMMENT = 'comment',
-  UPDATE = 'update',
-  MENTION = 'mention',
-  SYSTEM = 'system',
-  APPROVAL = 'approval'
-}
+export const TaskRisk = {
+  LOW: 'low',
+  MEDIUM: 'medium',
+  HIGH: 'high',
+  CRITICAL: 'critical'
+} as const;
 
-export enum TaskActivityType {
-  WORK = 'work',
-  MEETING = 'meeting',
-  RESEARCH = 'research',
-  TESTING = 'testing',
-  DOCUMENTATION = 'documentation',
-  REVIEW = 'review'
-}
+export type TaskRisk = typeof TaskRisk[keyof typeof TaskRisk];
+
+export const DependencyType = {
+  FINISH_TO_START: 'finish_to_start',
+  START_TO_START: 'start_to_start',
+  FINISH_TO_FINISH: 'finish_to_finish',
+  START_TO_FINISH: 'start_to_finish'
+} as const;
+
+export type DependencyType = typeof DependencyType[keyof typeof DependencyType];
+
+export const TaskCommentType = {
+  COMMENT: 'comment',
+  UPDATE: 'update',
+  MENTION: 'mention',
+  SYSTEM: 'system',
+  APPROVAL: 'approval'
+} as const;
+
+export type TaskCommentType = typeof TaskCommentType[keyof typeof TaskCommentType];
+
+export const TaskActivityType = {
+  WORK: 'work',
+  MEETING: 'meeting',
+  RESEARCH: 'research',
+  TESTING: 'testing',
+  DOCUMENTATION: 'documentation',
+  REVIEW: 'review'
+} as const;
+
+export type TaskActivityType = typeof TaskActivityType[keyof typeof TaskActivityType];
 
 // Enhanced Task Constants
 export const TASK_CONSTANTS = {
