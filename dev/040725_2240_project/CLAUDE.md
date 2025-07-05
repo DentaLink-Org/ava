@@ -244,6 +244,16 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 
 ### Code Standards
 
+#### **CRITICAL**: TypeScript Development Guidelines
+**Before starting ANY component development**, you MUST read and follow the TypeScript Development Guidelines in `TYPESCRIPT_DEVELOPMENT_GUIDELINES.md`. This document contains essential rules learned from previous TypeScript compilation errors.
+
+**Key Requirements from Guidelines**:
+- **NEVER use `as any`** - Always use proper TypeScript types
+- **Import enums correctly** - Use `import { EnumName }` not `import type { EnumName }`
+- **Define complete interfaces** - Include all required properties before implementation
+- **Validate component props** - Ensure playground configurations match component requirements
+- **Check icon imports** - Verify all Lucide React icons are properly imported
+
 1. **Follow Existing Patterns**
    ```typescript
    // Look at existing components for structure
@@ -292,6 +302,18 @@ Co-Authored-By: Claude <noreply@anthropic.com>
    ```
 
 ### Testing Requirements
+
+#### **MANDATORY**: TypeScript Validation
+**Before ANY commit**, you MUST run these commands to prevent compilation errors:
+```bash
+# Run TypeScript compilation check
+npm run type-check
+
+# Run linting
+npm run lint
+
+# If either fails, fix all errors before proceeding
+```
 
 1. **Test in Playground First**
    ```bash
@@ -488,6 +510,8 @@ export enum TaskPriority {
 - `/CLAUDE.md` - Main project guidelines
 - `/PLAN.md` - Implementation strategy
 - `/TODO.md` - Your task list
+- `/dev/040725_2240_project/CLAUDE.md` - This file (task management specific)
+- **`/dev/040725_2240_project/TYPESCRIPT_DEVELOPMENT_GUIDELINES.md`** - **CRITICAL**: TypeScript rules to prevent compilation errors
 - `/src/components/tasks/` - Existing task management implementation
 - `/src/components/milestones/` - Milestone integration patterns
 - `/database/schema/` - Database schema examples

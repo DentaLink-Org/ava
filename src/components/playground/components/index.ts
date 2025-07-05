@@ -57,6 +57,13 @@ export { TaskAssignmentManager } from './TaskAssignmentManager';
 export { TaskDependencyManager } from './TaskDependencyManager';
 export { TaskCommentsSystem } from './TaskCommentsSystem';
 
+// Phase 2: Advanced Task Features - Visualization & Analytics
+export { default as TaskTimeline } from './TaskTimeline';
+export { default as TaskAnalyticsDashboard } from './TaskAnalyticsDashboard';
+export { default as TaskBurndownChart } from './TaskBurndownChart';
+export { default as TaskVelocityTracker } from './TaskVelocityTracker';
+export { default as TaskBottleneckAnalyzer } from './TaskBottleneckAnalyzer';
+
 // Re-export types for convenience
 export type {
   WelcomeHeaderProps,

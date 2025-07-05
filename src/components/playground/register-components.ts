@@ -48,7 +48,12 @@ import {
   TaskProgressTracker,
   TaskAssignmentManager,
   TaskDependencyManager,
-  TaskCommentsSystem
+  TaskCommentsSystem,
+  TaskTimeline,
+  TaskAnalyticsDashboard,
+  TaskBurndownChart,
+  TaskVelocityTracker,
+  TaskBottleneckAnalyzer
 } from './components';
 import { ChatBot, IssueTracker } from '../_shared/components';
 
@@ -113,6 +118,13 @@ export const registerPlaygroundComponents = () => {
   componentRegistry.register(PLAYGROUND_PAGE_ID, 'TaskAssignmentManager', TaskAssignmentManager as any);
   componentRegistry.register(PLAYGROUND_PAGE_ID, 'TaskDependencyManager', TaskDependencyManager as any);
   componentRegistry.register(PLAYGROUND_PAGE_ID, 'TaskCommentsSystem', TaskCommentsSystem as any);
+  
+  // Register Phase 2: Advanced Task Features - Visualization & Analytics
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'TaskTimeline', TaskTimeline as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'TaskAnalyticsDashboard', TaskAnalyticsDashboard as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'TaskBurndownChart', TaskBurndownChart as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'TaskVelocityTracker', TaskVelocityTracker as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'TaskBottleneckAnalyzer', TaskBottleneckAnalyzer as any);
   
   console.log('Playground components registered successfully (including all milestone and enhanced task components)');
 };

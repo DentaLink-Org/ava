@@ -1827,6 +1827,64 @@ components:
       onRuleDelete: "console.log"
       onValidationRun: "console.log"
 
+  # Phase 2: Advanced Task Features - Visualization & Analytics
+  - id: "task-timeline"
+    type: "TaskTimeline"
+    group: "tasks"
+    position:
+      col: 1
+      row: 24
+      span: 8
+    props:
+      projectId: "project-1"
+      milestoneId: "milestone-1"
+      enableFilters: true
+      enableDependencies: true
+      enableCriticalPath: true
+      enableResourceView: true
+      enableMilestones: true
+      showBaseline: false
+      timeScale: "weeks"
+      height: 600
+
+  - id: "task-analytics-dashboard"
+    type: "TaskAnalyticsDashboard"
+    group: "tasks"
+    position:
+      col: 1
+      row: 25
+      span: 8
+    props:
+      projectId: "project-1"
+      milestoneId: "milestone-1"
+      timeRange: "month"
+      enableFilters: true
+      enableExport: true
+      enableRealtime: true
+      showComparisonMetrics: true
+      height: 800
+
+  - id: "task-burndown-chart"
+    type: "TaskBurndownChart"
+    group: "tasks"
+    position:
+      col: 1
+      row: 26
+      span: 8
+    props:
+      projectId: "project-1"
+      milestoneId: "milestone-1"
+      sprintId: "sprint-1"
+      timeframe: "sprint"
+      showIdealLine: true
+      showVelocityTrend: true
+      showScopeChanges: true
+      enableForecasting: true
+      enableComparison: false
+      chartType: "burndown"
+      height: 500
+      refreshInterval: 60000
+
 data:
   sources:
     - name: "orders"
