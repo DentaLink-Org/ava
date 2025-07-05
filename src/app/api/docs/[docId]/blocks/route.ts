@@ -31,7 +31,7 @@ export async function GET(
     const blocks = await blocksClient.listBlocks({
       documentId: params.docId,
       blockTypes,
-      searchTerm,
+      searchTerm: searchTerm || undefined,
       limit: limit ? parseInt(limit) : undefined,
       offset: offset ? parseInt(offset) : undefined,
     });
