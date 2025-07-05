@@ -70,6 +70,9 @@ export { default as TaskBurndownChart } from './TaskBurndownChartSimple';
 export { default as TaskVelocityTracker } from './TaskVelocityTracker';
 export { default as TaskBottleneckAnalyzer } from './TaskBottleneckAnalyzer';
 
+// Documentation System
+export { DocumentationSystem } from './DocumentationSystem';
+
 // Re-export types for convenience
 export type {
   WelcomeHeaderProps,

@@ -19,7 +19,7 @@ layout:
         row: 1
         span: 8
       multiSelect: true
-      defaultGroups: ["headers", "navigation", "data", "interactive", "tasks", "milestones", "vps"]
+      defaultGroups: ["headers", "navigation", "data", "interactive", "tasks", "milestones", "vps", "documentation"]
 
 # Theme configuration removed - using dynamic database themes instead
 
@@ -52,6 +52,10 @@ componentGroups:
     name: "VPS Integration"
     description: "VPS background processing and real-time updates"
     color: "#8B5CF6"
+  documentation:
+    name: "Documentation System"
+    description: "Document management with database table storage and references"
+    color: "#0EA5E9"
 
 components:
   # Group Selector Component
@@ -62,8 +66,8 @@ components:
       row: 1
       span: 8
     props:
-      groups: ["headers", "navigation", "data", "interactive", "tasks", "milestones", "vps"]
-      defaultSelected: ["headers", "navigation", "data", "interactive", "tasks", "milestones", "vps"]
+      groups: ["headers", "navigation", "data", "interactive", "tasks", "milestones", "vps", "documentation"]
+      defaultSelected: ["headers", "navigation", "data", "interactive", "tasks", "milestones", "vps", "documentation"]
 
   # Headers & Welcome Components
   - id: "welcome-header"
@@ -1963,6 +1967,17 @@ components:
       onJobDelete: "console.log"
       onJobView: "console.log"
       onExport: "console.log"
+
+  # Documentation System Components
+  - id: "documentation-system"
+    type: "DocumentationSystem"
+    group: "documentation"
+    position:
+      col: 1
+      row: 30
+      span: 8
+    props:
+      className: "playground-documentation-system"
 
 data:
   sources:

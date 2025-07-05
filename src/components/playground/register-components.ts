@@ -58,7 +58,9 @@ import {
   VpsDemo,
   VpsJobSubmitter,
   VpsProgressTracker,
-  VpsJobHistory
+  VpsJobHistory,
+  // Documentation System
+  DocumentationSystem
 } from './components';
 import { ChatBot, IssueTracker } from '../_shared/components';
 
@@ -136,6 +138,9 @@ export const registerPlaygroundComponents = () => {
   componentRegistry.register(PLAYGROUND_PAGE_ID, 'VpsJobSubmitter', VpsJobSubmitter as any);
   componentRegistry.register(PLAYGROUND_PAGE_ID, 'VpsProgressTracker', VpsProgressTracker as any);
   componentRegistry.register(PLAYGROUND_PAGE_ID, 'VpsJobHistory', VpsJobHistory as any);
+  
+  // Register Documentation System
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'DocumentationSystem', DocumentationSystem as any);
   
   console.log('Playground components registered successfully (including all milestone, enhanced task, and VPS components)');
 };

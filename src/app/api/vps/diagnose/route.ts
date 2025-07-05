@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// VPS server uses proper SSL certificates, so no need to bypass verification
+// Handle self-signed SSL certificates for VPS server
+if (process.env.NODE_ENV === 'production') {
+  process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
+}
 
 export async function GET(request: NextRequest) {
   const vpsUrl = process.env.VPS_API_URL;
