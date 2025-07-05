@@ -1948,6 +1948,9 @@ components:
       row: 29
       span: 8
     props:
+      jobs: []
+      activeJobId: null
+      onJobSelected: "console.log"
       enableFiltering: true
       enableSearch: true
       enableExport: true

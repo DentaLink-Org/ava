@@ -3,12 +3,74 @@
 import { VpsJob } from './VpsDemo';
 
 export interface VpsJobHistoryProps {
-  jobs: VpsJob[];
-  activeJobId: string | null;
-  onJobSelected: (jobId: string) => void;
+  jobs?: VpsJob[];
+  activeJobId?: string | null;
+  onJobSelected?: (jobId: string) => void;
+  enableFiltering?: boolean;
+  enableSearch?: boolean;
+  enableExport?: boolean;
+  enableRetry?: boolean;
+  maxHistoryItems?: number;
+  showStatus?: boolean;
+  showDuration?: boolean;
+  showResults?: boolean;
+  onJobRetry?: (jobId: string) => void;
+  onJobDelete?: (jobId: string) => void;
+  onJobView?: (jobId: string) => void;
+  onExport?: () => void;
 }
 
-export function VpsJobHistory({ jobs, activeJobId, onJobSelected }: VpsJobHistoryProps) {
+export function VpsJobHistory({ 
+  jobs = [], 
+  activeJobId = null, 
+  onJobSelected = () => {},
+  enableFiltering = true,
+  enableSearch = true,
+  enableExport = true,
+  enableRetry = true,
+  maxHistoryItems = 100,
+  showStatus = true,
+  showDuration = true,
+  showResults = true,
+  onJobRetry = () => {},
+  onJobDelete = () => {},
+  onJobView = () => {},
+  onExport = () => {}
+}: VpsJobHistoryProps) {
+  // If no jobs provided, use mock data for demonstration
+  const mockJobs: VpsJob[] = [
+    {
+      id: 'job-demo-001',
+      type: 'Data Processing',
+      status: 'COMPLETED',
+      submittedAt: new Date(Date.now() - 300000), // 5 minutes ago
+      completedAt: new Date(Date.now() - 60000),  // 1 minute ago
+      result: { processedItems: 1250, successRate: 98.4 }
+    },
+    {
+      id: 'job-demo-002', 
+      type: 'File Analysis',
+      status: 'PROCESSING',
+      submittedAt: new Date(Date.now() - 120000) // 2 minutes ago
+    },
+    {
+      id: 'job-demo-003',
+      type: 'Batch Import',
+      status: 'FAILED',
+      submittedAt: new Date(Date.now() - 900000), // 15 minutes ago
+      completedAt: new Date(Date.now() - 600000), // 10 minutes ago
+      error: 'Invalid file format detected'
+    },
+    {
+      id: 'job-demo-004',
+      type: 'Data Validation',
+      status: 'PENDING',
+      submittedAt: new Date(Date.now() - 30000) // 30 seconds ago
+    }
+  ];
+
+  const displayJobs = jobs.length > 0 ? jobs : mockJobs;
+
   const getStatusColor = (status: string) => {
     switch (status.toUpperCase()) {
       case 'PENDING': return '#f59e0b';
@@ -45,7 +107,7 @@ export function VpsJobHistory({ jobs, activeJobId, onJobSelected }: VpsJobHistor
     return `${seconds}s`;
   };
 
-  if (jobs.length === 0) {
+  if (displayJobs.length === 0) {
     return (
       <div className="vps-job-history">
         <h3>Job History</h3>
@@ -82,10 +144,15 @@ export function VpsJobHistory({ jobs, activeJobId, onJobSelected }: VpsJobHistor
 
   return (
     <div className="vps-job-history">
-      <h3>Job History</h3>
+      <div className="history-header">
+        <h3>Job History</h3>
+        {jobs.length === 0 && (
+          <span className="demo-badge">Demo Data</span>
+        )}
+      </div>
       
       <div className="job-list">
-        {jobs.map((job) => (
+        {displayJobs.map((job) => (
           <div
             key={job.id}
             className={`job-item ${activeJobId === job.id ? 'active' : ''}`}
@@ -124,9 +191,26 @@ export function VpsJobHistory({ jobs, activeJobId, onJobSelected }: VpsJobHistor
       </div>
 
       <style jsx>{`
-        .vps-job-history h3 {
+        .history-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
           margin-bottom: 15px;
+        }
+
+        .vps-job-history h3 {
+          margin: 0;
           color: #333;
+        }
+
+        .demo-badge {
+          background: #f3f4f6;
+          color: #6b7280;
+          padding: 4px 8px;
+          border-radius: 12px;
+          font-size: 11px;
+          font-weight: 500;
+          border: 1px solid #e5e7eb;
         }
 
         .job-list {
