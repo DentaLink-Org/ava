@@ -19,6 +19,7 @@ export interface DocumentTableRow {
   order_index: number;
   created_at: string;
   updated_at: string;
+  created_by?: string;
   metadata?: any;
 }
 
@@ -29,6 +30,7 @@ export interface DocumentTableInsert {
   order_index: number;
   created_at?: string;
   updated_at?: string;
+  created_by?: string;
   metadata?: any;
 }
 
