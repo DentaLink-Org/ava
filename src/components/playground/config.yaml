@@ -19,7 +19,7 @@ layout:
         row: 1
         span: 8
       multiSelect: true
-      defaultGroups: ["headers", "navigation", "data", "interactive", "tasks", "milestones"]
+      defaultGroups: ["headers", "navigation", "data", "interactive", "tasks", "milestones", "vps"]
 
 # Theme configuration removed - using dynamic database themes instead
 
@@ -48,6 +48,10 @@ componentGroups:
     name: "Milestone Management"
     description: "Milestone tracking and project management"
     color: "#EF4444"
+  vps:
+    name: "VPS Integration"
+    description: "VPS background processing and real-time updates"
+    color: "#8B5CF6"
 
 components:
   # Group Selector Component
@@ -58,8 +62,8 @@ components:
       row: 1
       span: 8
     props:
-      groups: ["headers", "navigation", "data", "interactive", "tasks", "milestones"]
-      defaultSelected: ["headers", "navigation", "data", "interactive", "tasks", "milestones"]
+      groups: ["headers", "navigation", "data", "interactive", "tasks", "milestones", "vps"]
+      defaultSelected: ["headers", "navigation", "data", "interactive", "tasks", "milestones", "vps"]
 
   # Headers & Welcome Components
   - id: "welcome-header"
@@ -1884,6 +1888,78 @@ components:
       chartType: "burndown"
       height: 500
       refreshInterval: 60000
+
+  # VPS Integration Components
+  - id: "vps-demo"
+    type: "VpsDemo"
+    group: "vps"
+    position:
+      col: 1
+      row: 27
+      span: 8
+    props:
+      title: "VPS Processing Demo"
+      description: "Demonstrates VPS background processing integration"
+      showProgressTracker: true
+      showJobHistory: true
+      enableRealtime: true
+
+  - id: "vps-job-submitter"
+    type: "VpsJobSubmitter"
+    group: "vps"
+    position:
+      col: 1
+      row: 28
+      span: 4
+    props:
+      title: "Job Submission"
+      enableValidation: true
+      showProgressFeedback: true
+      maxFileSize: 10485760
+      acceptedFileTypes: [".csv", ".json", ".txt"]
+      onJobSubmit: "console.log"
+      onJobSuccess: "console.log"
+      onJobError: "console.log"
+
+  - id: "vps-progress-tracker"
+    type: "VpsProgressTracker"
+    group: "vps"
+    position:
+      col: 5
+      row: 28
+      span: 4
+    props:
+      jobId: "demo-job-id"
+      enableSSE: true
+      enableReconnection: true
+      showDetailedProgress: true
+      showETA: true
+      showJobMetadata: true
+      onProgressUpdate: "console.log"
+      onJobComplete: "console.log"
+      onJobFailed: "console.log"
+      onConnectionError: "console.log"
+
+  - id: "vps-job-history"
+    type: "VpsJobHistory"
+    group: "vps"
+    position:
+      col: 1
+      row: 29
+      span: 8
+    props:
+      enableFiltering: true
+      enableSearch: true
+      enableExport: true
+      enableRetry: true
+      maxHistoryItems: 100
+      showStatus: true
+      showDuration: true
+      showResults: true
+      onJobRetry: "console.log"
+      onJobDelete: "console.log"
+      onJobView: "console.log"
+      onExport: "console.log"
 
 data:
   sources:
