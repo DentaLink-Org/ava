@@ -2,10 +2,10 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import type { 
   TaskComment,
   TaskAttachment,
-  TaskCommentType,
   CommentOptions,
   TasksError
 } from '../types';
+import { TaskCommentType } from '../types';
 import { taskCollaboration } from '../api/task-collaboration';
 
 /**

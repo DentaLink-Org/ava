@@ -1,12 +1,11 @@
 import type { 
   TaskComment,
   TaskAttachment,
-  TaskCommentType,
   CommentOptions,
   TasksError
 } from '../types';
 
-import { TASK_CONSTANTS } from '../types';
+import { TASK_CONSTANTS, TaskCommentType } from '../types';
 
 /**
  * Task Collaboration API
@@ -475,7 +474,7 @@ class TaskCollaborationOperations {
           `File size exceeds maximum of ${TASK_CONSTANTS.MAX_FILE_SIZE / (1024 * 1024)}MB`);
       }
 
-      if (!TASK_CONSTANTS.ALLOWED_FILE_TYPES.includes(file.type)) {
+      if (!TASK_CONSTANTS.ALLOWED_FILE_TYPES.includes(file.type as any)) {
         throw this.createError('INVALID_FILE_TYPE', 
           `File type ${file.type} is not allowed`);
       }
@@ -686,7 +685,7 @@ class TaskCollaborationOperations {
       mentions.push(match[1]);
     }
 
-    return [...new Set(mentions)]; // Remove duplicates
+    return Array.from(new Set(mentions)); // Remove duplicates
   }
 
   private async calculateThreadDepth(parentId: string): Promise<number> {

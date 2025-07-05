@@ -520,6 +520,7 @@ export interface BulkTaskUpdate {
     updateDependencies?: boolean;
     notifyAssignees?: boolean;
     createHistoryEntry?: boolean;
+    continueOnError?: boolean;
   };
 }
 

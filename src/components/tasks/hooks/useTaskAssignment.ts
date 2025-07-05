@@ -505,10 +505,12 @@ export function useTaskAssignment(options: UseTaskAssignmentOptions = {}): UseTa
     for (const taskId of taskIds) {
       try {
         const assignment = await assignTask(taskId, assigneeId, { notifyAssignee: false });
+        // Get the updated task after assignment
+        const updatedTask = await enhancedTaskOperations.get(taskId);
         result.results.push({
           taskId,
           success: true,
-          data: assignment
+          data: updatedTask
         });
         result.summary.successful++;
       } catch (error) {
@@ -584,10 +586,12 @@ export function useTaskAssignment(options: UseTaskAssignmentOptions = {}): UseTa
     for (const { taskId, assigneeId } of assignments) {
       try {
         const assignment = await reassignTask(taskId, assigneeId);
+        // Get the updated task after reassignment
+        const updatedTask = await enhancedTaskOperations.get(taskId);
         result.results.push({
           taskId,
           success: true,
-          data: assignment
+          data: updatedTask
         });
         result.summary.successful++;
       } catch (error) {
@@ -727,10 +731,12 @@ export function useTaskAssignment(options: UseTaskAssignmentOptions = {}): UseTa
             notifyAssignee: true
           });
           
+          // Get the updated task after auto-assignment
+          const updatedTask = await enhancedTaskOperations.get(taskId);
           result.results.push({
             taskId,
             success: true,
-            data: assignment
+            data: updatedTask
           });
           result.summary.successful++;
         } else {

@@ -3,14 +3,10 @@ import type {
   TaskAnalytics,
   TaskFilter,
   TaskPriority,
-  TaskEffort,
-  TaskComplexity,
-  TaskRisk,
-  TaskActivityType,
   TasksError
 } from '../types';
 
-import { TASK_STATUS_CONSTANTS } from '../types';
+import { TASK_STATUS_CONSTANTS, TaskEffort, TaskComplexity, TaskRisk, TaskActivityType } from '../types';
 
 /**
  * Task Analytics API
@@ -53,10 +49,10 @@ class TaskAnalyticsOperations {
       const totalTasks = tasks.length;
       const completedTasks = tasks.filter(t => t.status.isCompleted).length;
       const inProgressTasks = tasks.filter(t => 
-        TASK_STATUS_CONSTANTS.IN_PROGRESS_STATUSES.includes(t.status.id)
+        TASK_STATUS_CONSTANTS.IN_PROGRESS_STATUSES.includes(t.status.id as any)
       ).length;
       const blockedTasks = tasks.filter(t => 
-        TASK_STATUS_CONSTANTS.BLOCKED_STATUSES.includes(t.status.id) || !!t.blockedReason
+        TASK_STATUS_CONSTANTS.BLOCKED_STATUSES.includes(t.status.id as any) || !!t.blockedReason
       ).length;
       const overdueTasks = tasks.filter(t => this.isTaskOverdue(t)).length;
 

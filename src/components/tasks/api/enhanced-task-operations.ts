@@ -12,8 +12,7 @@ import type {
   TaskValidationWarning,
   TaskDependency,
   TaskTimeEntry,
-  TaskHistory,
-  DependencyType
+  TaskHistory
 } from '../types';
 
 import { 
@@ -22,7 +21,8 @@ import {
   TaskRisk,
   TaskActivityType,
   TASK_CONSTANTS,
-  TASK_STATUS_CONSTANTS
+  TASK_STATUS_CONSTANTS,
+  DependencyType
 } from '../types';
 
 /**
@@ -1013,7 +1013,7 @@ class EnhancedTaskOperations {
     return {
       totalTasks: tasks.length,
       completedTasks: tasks.filter(t => t.status.isCompleted).length,
-      inProgressTasks: tasks.filter(t => TASK_STATUS_CONSTANTS.IN_PROGRESS_STATUSES.includes(t.status.id)).length,
+      inProgressTasks: tasks.filter(t => TASK_STATUS_CONSTANTS.IN_PROGRESS_STATUSES.includes(t.status.id as any)).length,
       blockedTasks: tasks.filter(t => !!t.blockedReason).length,
       averageProgress: tasks.reduce((sum, t) => sum + t.progress, 0) / tasks.length || 0,
       totalEstimatedHours: tasks.reduce((sum, t) => sum + (t.estimatedHours || 0), 0),
