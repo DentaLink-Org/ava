@@ -49,8 +49,9 @@ export function CodeBlock({ block, onUpdate, isEditing }: CodeBlockProps) {
       content: {
         ...block.content,
         code: {
-          ...block.content.code,
-          language
+          language,
+          code: block.content.code?.code || '',
+          filename: block.content.code?.filename
         }
       }
     });
@@ -61,8 +62,9 @@ export function CodeBlock({ block, onUpdate, isEditing }: CodeBlockProps) {
       content: {
         ...block.content,
         code: {
-          ...block.content.code,
-          code
+          language: block.content.code?.language || 'plain',
+          code,
+          filename: block.content.code?.filename
         }
       }
     });
