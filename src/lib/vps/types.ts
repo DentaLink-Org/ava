@@ -1,6 +1,11 @@
 export interface VpsAuthToken {
   token: string;
-  expiresAt: string;
+  expiresIn: number; // VPS returns expiresIn (seconds)
+}
+
+export interface CachedVpsAuthToken {
+  token: string;
+  expiresAt: string; // Calculated expiration timestamp for caching
 }
 
 export interface VpsJobRequest {

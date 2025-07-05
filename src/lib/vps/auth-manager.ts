@@ -1,14 +1,14 @@
 import { vpsConfig } from '@/config/vps';
 import { HttpClient, HttpRequestOptions } from './http-client';
-import { VpsAuthToken, VpsRequestOptions } from './types';
+import { VpsAuthToken, CachedVpsAuthToken, VpsRequestOptions } from './types';
 import { isTokenExpired, debugLog } from './utils';
 
 export class AuthManager {
   private httpClient: HttpClient;
   private apiKey: string;
   private apiSecret: string;
-  private currentToken: VpsAuthToken | null = null;
-  private tokenPromise: Promise<VpsAuthToken> | null = null;
+  private currentToken: CachedVpsAuthToken | null = null;
+  private tokenPromise: Promise<CachedVpsAuthToken> | null = null;
   private debug: boolean;
 
   constructor(
@@ -49,7 +49,7 @@ export class AuthManager {
     }
   }
 
-  private async requestNewToken(options?: VpsRequestOptions): Promise<VpsAuthToken> {
+  private async requestNewToken(options?: VpsRequestOptions): Promise<CachedVpsAuthToken> {
     const requestOptions: HttpRequestOptions = {
       ...options,
       headers: {
@@ -63,8 +63,15 @@ export class AuthManager {
       requestOptions
     );
 
-    debugLog(this.debug, 'Token received, expires at:', response.expiresAt);
-    return response;
+    // Convert expiresIn (seconds) to expiresAt (timestamp)
+    const expiresAt = new Date(Date.now() + (response.expiresIn * 1000)).toISOString();
+    
+    debugLog(this.debug, 'Token received, expires at:', expiresAt);
+    
+    return {
+      token: response.token,
+      expiresAt
+    };
   }
 
   clearToken(): void {
