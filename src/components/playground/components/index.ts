@@ -8,6 +8,12 @@ export { WelcomeHeader } from './WelcomeHeader';
 export { DatabaseLinkCard } from './DatabaseLinkCard';
 export { TasksLinkCard } from './TasksLinkCard';
 export { QuickStartCard } from './QuickStartCard';
+
+// VPS Components
+export { VpsDemo } from './VpsDemo';
+export { VpsJobSubmitter } from './VpsJobSubmitter';
+export { VpsProgressTracker } from './VpsProgressTracker';
+export { VpsJobHistory } from './VpsJobHistory';
 export { KPICards } from './KPICards';
 export { GroupSelector } from './GroupSelector';
 export { PlaygroundPageRenderer } from './PlaygroundPageRenderer';

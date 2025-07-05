@@ -53,7 +53,12 @@ import {
   TaskAnalyticsDashboard,
   TaskBurndownChart,
   TaskVelocityTracker,
-  TaskBottleneckAnalyzer
+  TaskBottleneckAnalyzer,
+  // VPS Components
+  VpsDemo,
+  VpsJobSubmitter,
+  VpsProgressTracker,
+  VpsJobHistory
 } from './components';
 import { ChatBot, IssueTracker } from '../_shared/components';
 
@@ -126,7 +131,13 @@ export const registerPlaygroundComponents = () => {
   componentRegistry.register(PLAYGROUND_PAGE_ID, 'TaskVelocityTracker', TaskVelocityTracker as any);
   componentRegistry.register(PLAYGROUND_PAGE_ID, 'TaskBottleneckAnalyzer', TaskBottleneckAnalyzer as any);
   
-  console.log('Playground components registered successfully (including all milestone and enhanced task components)');
+  // Register VPS components
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'VpsDemo', VpsDemo as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'VpsJobSubmitter', VpsJobSubmitter as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'VpsProgressTracker', VpsProgressTracker as any);
+  componentRegistry.register(PLAYGROUND_PAGE_ID, 'VpsJobHistory', VpsJobHistory as any);
+  
+  console.log('Playground components registered successfully (including all milestone, enhanced task, and VPS components)');
 };
 
 /**
