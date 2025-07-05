@@ -38,6 +38,26 @@ import {
 } from 'lucide-react';
 ```
 
+#### "Cannot access 'E' before initialization" (Enum Error)
+```typescript
+// ❌ PROBLEMATIC - TypeScript enum causing initialization issues
+export enum TaskEffort {
+  MINIMAL = 'minimal',
+  LIGHT = 'light',
+  MODERATE = 'moderate'
+}
+
+// ✅ QUICK FIX - Replace with const assertion
+export const TaskEffort = {
+  MINIMAL: 'minimal',
+  LIGHT: 'light',
+  MODERATE: 'moderate'
+} as const;
+
+export type TaskEffort = typeof TaskEffort[keyof typeof TaskEffort];
+```
+**Why**: TypeScript enums can cause initialization order issues in production builds, especially in Vercel deployments. Const assertions provide the same functionality without runtime initialization problems.
+
 ### Component Registration Issues
 
 #### Component not showing in playground

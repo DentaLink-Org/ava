@@ -36,6 +36,33 @@ import { DependencyType, TaskStatus } from './types';
 import type { Task, TaskComment } from './types';
 ```
 
+#### **CRITICAL: Enum vs Const Assertions (Updated January 2025)**
+**Due to TypeScript enum initialization issues in production builds, ALWAYS use const assertions instead of enums:**
+
+```typescript
+// ❌ WRONG - TypeScript enums cause "Cannot access 'E' before initialization" errors
+export enum TaskComplexity {
+  SIMPLE = 'simple',
+  MODERATE = 'moderate',
+  COMPLEX = 'complex'
+}
+
+// ✅ CORRECT - Use const assertions to avoid initialization issues
+export const TaskComplexity = {
+  SIMPLE: 'simple',
+  MODERATE: 'moderate',
+  COMPLEX: 'complex'
+} as const;
+
+export type TaskComplexity = typeof TaskComplexity[keyof typeof TaskComplexity];
+```
+
+**Why This Matters:**
+- TypeScript enums are transpiled in a way that can cause initialization order issues
+- Const assertions provide the same functionality without runtime initialization problems
+- This is especially important for components that may be lazy-loaded or used in dynamic imports
+- Vercel deployments are particularly sensitive to these initialization issues
+
 #### Icon Imports
 - **Always import icons explicitly** - Don't assume they exist
 - **Use consistent icon naming** across components
@@ -219,6 +246,40 @@ return Array.from(new Set(allTypes));
 2. **Add pre-commit hooks** for type checking
 3. **Include build validation** for all environments
 4. **Monitor for type regression** in deployments
+
+## Historical Issues and Solutions
+
+### Issue: TaskBurndownChart "Cannot access 'E' before initialization" (January 2025)
+
+**Problem**: The TaskBurndownChart component was failing to render in Vercel deployment with the error "Cannot access 'E' before initialization".
+
+**Root Cause**: TypeScript enums in `/src/components/tasks/types.ts` were causing initialization order issues during production builds.
+
+**Solution Applied**: 
+- Converted all TypeScript enums to const assertions
+- Updated `TaskComplexity`, `TaskEffort`, `TaskRisk`, `DependencyType`, `TaskCommentType`, and `TaskActivityType`
+- Maintained type safety while avoiding runtime initialization issues
+
+**Code Changes**:
+```typescript
+// Before (problematic)
+export enum TaskEffort {
+  MINIMAL = 'minimal',
+  LIGHT = 'light',
+  MODERATE = 'moderate'
+}
+
+// After (fixed)
+export const TaskEffort = {
+  MINIMAL: 'minimal',
+  LIGHT: 'light',
+  MODERATE: 'moderate'
+} as const;
+
+export type TaskEffort = typeof TaskEffort[keyof typeof TaskEffort];
+```
+
+**Prevention**: Always use const assertions for enum-like structures to avoid this issue in the future.
 
 ## Tools and Resources
 
