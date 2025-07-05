@@ -52,11 +52,14 @@ export class AuthManager {
   private async requestNewToken(options?: VpsRequestOptions): Promise<VpsAuthToken> {
     const response = await this.httpClient.post<VpsAuthToken>(
       vpsConfig.endpoints.auth.token,
+      {}, // Empty body - API key should be in headers
       {
-        apiKey: this.apiKey,
-        apiSecret: this.apiSecret,
-      },
-      options
+        ...options,
+        headers: {
+          ...options?.headers,
+          'X-API-Key': this.apiKey, // Send API key as header, not body
+        },
+      }
     );
 
     debugLog(this.debug, 'Token received, expires at:', response.expiresAt);
